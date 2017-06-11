@@ -102,11 +102,12 @@ h2 {
   z-index: 5;
   box-sizing: border-box;
   margin-top: 12vh;
-  /*transform: translateY(8vh);*/
+  text-shadow: 0 0 3px rgba(142, 110, 171, 0.5);
   opacity: 0;
   animation-name: text;
   animation-duration: .8s;
   animation-fill-mode: forwards;
+  position: relative;
 }
 
 h2 > span{
@@ -114,6 +115,18 @@ h2 > span{
   color: #799682;
   line-height: 5vh;
   text-transform: none;
+}
+
+h2::after{
+  content: '';
+  position: absolute;
+  width: 230px;
+  height: 230px;
+  top:-8vh;
+  left: 50%;
+  margin-left: -115px;
+  border-radius: 50%;
+  box-shadow: 2px 2px 15px rgba(33, 32, 47, 0.5);
 }
 
 @keyframes text {
