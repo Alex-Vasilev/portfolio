@@ -52,7 +52,6 @@ body{
   }
 }
 
-
 .menu-contain{
   height: 20vh;
   flex-grow: 6;
@@ -922,11 +921,11 @@ li a:hover::after {
 .shake-rotate:hover,
 .shake-trigger:hover .shake-rotate, 
 .shake-rotate.shake-freeze, .shake-rotate.shake-constant {
-    -webkit-animation: heartbeat .45s ease-in-out infinite;
-    -o-animation: heartbeat .45s ease-in-out infinite;
-    -moz-animation: heartbeat .45s ease-in-out infinite;
-    -ms-animation: heartbeat .45s ease-in-out infinite;
-    animation: heartbeat .45s ease-in-out infinite;
+    -webkit-animation: heartbeat .35s ease-in-out infinite;
+    -o-animation: heartbeat .35s ease-in-out infinite;
+    -moz-animation: heartbeat .35s ease-in-out infinite;
+    -ms-animation: heartbeat .35s ease-in-out infinite;
+    animation: heartbeat .35s ease-in-out infinite;
     filter: drop-shadow(0 0 10px #fff);
 }
 
