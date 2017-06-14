@@ -7,12 +7,15 @@ html, body{
 }
 
 body{  
-  font-family: 'Montserrat', sans-serif;
+/*font-family: 'Catamaran', sans-serif;
+font-family: 'Maven Pro', sans-serif;
+font-family: 'Julius Sans One', sans-serif;*/
+font-family: 'Josefin Sans', sans-serif;
 }
 
 .content{
   display: flex;
-  background: rgb(49, 50, 54);
+  background: rgb(95, 94, 88);
   width: 100%;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -20,18 +23,18 @@ body{
 }
 
 .logo{
-  min-width: 20vw;
-  height: 10vh;
-  flex-grow: 1;
-  background: url("logo-color.png") no-repeat 50% 65%;
-  background-size: contain;
-  padding: 5vh;
-  box-sizing: border-box;
-  align-self: center;
-  filter: drop-shadow(0 0 20px rgba(1, 14, 10, 1));
-  animation: logo;
-  animation-duration: 2s;
-  animation-delay: 3s;
+    min-width: 20vw;
+    height: 10vh;
+    flex-grow: 1;
+    background: url(logo-color.png) no-repeat 50% 65%;
+    background-size: contain;
+    padding: 5vh;
+    box-sizing: border-box;
+    align-self: center;
+    filter: drop-shadow(1px -1px 5px rgba(1, 7, 30, 0.5));
+    /*animation: logo;*/
+    animation-duration: 2s
+    animation-delay: 3s;
 }
 
 @keyframes logo {
@@ -91,30 +94,33 @@ body{
 }
 
 h2 {
-  font-size: 6vh;
-  flex-basis: 100%;
-  text-transform: uppercase;
-  color: #a3c5ac;
-  line-height: 7vh;
-  text-align: center;
-  font-weight: 100;
-  letter-spacing: 0.1vw;
-  z-index: 5;
-  box-sizing: border-box;
-  margin-top: 12vh;
-  text-shadow: 0 0 3px rgba(142, 110, 171, 0.5);
-  opacity: 0;
-  animation-name: text;
-  animation-duration: .8s;
-  animation-fill-mode: forwards;
-  position: relative;
+    font-size: 6vh;
+    flex-basis: 100%;
+    text-transform: uppercase;
+    color: #cfd0ff;
+    line-height: 7vh;
+    text-align: center;
+    font-weight: 400;
+    letter-spacing: 0.25vw;
+    z-index: 5;
+    box-sizing: border-box;
+    margin-top: 12vh;
+    text-shadow: 0 0 9px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    animation-name: text;
+    animation-duration: .8s;
+    animation-fill-mode: forwards;
+    position: relative;
+    font-variant: small-caps;
 }
 
 h2 > span{
-  font-size: 4.6vh;
-  color: #799682;
-  line-height: 5vh;
-  text-transform: none;
+    font-size: 4.6vh;
+    color: #ccc5ad;
+    line-height: 5vh;
+    text-transform: none;
+    font-weight: initial;
+    letter-spacing: 4px;
 }
 
 h2::after{
@@ -126,7 +132,8 @@ h2::after{
   left: 50%;
   margin-left: -115px;
   border-radius: 50%;
-  box-shadow: 2px 2px 15px rgba(33, 32, 47, 0.5);
+  z-index: -1;
+  box-shadow: 3px -3px 12px rgba(33, 32, 47, 0.4);
 }
 
 @keyframes text {
@@ -190,9 +197,9 @@ li a:hover::after {
   width: 100%;
 }
 
-/* Стили модального окна */
+/* ÃÂ¡Ã‘â€šÃÂ¸ÃÂ»ÃÂ¸ ÃÂ¼ÃÂ¾ÃÂ´ÃÂ°ÃÂ»Ã‘Å’ÃÂ½ÃÂ¾ÃÂ³ÃÂ¾ ÃÂ¾ÃÂºÃÂ½ÃÂ° */
 
-/* слой затемнения */
+/* Ã‘ÂÃÂ»ÃÂ¾ÃÂ¹ ÃÂ·ÃÂ°Ã‘â€šÃÂµÃÂ¼ÃÂ½ÃÂµÃÂ½ÃÂ¸Ã‘Â */
 .modal-wrap:before {
     content: "";
     display: none;
@@ -214,7 +221,7 @@ li a:hover::after {
     z-index: 102;
 }
 
-/* активация слоя затемнения и модального блока */
+/* ÃÂ°ÃÂºÃ‘â€šÃÂ¸ÃÂ²ÃÂ°Ã‘â€ ÃÂ¸Ã‘Â Ã‘ÂÃÂ»ÃÂ¾Ã‘Â ÃÂ·ÃÂ°Ã‘â€šÃÂµÃÂ¼ÃÂ½ÃÂµÃÂ½ÃÂ¸Ã‘Â ÃÂ¸ ÃÂ¼ÃÂ¾ÃÂ´ÃÂ°ÃÂ»Ã‘Å’ÃÂ½ÃÂ¾ÃÂ³ÃÂ¾ ÃÂ±ÃÂ»ÃÂ¾ÃÂºÃÂ° */
 .modal-open:checked ~ .modal-wrap:before,
 .modal-open:checked ~ .modal-wrap .modal-overlay {
     display: block;
@@ -228,7 +235,7 @@ li a:hover::after {
     top: 20%;
 }
 
-/* элементы модального окна */
+/* Ã‘ÂÃÂ»ÃÂµÃÂ¼ÃÂµÃÂ½Ã‘â€šÃ‘â€¹ ÃÂ¼ÃÂ¾ÃÂ´ÃÂ°ÃÂ»Ã‘Å’ÃÂ½ÃÂ¾ÃÂ³ÃÂ¾ ÃÂ¾ÃÂºÃÂ½ÃÂ° */
 .modal-dialog {
     border: none;
     position: fixed;
@@ -292,14 +299,16 @@ li a:hover::after {
 
 .bottom{
   width: 100%;
-  background-color: rgb(40, 41, 46);
+  background-color: rgb(56, 64, 64);
   display: flex;
   flex-wrap: nowrap;
   box-sizing: border-box;
-    padding-bottom: 40px;
-    margin-bottom: -100px;
-    position: relative;
-    height: 100px;
+  padding-bottom: 40px;
+  margin-bottom: -100px;
+  position: relative;
+  height: 100px;
+  /* display: none; */
+  opacity: .9;
 }
 
 .pattern-bottom-section{
@@ -316,10 +325,12 @@ li a:hover::after {
   width: 40.5px;
   height: 37px;
   position: relative;
-  animation-name: coloring-bottom1;
+  /* animation-name: coloring-bottom1; */
   animation-duration: 5s;
   animation-iteration-count: infinite;
-  box-shadow: 0 0 20px rgba(1, 14, 10, 0.5);
+  box-shadow: 5px -6px 12px rgba(1, 14, 10, 0.5);
+  /* opacity: .9; */
+  background: none !important;
 }
 
 .pattern-bottom-element:first-of-type{
@@ -350,7 +361,8 @@ li a:hover::after {
   width: 40.5px;
   height: 37px;
   transform: skewY(116.9deg);
-  box-shadow: 0 0 20px rgba(1, 14, 10, 0.5);
+  box-shadow: 12px 4px 14px rgba(1, 14, 10, 0.5);
+  background: none !important;
 }
 
 .pattern-bottom-element.changed,
@@ -365,23 +377,23 @@ li a:hover::after {
 
 
 .first,
-.first::after{  
-  background-color: rgb(53, 56, 58);
+.first::after{
+  background-color: rgb(102, 115, 110) !important;
 }
 
 .first:nth-of-type(2),
-.first:nth-of-type(2)::after{  
-  background-color: rgb(81, 100, 88);
+.first:nth-of-type(2)::after{
+  background-color: rgb(95, 94, 88) !important;
 }
 
 .first:nth-of-type(3),
-.first:nth-of-type(3)::after{  
-  background-color: rgb(53, 56, 58);
+.first:nth-of-type(3)::after{
+  background-color: rgb(107, 96, 79) !important;
 }
 
 .first:nth-of-type(4),
-.first:nth-of-type(4)::after{  
-  background-color: rgb(43, 46, 54);
+.first:nth-of-type(4)::after{
+  background-color: rgb(66, 59, 51) !important;
 }
 
 @keyframes coloring-bottom1 {
@@ -398,23 +410,23 @@ li a:hover::after {
 }
 
 .second,
-.second::after{  
-  background-color: rgb(31, 35, 44);
+.second::after{
+  background-color: rgb(95, 93, 86) !important;
 }
 
 .second:nth-of-type(2),
-.second:nth-of-type(2)::after{  
-  background-color: rgb(31, 35, 44);
+.second:nth-of-type(2)::after{
+  background-color: rgb(127, 136, 126) !important;
 }
 
 .second:nth-of-type(3),
-.second:nth-of-type(3)::after{  
-  background-color: rgb(43, 46, 54);
+.second:nth-of-type(3)::after{
+  background-color: rgb(140, 139, 131) !important;
 }
 
 .second:nth-of-type(4),
-.second:nth-of-type(4)::after{  
-  background-color: rgb(81, 100, 88);
+.second:nth-of-type(4)::after{
+  background-color: rgb(89, 99, 95) !important;
 }
 
 .second:nth-of-type(5),
@@ -427,28 +439,28 @@ li a:hover::after {
 }
 
 .third,
-.third::after{  
-  background-color: rgb(64, 73, 70);
+.third::after{
+  background-color: rgb(101, 90, 76) !important;
 }
 
 .third:nth-of-type(2),
-.third:nth-of-type(2)::after{  
-  background-color: rgb(31, 35, 44);
+.third:nth-of-type(2)::after{
+  background-color: rgb(98, 108, 104) !important;
 }
 
 .third:nth-of-type(3),
-.third:nth-of-type(3)::after{  
-  background-color: rgb(81, 100, 88);
+.third:nth-of-type(3)::after{
+  background-color: rgb(133, 132, 124) !important;
 }
 
 .third:nth-of-type(4),
-.third:nth-of-type(4)::after{  
-  background-color: rgb(53, 56, 58);
+.third:nth-of-type(4)::after{
+  background-color: rgb(129, 128, 121) !important;
 }
 
 .third:nth-of-type(5),
-.third:nth-of-type(5)::after{  
-  background-color: rgb(55, 59, 60);
+.third:nth-of-type(5)::after{
+  background-color: rgb(90, 88, 84) !important;
 }
 
 .fourth{
@@ -456,13 +468,13 @@ li a:hover::after {
 }
 
 .fourth,
-.fourth::after{  
-  background-color: rgb(31, 35, 44);
+.fourth::after{
+  background-color: rgb(91, 89, 84) !important;
 }
 
 .fourth:nth-of-type(2),
-.fourth:nth-of-type(2)::after{  
-  background-color: rgb(55, 59, 60);
+.fourth:nth-of-type(2)::after{
+  background-color: rgb(95, 105, 100) !important;
 }
 
 .fourth:nth-of-type(3),
@@ -480,8 +492,8 @@ li a:hover::after {
 }
 
 .fifth,
-.fifth::after{  
-  background-color: rgb(66, 76, 72);
+.fifth::after{
+  background-color: rgb(126, 124, 118) !important;
 }
 
 .fifth:nth-of-type(2),
@@ -490,13 +502,13 @@ li a:hover::after {
 }
 
 .fifth:nth-of-type(3),
-.fifth:nth-of-type(3)::after{  
-  background-color: rgb(53, 56, 58);
+.fifth:nth-of-type(3)::after{
+  background-color: rgb(92, 100, 97) !important;
 }
 
 .fifth:nth-of-type(4),
-.fifth:nth-of-type(4)::after{  
-  background-color: rgb(43, 46, 54);
+.fifth:nth-of-type(4)::after{
+  background-color: rgb(99, 89, 75) !important;
 }
 
 .sixth{
@@ -504,8 +516,8 @@ li a:hover::after {
 }
 
 .sixth,
-.sixth::after{  
-  background-color: rgb(43, 46, 54);
+.sixth::after{
+  background-color: rgb(115, 122, 113) !important;
 }
 
 .sixth:nth-of-type(2),
@@ -514,18 +526,18 @@ li a:hover::after {
 }
 
 .sixth:nth-of-type(3),
-.sixth:nth-of-type(3)::after{  
-  background-color: rgb(66, 76, 72);
+.sixth:nth-of-type(3)::after{
+  background-color: rgb(85, 84, 79) !important;
 }
 
 .sixth:nth-of-type(4),
-.sixth:nth-of-type(4)::after{  
-  background-color: rgb(55, 59, 60);
+.sixth:nth-of-type(4)::after{
+  background-color: rgb(98, 107, 104) !important;
 }
 
 .sixth:nth-of-type(5),
-.sixth:nth-of-type(5)::after{  
-  background-color: rgb(53, 56, 58);
+.sixth:nth-of-type(5)::after{
+  background-color: rgb(113, 120, 111) !important;
 }
 
 .seventh{
@@ -533,18 +545,18 @@ li a:hover::after {
 }
 
 .seventh,
-.seventh::after{  
-  background-color: rgb(55, 59, 60);
+.seventh::after{
+  background-color: rgb(96, 86, 73) !important;
 }
 
 .seventh:nth-of-type(2),
-.seventh:nth-of-type(2)::after{  
-  background-color: rgb(43, 46, 54);
+.seventh:nth-of-type(2)::after{
+  background-color: rgb(87, 86, 80) !important;
 }
 
 .seventh:nth-of-type(3),
-.seventh:nth-of-type(3)::after{  
-  background-color: rgb(55, 59, 60);
+.seventh:nth-of-type(3)::after{
+  background-color: rgb(97, 106, 102) !important;
 }
 
 .seventh:nth-of-type(4),
@@ -557,18 +569,18 @@ li a:hover::after {
 }
 
 .eighth,
-.eighth::after{  
-  background-color: rgb(81, 100, 88);
+.eighth::after{
+  background-color: rgb(133, 132, 124) !important;
 }
 
 .eighth:nth-of-type(2),
-.eighth:nth-of-type(2)::after{  
-  background-color: rgb(65, 75, 71);
+.eighth:nth-of-type(2)::after{
+  background-color: rgb(85, 92, 88) !important;
 }
 
 .eighth:nth-of-type(3),
-.eighth:nth-of-type(3)::after{  
-  background-color: rgb(43, 46, 54);
+.eighth:nth-of-type(3)::after{
+  background-color: rgb(98, 88, 76) !important;
 }
 
 .eighth:nth-of-type(4),
@@ -582,8 +594,8 @@ li a:hover::after {
 }
 
 .ninth,
-.ninth::after{  
-  background-color: rgb(31, 35, 44);
+.ninth::after{
+  background-color: rgb(95, 92, 86) !important;
 }
 
 .ninth:nth-of-type(2),
@@ -592,8 +604,8 @@ li a:hover::after {
 }
 
 .ninth:nth-of-type(3),
-.ninth:nth-of-type(3)::after{  
-  background-color: rgb(66, 76, 72);
+.ninth:nth-of-type(3)::after{
+  background-color: rgb(122, 128, 120) !important;
 }
 
 .tenth{
@@ -601,8 +613,8 @@ li a:hover::after {
 }
 
 .tenth,
-.tenth::after{  
-  background-color: rgb(66, 76, 72);
+.tenth::after{
+  background-color: rgb(69, 62, 54) !important;
 }
 
 .tenth:nth-of-type(2),
@@ -611,13 +623,13 @@ li a:hover::after {
 }
 
 .tenth:nth-of-type(3),
-.tenth:nth-of-type(3)::after{  
-  background-color: rgb(53, 56, 58);
+.tenth:nth-of-type(3)::after{
+  background-color: rgb(119, 124, 116) !important;
 }
 
 .tenth:nth-of-type(4),
-.tenth:nth-of-type(4)::after{  
-  background-color: rgb(43, 46, 54);
+.tenth:nth-of-type(4)::after{
+  background-color: rgb(95, 93, 88) !important;
 }
 
 .tenth:nth-of-type(5),
@@ -630,13 +642,13 @@ li a:hover::after {
 }
 
 .eleventh,
-.eleventh::after{  
-  background-color: rgb(66, 76, 72);
+.eleventh::after{
+  background-color: rgb(85, 90, 87) !important;
 }
 
 .eleventh:nth-of-type(2),
-.eleventh:nth-of-type(2)::after{  
-  background-color: rgb(43, 46, 54);
+.eleventh:nth-of-type(2)::after{
+  background-color: rgb(100, 89, 77) !important;
 }
 
 .eleventh:nth-of-type(3),
@@ -645,8 +657,8 @@ li a:hover::after {
 }
 
 .eleventh:nth-of-type(4),
-.eleventh:nth-of-type(4)::after{  
-  background-color: rgb(53, 56, 58);
+.eleventh:nth-of-type(4)::after{
+  background-color: rgb(71, 64, 57) !important;
 }
 
 .twelfth{
@@ -654,23 +666,23 @@ li a:hover::after {
 }
 
 .twelfth,
-.twelfth::after{  
-  background-color: rgb(53, 56, 58);
+.twelfth::after{
+  background-color: rgb(129, 127, 120) !important;
 }
 
 .twelfth:nth-of-type(2),
-.twelfth:nth-of-type(2)::after{  
-  background-color: rgb(43, 46, 54);
+.twelfth:nth-of-type(2)::after{
+  background-color: rgb(119, 124, 116) !important;
 }
 
 .twelfth:nth-of-type(3),
-.twelfth:nth-of-type(3)::after{  
-  background-color: rgb(43, 46, 54);
+.twelfth:nth-of-type(3)::after{
+  background-color: rgb(100, 89, 77) !important;
 }
 
 .twelfth:nth-of-type(4),
-.twelfth:nth-of-type(4)::after{  
-  background-color: rgb(53, 56, 58);
+.twelfth:nth-of-type(4)::after{
+  background-color: rgb(91, 102, 97) !important;
 }
 
 .twelfth:nth-of-type(5),
@@ -683,23 +695,23 @@ li a:hover::after {
 }
 
 .thirteenth,
-.thirteenth::after{  
-  background-color: rgb(55, 59, 60);
+.thirteenth::after{
+  background-color: rgb(116, 114, 109) !important;
 }
 
 .thirteenth:nth-of-type(2),
-.thirteenth:nth-of-type(2)::after{  
-  background-color: rgb(81, 100, 88);
+.thirteenth:nth-of-type(2)::after{
+  background-color: rgb(113, 116, 109) !important;
 }
 
 .thirteenth:nth-of-type(3),
-.thirteenth:nth-of-type(3)::after{  
-  background-color: rgb(53, 56, 58);
+.thirteenth:nth-of-type(3)::after{
+  background-color: rgb(91, 88, 84) !important;
 }
 
 .thirteenth:nth-of-type(4),
-.thirteenth:nth-of-type(4)::after{  
-  background-color: rgb(53, 56, 58);
+.thirteenth:nth-of-type(4)::after{
+  background-color: rgb(94, 102, 97) !important;
 }
 
 .fourteenth{
@@ -707,13 +719,13 @@ li a:hover::after {
 }
 
 .fourteenth,
-.fourteenth::after{  
-  background-color: rgb(64, 73, 70);
+.fourteenth::after{
+  background-color: rgb(119, 124, 116) !important;
 }
 
 .fourteenth:nth-of-type(2),
-.fourteenth:nth-of-type(2)::after{  
-  background-color: rgb(43, 46, 54);
+.fourteenth:nth-of-type(2)::after{
+  background-color: rgb(89, 86, 81) !important;
 }
 
 .fourteenth:nth-of-type(3),
@@ -726,12 +738,12 @@ li a:hover::after {
 }
 
 .fifteenth,
-.fifteenth::after{  
-  background-color: rgb(66, 76, 72);
+.fifteenth::after{
+  background-color: rgb(96, 86, 74) !important;
 }
 .fifteenth:nth-of-type(2),
-.fifteenth:nth-of-type(2)::after{  
-  background-color: rgb(66, 76, 72);
+.fifteenth:nth-of-type(2)::after{
+  background-color: rgb(121, 118, 113) !important;
 }
 
 .fifteenth:nth-of-type(3),
@@ -740,8 +752,8 @@ li a:hover::after {
 }
 
 .fifteenth:nth-of-type(4),
-.fifteenth:nth-of-type(4)::after{  
-  background-color: rgb(43, 46, 54);
+.fifteenth:nth-of-type(4)::after{
+  background-color: rgb(90, 99, 95) !important;
 }
 
 .fifteenth:nth-of-type(5),
@@ -754,17 +766,17 @@ li a:hover::after {
 }
 
 .sixteenth,
-.sixteenth::after{  
-  background-color: rgb(53, 56, 58);
+.sixteenth::after{
+  background-color: rgb(100, 111, 106) !important;
 }
 .sixteenth:nth-of-type(2),
-.sixteenth:nth-of-type(2)::after{  
-  background-color: rgb(43, 46, 54);
+.sixteenth:nth-of-type(2)::after{
+  background-color: rgb(119, 124, 116) !important;
 }
 
 .sixteenth:nth-of-type(3),
-.sixteenth:nth-of-type(3)::after{  
-  background-color: rgb(31, 35, 44);
+.sixteenth:nth-of-type(3)::after{
+  background-color: rgb(114, 111, 106) !important;
 }
 
 .sixteenth:nth-of-type(4),
@@ -777,22 +789,22 @@ li a:hover::after {
 }
 
 .seventeenth,
-.seventeenth::after{  
-  background-color: rgb(81, 100, 88);
+.seventeenth::after{
+  background-color: rgb(69, 62, 54) !important;
 }
 .seventeenth:nth-of-type(2),
-.seventeenth:nth-of-type(2)::after{  
-  background-color: rgb(53, 56, 58);
+.seventeenth:nth-of-type(2)::after{
+  background-color: rgb(94, 92, 87) !important;
 }
 
 .seventeenth:nth-of-type(3),
-.seventeenth:nth-of-type(3)::after{  
-  background-color: rgb(43, 46, 54);
+.seventeenth:nth-of-type(3)::after{
+  background-color: rgb(105, 94, 79) !important;
 }
 
 .seventeenth:nth-of-type(4),
-.seventeenth:nth-of-type(4)::after{  
-  background-color: rgb(66, 76, 72);
+.seventeenth:nth-of-type(4)::after{
+  background-color: rgb(124, 122, 115) !important;
 }
 
 .seventeenth:nth-of-type(5),
@@ -931,7 +943,7 @@ li a:hover::after {
   filter: drop-shadow(0 0 10px #fff);
 }*/
 
-.shake-rotate:hover,
+/*.shake-rotate:hover,
 .shake-trigger:hover .shake-rotate, 
 .shake-rotate.shake-freeze, .shake-rotate.shake-constant {
     -webkit-animation: heartbeat .35s ease-in-out infinite;
@@ -940,7 +952,7 @@ li a:hover::after {
     -ms-animation: heartbeat .35s ease-in-out infinite;
     animation: heartbeat .35s ease-in-out infinite;
     filter: drop-shadow(0 0 10px #fff);
-}
+}*/
 
 @keyframes heartbeat {
     0% {  -webkit-transform: scale(1);
