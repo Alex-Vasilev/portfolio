@@ -7,37 +7,36 @@ html, body{
 }
 
 body{  
-/*font-family: 'Catamaran', sans-serif;
-font-family: 'Maven Pro', sans-serif;
-font-family: 'Julius Sans One', sans-serif;*/
 font-family: 'Josefin Sans', sans-serif;
 }
 
 .content{
-  display: flex;
-  background: rgb(95, 94, 88);
+  /*background: rgb(95, 94, 88);*/
   width: 100%;
-  flex-wrap: wrap;
-  justify-content: flex-start;
   min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 50px;
 }
 
 .logo{
-    min-width: 20vw;
-    height: 10vh;
-    flex-grow: 1;
+    width: 100px;
+    height: 50px;
     background: url(logo-color.png) no-repeat 50% 65%;
     background-size: contain;
-    padding: 5vh;
     box-sizing: border-box;
-    align-self: center;
-    filter: drop-shadow(1px -1px 5px rgba(1, 7, 30, 0.5));
-    /*animation: logo;*/
-    animation-duration: 2s
-    animation-delay: 3s;
+    filter: drop-shadow(1px -1px 5px rgba(1, 7, 30, 0.2));
 }
 
-@keyframes logo {
+/*@keyframes logo {
   from {  
     transform: scale(1);
   }
@@ -53,22 +52,18 @@ font-family: 'Josefin Sans', sans-serif;
   to {    
     transform: scale(1);;
   }
-}
+}*/
 
 .menu-contain{
-  height: 20vh;
-  flex-grow: 6;
   box-sizing: border-box;
 }
 
 .menu{
  cursor: pointer;
  font-size: 3.5vh;
- color: rgb(189, 189, 241);
+ color: rgb(42, 44, 49);
  text-transform: uppercase;
  position: relative;
- top:9vh;
- left: 53vw;
  text-shadow: 0 0 2px #fff;
 }
 
@@ -93,30 +88,39 @@ font-family: 'Josefin Sans', sans-serif;
   box-shadow: 0 0 3px rgba(142, 123, 191, 0.5);
 }
 
+.main-content{
+    height: 85vh;
+    display: flex;
+    justify-content: center;
+}
+
 h2 {
+    /* margin: 50% auto; */
     font-size: 6vh;
-    flex-basis: 100%;
+    /* flex-basis: 100%; */
     text-transform: uppercase;
-    color: #cfd0ff;
+    color: #2a2c31;
     line-height: 7vh;
     text-align: center;
     font-weight: 400;
     letter-spacing: 0.25vw;
     z-index: 5;
     box-sizing: border-box;
-    margin-top: 12vh;
+    margin-bottom: 22vh;
     text-shadow: 0 0 9px rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    animation-name: text;
-    animation-duration: .8s;
-    animation-fill-mode: forwards;
+    /* opacity: 0; */
+    /* animation-name: text; */
+    /* animation-duration: .8s; */
+    /* animation-fill-mode: forwards; */
     position: relative;
     font-variant: small-caps;
+    /* display: flex; */
+    align-self: center;
 }
 
 h2 > span{
     font-size: 4.6vh;
-    color: #ccc5ad;
+    color: #2d2d2d;
     line-height: 5vh;
     text-transform: none;
     font-weight: initial;
@@ -300,11 +304,11 @@ li a:hover::after {
 .bottom{
   width: 100%;
   background-color: rgb(56, 64, 64);
-  display: flex;
+  display: none;
   flex-wrap: nowrap;
   box-sizing: border-box;
   padding-bottom: 40px;
-  margin-bottom: -100px;
+  /* margin-bottom: -100px; */
   position: relative;
   height: 100px;
   /* display: none; */
