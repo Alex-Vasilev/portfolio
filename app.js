@@ -53,7 +53,6 @@ app.post("/api/posts", jsonParser, function (req, res) {
     });
 });
 
-
 //app.delete("/api/users/:id", function(req, res){
 //      
 //    var id = new objectId(req.params.id);
