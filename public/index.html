@@ -4,20 +4,21 @@
         <link href="https://fonts.googleapis.com/css?family=Catamaran:400,500,700,800,900|Josefin+Sans:100,100i,300,300i,400,400i,600,600i,700,700i|Julius+Sans+One|Maven+Pro:400,500,700,900" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://unpkg.com/vue@2.1.4/dist/vue.js"></script>
+        <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css">
         <meta name="viewport" content="width=device-width">
         <meta charset="utf-8">
         <title>avdesign</title>
     </head>
     <body>
-        <div class="content"
+       <div class="content"
              id="main-page">
-            <div class="header">
+             <div class="header">
                 <div class="logo shake-rotate"></div>
                 <div class="menu-contain">
-                    <!-- activation -->
+                     <!--activation--> 
                     <label class="menu" for="modal-1">menu</label>
-                    <!-- modal window -->
+                     <!--modal window--> 
                     <div class="modal">
                         <input class="modal-open" id="modal-1" type="checkbox" hidden>
                         <div class="modal-wrap" aria-hidden="true" role="dialog">
@@ -25,15 +26,12 @@
                             <div class="modal-dialog"> 
                                 <div class="modal-body">
                                     <ul class="main-menu">
-                                        <li><a href="#" 
-                                               data-hover="works">works</a></li>
+                                        <li><router-link to="/foo">Go to Foo</router-link></li>
                                         <li><a href="#"
                                                data-hover="about">about</a></li>
                                         <li><a href="#"
                                                data-hover="contact">contact</a></li>
-                                        <li><a href="#"
-                                               data-hover="blog"
-                                               v-on:click="GetPosts()">blog</a></li>
+                                        <li><router-link to="/blog" @click="rea()">Go to Blog</router-link></li>
                                     </ul>
                                 </div>
                             </div>
@@ -41,55 +39,19 @@
                     </div>
                 </div>
             </div>
-            <div class="blog-content"
-                 v-show="main"> 
-                <h2>Hello people!<br> <span>My name is Alex and<br>
-                        welcome to my fucking great website!</span></h2>
 
-            </div>
-            <blog></blog>
-<!--                        <div class="blog-content"
-                            v-show="blog">
-            
-                            <h3>latest news</h3>
-                            <form name="postsForm" @submit.prevent="onSubmit">
-                                <input type="hidden" name="id" value="0" />
-                                <div class="form-group">
-                                    <label for="name">Title</label>
-                                    <input class="form-control"
-                                           name="name"
-                                           v-model="name"/>
-                                </div>
-                                <div class="form-group">
-                                    <label for="description">Text</label>
-                                    <input class="form-control"
-                                           name="description"
-                                           v-model="description"/>
-                                </div>
-                                <div class="panel-body">
-                                    <button type="submit"
-                                            class="btn btn-sm btn-primary">Save</button>
-                                    <a id="reset" class="btn btn-sm btn-primary">Cancel</a>
-                                </div>
-                            </form>
-                            <ul class="news-item-list">
-                                <li v-for="item in items"
-                                    class="news-item">
-                                    <p class="news-item-title">{{item.name}}</p>
-                                    <p class="news-item-description">{{item.description}}</p>
-                                    <button>Edit</button>
-                                    <button>Delete</button>
-                                </li>
-                            </ul>
-                        </div>-->
+  <!-- отображение компонента, для которого совпал путь -->
+  <router-view></router-view>
+
         </div>
 
         <script>
-
-Vue.component('blog', {
-    template: `<div class="blog-content"
-                v-show="blog">
-
+            
+const Home = { template: `<div class="blog-content"> 
+                <h2>Hello people!<br> <span>My name is Alex and<br>
+                        welcome to my fucking great website!</span></h2>
+            </div>` }
+const Blog = { template: `<div class="blog-content">
                 <h3>latest news</h3>
                 <form name="postsForm" @submit.prevent="onSubmit">
                     <input type="hidden" name="id" value="0" />
@@ -97,13 +59,13 @@ Vue.component('blog', {
                         <label for="name">Title</label>
                         <input class="form-control"
                                name="name"
-                               v-model="name"/>
+                               />
                     </div>
                     <div class="form-group">
                         <label for="description">Text</label>
                         <input class="form-control"
                                name="description"
-                               v-model="description"/>
+                               />
                     </div>
                     <div class="panel-body">
                         <button type="submit"
@@ -124,188 +86,343 @@ Vue.component('blog', {
     data: function(){
         return {
             items: [],
-            blog: false,
-            description: '',
-            name: ''
+
+//            description: '',
+//            name: ''
         }
-    },
-    methods: {
-        GetPosts: function () {
-            this.blog = true;
-            this.main = false;
+    }
+    
+//    methods:{
+//        ready: function(){
+//            var self = this;
+//            $.ajax({
+//            url: "api/posts",
+//                    type: "GET",
+//                    contentType: "application/json",
+//                    success: function (posts) {
+//                    self.items = posts;
+//                    console.log(posts)
+//                }
+//            });
+//    }
+    }
+    
+//    ready: function(){
+//            var self = this;
+//            $.ajax({
+//            url: "api/posts",
+//                    type: "GET",
+//                    contentType: "application/json",
+//                    success: function (posts) {
+//                    self.items = posts;
+//                    console.log(posts)
+//                }
+//            });
+//    }
+//}
+
+// 2. Определение путей
+// Каждый путь должен указывать на компонент
+// "Компонентом" может быть как созданный через `Vue.extend()`
+// полноценный конструктор, так и просто объект с настройками компонента
+// Вложенные пути будут рассмотрены далее.
+const routes = [
+  { path: '/home', component: Home },
+  { path: '/blog', component: Blog }
+]
+
+// 3. Создаём инстанс роутера с опцией `routes`
+// Можно передать и другие опции, но пока не будем усложнять
+const router = new VueRouter({
+  routes 
+})
+
+// 4. Создаём и монтируем корневой инстанс Vue нашего приложения.
+// Удостоверьтесь, что передали инстанс роутера в опции `router`,
+// что позволит приложению знать о его наличии
+const app = new Vue({
+  router: router,
+  el: '#main-page',
+  data: {
+      a: 1
+  },
+    methods:{
+        rea: function(){
+            console.log(1)
             var self = this;
             $.ajax({
-            url: "api/posts",
+            url: "/api/posts",
                     type: "GET",
                     contentType: "application/json",
                     success: function (posts) {
-                    self.items = posts;
+//                    self.items = posts;
+                    console.log(1)
+                },
+                error: function(){
+                                        console.log(2)
+
                 }
             });
-        },
+    }
     },
-    events: {
-
+    ready: function(){
+        console.log(this.a)
     }
 })
-
-                    new Vue({
-                    el: '#main-page',
-                            data: {
-                            items: [],
-                                    main: true,
-                                    blog: false,
-                                    about: false,
-                                    works: false,
-                                    contact: false,
-                                    description: '',
-                                    name: ''
-                            },
-                            methods: {
-                            GetPosts: function () {
-                            this.blog = true;
-                            this.main = false;
-                            var self = this;
-                            $.ajax({
-                            url: "api/posts",
-                                    type: "GET",
-                                    contentType: "application/json",
-                                    success: function (posts) {
-                                    self.items = posts;
-                                    }
-                            });
-                            },
-//        GetPost: function (id) {
+            
+            
+            
+            
+//            var router = new VueRouter();
+//            
+//Vue.component('blog', {
+//    template: `<div class="blog-content">
+//                <h3>latest news</h3>
+//                <form name="postsForm" @submit.prevent="onSubmit">
+//                    <input type="hidden" name="id" value="0" />
+//                    <div class="form-group">
+//                        <label for="name">Title</label>
+//                        <input class="form-control"
+//                               name="name"
+//                               v-model="name"/>
+//                    </div>
+//                    <div class="form-group">
+//                        <label for="description">Text</label>
+//                        <input class="form-control"
+//                               name="description"
+//                               v-model="description"/>
+//                    </div>
+//                    <div class="panel-body">
+//                        <button type="submit"
+//                                class="btn btn-sm btn-primary">Save</button>
+//                        <a id="reset" class="btn btn-sm btn-primary">Cancel</a>
+//                    </div>
+//                </form>
+//                <ul class="news-item-list">
+//                    <li v-for="item in items"
+//                        class="news-item">
+//                        <p class="news-item-title">{{item.name}}</p>
+//                        <p class="news-item-description">{{item.description}}</p>
+//                        <button>Edit</button>
+//                        <button>Delete</button>
+//                    </li>
+//                </ul>
+//            </div>`,
+//    data: function(){
+//        return {
+//            items: [],
+//
+//            description: '',
+//            name: ''
+//        }
+//    },
+//    methods: {
+//        GetPosts: function () {
+//            this.blog = true;
+//            this.main = false;
+//            var self = this;
 //            $.ajax({
-//                url: "/api/posts/" + id,
-//                type: "GET",
-//                contentType: "application/json",
-//                success: function (post) {
-//                    var form = document.forms["postsForm"];
-//                    form.elements["id"].value = post._id;
-//                    form.elements["name"].value = post.name;
-//                    form.elements["description"].value = post.description;
+//            url: "api/posts",
+//                    type: "GET",
+//                    contentType: "application/json",
+//                    success: function (posts) {
+//                    self.items = posts;
 //                }
 //            });
 //        },
-//        CreatePost: function () {
+//    },
+//    events: {
+//    }
+//})
 //
-//            console.log(this.name, this.description)
+//Vue.component('home-page', {
+//    template: `<div class="blog-content"> 
+//                <h2>Hello people!<br> <span>My name is Alex and<br>
+//                        welcome to my fucking great website!</span></h2>
+//            </div>`,
+//    data: function(){
+//        return {
+//            items: [],
+//
+//            description: '',
+//            name: ''
+//        }
+//    },
+//    methods: {
+//        GetPosts: function () {
+//            this.blog = true;
+//            this.main = false;
+//            var self = this;
 //            $.ajax({
-//                url: "api/posts",
+//            url: "api/posts",
+//                    type: "GET",
+//                    contentType: "application/json",
+//                    success: function (posts) {
+//                    self.items = posts;
+//                }
+//            });
+//        },
+//    },
+//    events: {
+//    }
+//})
+//
+//router.map({
+//  '/': {
+//    component: home-page
+//  },
+//  '/posts': {
+//    component: blog
+//  }
+//});
+//
+//router.start(App, '#main-page');
+//
+//var App = new Vue({
+//el: '#main-page',
+//        data: {
+//        items: [],
+//                main: true,
+//                blog: false,
+//                about: false,
+//                works: false,
+//                contact: false,
+//                description: '',
+//                name: ''
+//        },
+//        methods: {
+//        GetPosts: function () {
+//        this.blog = true;
+//        this.main = false;
+//        var self = this;
+//        $.ajax({
+//        url: "api/posts",
+//                type: "GET",
+//                contentType: "application/json",
+//                success: function (posts) {
+//                self.items = posts;
+//                }
+//        });
+//        },
+////        GetPost: function (id) {
+////            $.ajax({
+////                url: "/api/posts/" + id,
+////                type: "GET",
+////                contentType: "application/json",
+////                success: function (post) {
+////                    var form = document.forms["postsForm"];
+////                    form.elements["id"].value = post._id;
+////                    form.elements["name"].value = post.name;
+////                    form.elements["description"].value = post.description;
+////                }
+////            });
+////        },
+////        CreatePost: function () {
+////
+////            console.log(this.name, this.description)
+////            $.ajax({
+////                url: "api/posts",
+////                contentType: "application/json",
+////                method: "POST",
+////                data: JSON.stringify({
+////                    name: this.name,
+////                    description: this.description
+////                }),
+////                success: function (post) {
+////
+////
+////                }
+////            })
+////        },
+//        onSubmit: function () {
+////                var id = this.elements["id"].value;
+//        var name = this.name;
+//        var description = this.description;
+//        var self = this;
+//        $.ajax({
+//        url: "api/posts",
 //                contentType: "application/json",
 //                method: "POST",
 //                data: JSON.stringify({
-//                    name: this.name,
-//                    description: this.description
+//                name: name,
+//                        description: description
 //                }),
 //                success: function (post) {
-//
-//
+//                self.items.push(post)
 //                }
-//            })
+//        })
 //        },
-
-                                    onSubmit: function () {
-//                var id = this.elements["id"].value;
-                                    var name = this.name;
-                                    var description = this.description;
-                                    var self = this;
-                                    $.ajax({
-                                    url: "api/posts",
-                                            contentType: "application/json",
-                                            method: "POST",
-                                            data: JSON.stringify({
-                                            name: name,
-                                                    description: description
-                                            }),
-                                            success: function (post) {
-                                            self.items.push(post)
-
-                                            }
-                                    })
-                                    },
-//        EditUser:  function (userId, userName, userAge) {
-//                $.ajax({
-//                    url: "api/users",
-//                    contentType: "application/json",
-//                    method: "PUT",
-//                    data: JSON.stringify({
-//                        id: userId,
-//                        name: userName,
-//                        age: userAge
-//                    }),
-//                    success: function (user) {
-//                        reset();
-//                        console.log(user);
+////        EditUser:  function (userId, userName, userAge) {
+////                $.ajax({
+////                    url: "api/users",
+////                    contentType: "application/json",
+////                    method: "PUT",
+////                    data: JSON.stringify({
+////                        id: userId,
+////                        name: userName,
+////                        age: userAge
+////                    }),
+////                    success: function (user) {
+////                        reset();
+////                        console.log(user);
+//////                        $("tr[data-rowid='" + user._id + "']").replaceWith(row(user));
+////                    }
+////                })
+////            }
+//                            }
+//                    });
+////            function EditUser(userId, userName, userAge) {
+////                $.ajax({
+////                    url: "api/users",
+////                    contentType: "application/json",
+////                    method: "PUT",
+////                    data: JSON.stringify({
+////                        id: userId,
+////                        name: userName,
+////                        age: userAge
+////                    }),
+////                    success: function (user) {
+////                        reset();
+////                        console.log(user);
 ////                        $("tr[data-rowid='" + user._id + "']").replaceWith(row(user));
-//                    }
-//                })
-//            }
-
-                            }
-                    });
-//            function EditUser(userId, userName, userAge) {
-//                $.ajax({
-//                    url: "api/users",
-//                    contentType: "application/json",
-//                    method: "PUT",
-//                    data: JSON.stringify({
-//                        id: userId,
-//                        name: userName,
-//                        age: userAge
-//                    }),
-//                    success: function (user) {
-//                        reset();
-//                        console.log(user);
-//                        $("tr[data-rowid='" + user._id + "']").replaceWith(row(user));
-//                    }
-//                })
-//            }
-
-// сброс формы
-//            function reset() {
-//                var form = document.forms["userForm"];
-//                form.reset();
-//                form.elements["id"].value = 0;
-//            }
-
-// Удаление пользователя
-//            function DeleteUser(id) {
-//                $.ajax({
-//                    url: "api/users/" + id,
-//                    contentType: "application/json",
-//                    method: "DELETE",
-//                    success: function (user) {
-//                        console.log(user);
-//                        $("tr[data-rowid='" + user._id + "']").remove();
-//                    }
-//                })
-//            }
-
-
-// сброс значений формы
-//            $("#reset").click(function (e) {
+////                    }
+////                })
+////            }
+//// сброс формы
+////            function reset() {
+////                var form = document.forms["userForm"];
+////                form.reset();
+////                form.elements["id"].value = 0;
+////            }
+//// Удаление пользователя
+////            function DeleteUser(id) {
+////                $.ajax({
+////                    url: "api/users/" + id,
+////                    contentType: "application/json",
+////                    method: "DELETE",
+////                    success: function (user) {
+////                        console.log(user);
+////                        $("tr[data-rowid='" + user._id + "']").remove();
+////                    }
+////                })
+////            }
+//// сброс значений формы
+////            $("#reset").click(function (e) {
+////
+////                e.preventDefault();
+////                reset();
+////            })
+//// нажимаем на ссылку Изменить
+////            $("body").on("click", ".editLink", function () {
+////                var id = $(this).data("id");
+////                GetUser(id);
+////            })
+//// нажимаем на ссылку Удалить
+////            $("body").on("click", ".removeLink", function () {
+////                var id = $(this).data("id");
+////                DeleteUser(id);
+////            })
 //
-//                e.preventDefault();
-//                reset();
-//            })
-
-
-
-// нажимаем на ссылку Изменить
-//            $("body").on("click", ".editLink", function () {
-//                var id = $(this).data("id");
-//                GetUser(id);
-//            })
-// нажимаем на ссылку Удалить
-//            $("body").on("click", ".removeLink", function () {
-//                var id = $(this).data("id");
-//                DeleteUser(id);
-//            })
-
-
-
 
         </script>
     </body>
