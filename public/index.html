@@ -8,13 +8,13 @@
         <link rel="stylesheet" type="text/css" href="style.css">
         <meta name="viewport" content="width=device-width">
         <meta charset="utf-8">
-        <title>avdesign</title>
+        <title>avawesome</title>
     </head>
     <body>
        <div class="content"
              id="main-page">
              <div class="header">
-                <div class="logo shake-rotate"></div>
+                 <router-link to="/" class="logo"></router-link>
                 <div class="menu-contain">
                      <!--activation--> 
                     <label class="menu" for="modal-1">menu</label>
@@ -26,12 +26,10 @@
                             <div class="modal-dialog"> 
                                 <div class="modal-body">
                                     <ul class="main-menu">
-                                        <li><router-link to="/foo">Go to Foo</router-link></li>
-                                        <li><a href="#"
-                                               data-hover="about">about</a></li>
-                                        <li><a href="#"
-                                               data-hover="contact">contact</a></li>
-                                        <li><router-link to="/blog" @click="rea()">Go to Blog</router-link></li>
+                                        <li><router-link to="/works">Works</router-link></li>
+                                        <li><router-link to="/about">About</router-link></li>
+                                        <li><router-link to="/contact">Contact</router-link></li>
+                                        <li><router-link to="/blog">Blog</router-link></li>
                                     </ul>
                                 </div>
                             </div>
@@ -47,10 +45,14 @@
 
         <script>
             
-const Home = { template: `<div class="blog-content"> 
+const Home = { template: `<div class="blog-content home"> 
                 <h2>Hello people!<br> <span>My name is Alex and<br>
                         welcome to my fucking great website!</span></h2>
-            </div>` }
+            </div>` };
+const Works = { template: `<div class="blog-content">works</div>` };
+const Contact = { template: `<div class="blog-content">contact</div>` };
+const About = { template: `<div class="blog-content">about</div>` };
+
 const Blog = { template: `<div class="blog-content">
                 <h3>latest news</h3>
                 <form name="postsForm" @submit.prevent="onSubmit">
@@ -59,13 +61,13 @@ const Blog = { template: `<div class="blog-content">
                         <label for="name">Title</label>
                         <input class="form-control"
                                name="name"
-                               />
+                               v-model="name"/>
                     </div>
                     <div class="form-group">
                         <label for="description">Text</label>
                         <input class="form-control"
                                name="description"
-                               />
+                               v-model="description"/>
                     </div>
                     <div class="panel-body">
                         <button type="submit"
@@ -86,40 +88,57 @@ const Blog = { template: `<div class="blog-content">
     data: function(){
         return {
             items: [],
+            description: '',
+            name: ''
+        };
+    },
+    created () {
+    this.fethPostsData();
+  },
+    watch: {
+    // в случае изменения маршрута запрашиваем данные вновь
+    '$route': 'fetchData'
+  },
+    methods:{
+        fethPostsData: function(){
+            console.log(1);
+            var self = this;
+            $.ajax({
+            url: "api/posts",
+                    type: "GET",
+                    contentType: "application/json",
+                    success: function (posts) {
+                    self.items = posts;
+                    console.log(1);
+                },
+                error: function(){
+                    console.log(2);
 
-//            description: '',
-//            name: ''
+                }
+            });
+        },
+        
+        onSubmit: function () {
+//                var id = this.elements["id"].value;
+        var name = this.name;
+        var description = this.description;
+        var self = this;
+        $.ajax({
+            url: "api/posts",
+            contentType: "application/json",
+            method: "POST",
+            data: JSON.stringify({
+            name: name,
+            description: description
+            }),
+            success: function (post) {
+                self.items.push(post);
+                }
+            });
         }
     }
+};
     
-//    methods:{
-//        ready: function(){
-//            var self = this;
-//            $.ajax({
-//            url: "api/posts",
-//                    type: "GET",
-//                    contentType: "application/json",
-//                    success: function (posts) {
-//                    self.items = posts;
-//                    console.log(posts)
-//                }
-//            });
-//    }
-    }
-    
-//    ready: function(){
-//            var self = this;
-//            $.ajax({
-//            url: "api/posts",
-//                    type: "GET",
-//                    contentType: "application/json",
-//                    success: function (posts) {
-//                    self.items = posts;
-//                    console.log(posts)
-//                }
-//            });
-//    }
-//}
 
 // 2. Определение путей
 // Каждый путь должен указывать на компонент
@@ -127,15 +146,18 @@ const Blog = { template: `<div class="blog-content">
 // полноценный конструктор, так и просто объект с настройками компонента
 // Вложенные пути будут рассмотрены далее.
 const routes = [
-  { path: '/home', component: Home },
-  { path: '/blog', component: Blog }
-]
+    { path: '/', component: Home },
+    { path: '/blog', component: Blog },
+    { path: '/works', component: Works },
+    { path: '/contact', component: Contact },
+    { path: '/about', component: About }
+];
 
 // 3. Создаём инстанс роутера с опцией `routes`
 // Можно передать и другие опции, но пока не будем усложнять
 const router = new VueRouter({
   routes 
-})
+});
 
 // 4. Создаём и монтируем корневой инстанс Vue нашего приложения.
 // Удостоверьтесь, что передали инстанс роутера в опции `router`,
@@ -144,140 +166,10 @@ const app = new Vue({
   router: router,
   el: '#main-page',
   data: {
-      a: 1
-  },
-    methods:{
-        rea: function(){
-            console.log(1)
-            var self = this;
-            $.ajax({
-            url: "/api/posts",
-                    type: "GET",
-                    contentType: "application/json",
-                    success: function (posts) {
-//                    self.items = posts;
-                    console.log(1)
-                },
-                error: function(){
-                                        console.log(2)
+     
+  }
+});
 
-                }
-            });
-    }
-    },
-    ready: function(){
-        console.log(this.a)
-    }
-})
-            
-            
-            
-            
-//            var router = new VueRouter();
-//            
-//Vue.component('blog', {
-//    template: `<div class="blog-content">
-//                <h3>latest news</h3>
-//                <form name="postsForm" @submit.prevent="onSubmit">
-//                    <input type="hidden" name="id" value="0" />
-//                    <div class="form-group">
-//                        <label for="name">Title</label>
-//                        <input class="form-control"
-//                               name="name"
-//                               v-model="name"/>
-//                    </div>
-//                    <div class="form-group">
-//                        <label for="description">Text</label>
-//                        <input class="form-control"
-//                               name="description"
-//                               v-model="description"/>
-//                    </div>
-//                    <div class="panel-body">
-//                        <button type="submit"
-//                                class="btn btn-sm btn-primary">Save</button>
-//                        <a id="reset" class="btn btn-sm btn-primary">Cancel</a>
-//                    </div>
-//                </form>
-//                <ul class="news-item-list">
-//                    <li v-for="item in items"
-//                        class="news-item">
-//                        <p class="news-item-title">{{item.name}}</p>
-//                        <p class="news-item-description">{{item.description}}</p>
-//                        <button>Edit</button>
-//                        <button>Delete</button>
-//                    </li>
-//                </ul>
-//            </div>`,
-//    data: function(){
-//        return {
-//            items: [],
-//
-//            description: '',
-//            name: ''
-//        }
-//    },
-//    methods: {
-//        GetPosts: function () {
-//            this.blog = true;
-//            this.main = false;
-//            var self = this;
-//            $.ajax({
-//            url: "api/posts",
-//                    type: "GET",
-//                    contentType: "application/json",
-//                    success: function (posts) {
-//                    self.items = posts;
-//                }
-//            });
-//        },
-//    },
-//    events: {
-//    }
-//})
-//
-//Vue.component('home-page', {
-//    template: `<div class="blog-content"> 
-//                <h2>Hello people!<br> <span>My name is Alex and<br>
-//                        welcome to my fucking great website!</span></h2>
-//            </div>`,
-//    data: function(){
-//        return {
-//            items: [],
-//
-//            description: '',
-//            name: ''
-//        }
-//    },
-//    methods: {
-//        GetPosts: function () {
-//            this.blog = true;
-//            this.main = false;
-//            var self = this;
-//            $.ajax({
-//            url: "api/posts",
-//                    type: "GET",
-//                    contentType: "application/json",
-//                    success: function (posts) {
-//                    self.items = posts;
-//                }
-//            });
-//        },
-//    },
-//    events: {
-//    }
-//})
-//
-//router.map({
-//  '/': {
-//    component: home-page
-//  },
-//  '/posts': {
-//    component: blog
-//  }
-//});
-//
-//router.start(App, '#main-page');
-//
 //var App = new Vue({
 //el: '#main-page',
 //        data: {
