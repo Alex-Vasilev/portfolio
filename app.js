@@ -53,21 +53,21 @@ app.post("/api/posts", jsonParser, function (req, res) {
     });
 });
 
-//app.delete("/api/users/:id", function(req, res){
-//      
-//    var id = new objectId(req.params.id);
-//    mongoClient.connect(url, function(err, db){
-//        db.collection("users").findOneAndDelete({_id: id}, function(err, result){
-//             
-//            if(err) return res.status(400).send();
-//             
-//            var user = result.value;
-//            res.send(user);
-//            db.close();
-//        });
-//    });
-//});
-// 
+app.delete("/api/posts/:id", function(req, res){
+      
+    var id = new objectId(req.params.id);
+    mongoClient.connect(url, function(err, db){
+        db.collection("posts").findOneAndDelete({_id: id}, function(err, result){
+             
+            if(err) return res.status(400).send();
+             
+            var user = result.value;
+            res.send(user);
+            db.close();
+        });
+    });
+});
+
 //app.put("/api/users", jsonParser, function(req, res){
 //      
 //    if(!req.body) return res.sendStatus(400);
