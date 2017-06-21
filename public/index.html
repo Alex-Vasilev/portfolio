@@ -36,7 +36,15 @@ const Home = {template: `<div class="blog-content home">
 </div>`};
 const Works = {template: `<div class="blog-content works"><h3>There's nothing here...yet</h3></div>`};
 const Contact = {template: `<div class="blog-content">contact</div>`};
-const About = {template: `<div class="blog-content">about</div>`};
+const About = {template: `<div class="blog-content about"><h3>About</h3>
+<p class="container">Hello! My name is Alex. I am 28 years old. I'm engaged in front-end development.
+Now we are working with the guys to develop a cool callback widget
+ with CRM and analytics. Here I will keep a small blog, in which I
+ will describe interesting things that I will encounter in the process of work.
+ I do not apply for the last instance and this information will be of a fact-finding character.
+ Therefore, here are my contacts and if you have an irresistible desire to discuss these
+ topics - write here or in the comments, I will be happy.</p>
+</div>`};
 
 const Blog = {
     template: `<div class="blog-content">
@@ -61,7 +69,7 @@ const Blog = {
             <a id="reset" class="btn btn-sm btn-primary">Cancel</a>
         </div>
     </form>
-    <ul class="news-item-list">
+    <ul class="news-item-list container">
         <li v-for="item in items"
             class="news-item">
             <p class="news-item-title">{{item.name}}</p>
@@ -215,6 +223,15 @@ const app = new Vue({
 ////                GetUser(id);
 ////            })
 
+$('.main-menu a').mouseenter(function(){
+    $(this).addClass("mouseenter")
+    $(this).removeClass("mouseleave")
+})
+
+$('.main-menu a').mouseleave(function(){
+    $(this).addClass("mouseleave")
+    $(this).removeClass("mouseenter")
+})
         </script>
     </body>
 </html>
