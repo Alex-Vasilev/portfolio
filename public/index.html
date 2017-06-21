@@ -14,28 +14,13 @@
         <div class="content"
              id="main-page">
             <div class="header">
-                <router-link to="/" class="logo"></router-link>
-                <div class="menu-contain">
-                    <!--activation--> 
-                    <label class="menu" for="modal-1">menu</label>
-                    <!--modal window--> 
-                    <div class="modal">
-                        <input class="modal-open" id="modal-1" type="checkbox" hidden>
-                        <div class="modal-wrap" aria-hidden="true" role="dialog">
-                            <label class="modal-overlay" for="modal-1"></label>
-                            <div class="modal-dialog"> 
-                                <div class="modal-body">
-                                    <ul class="main-menu">
-                                        <li><router-link to="/works">Works</router-link></li>
-                                        <li><router-link to="/about">About</router-link></li>
-                                        <li><router-link to="/contact">Contact</router-link></li>
-                                        <li><router-link to="/blog">Blog</router-link></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <router-link to="/" class="logo"></router-link>               
+                <ul class="main-menu">
+                    <li><router-link to="/works">Works</router-link></li>
+                    <li><router-link to="/about">About</router-link></li>
+                    <li><router-link to="/contact">Contact</router-link></li>
+                    <li><router-link to="/blog">Blog</router-link></li>
+                </ul>   
             </div>
 
             <!-- отображение компонента, для которого совпал путь -->
@@ -49,7 +34,7 @@ const Home = {template: `<div class="blog-content home">
     <h2>Hello people!<br> <span>My name is Alex and<br>
             welcome to my fucking great website!</span></h2>
 </div>`};
-const Works = {template: `<div class="blog-content">works</div>`};
+const Works = {template: `<div class="blog-content works"><h3>There's nothing here...yet</h3></div>`};
 const Contact = {template: `<div class="blog-content">contact</div>`};
 const About = {template: `<div class="blog-content">about</div>`};
 
