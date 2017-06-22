@@ -16,16 +16,18 @@
             <div class="header">
                 <router-link to="/" class="logo"></router-link>               
                 <ul class="main-menu">
-                    <li><router-link to="/works">Works</router-link></li>
                     <li><router-link to="/about">About</router-link></li>
                     <li><router-link to="/contact">Contact</router-link></li>
                     <li><router-link to="/blog">Blog</router-link></li>
+                    <li><router-link to="/works">Works</router-link></li>
                 </ul>   
             </div>
 
             <!-- отображение компонента, для которого совпал путь -->
-            <router-view></router-view>
-
+<!--            <router-view></router-view>-->
+            <transition name="component-fade" mode="out-in">
+               <router-view></router-view>
+            </transition>
         </div>
 
         <script>
@@ -34,8 +36,30 @@ const Home = {template: `<div class="blog-content home">
     <h2>Hello people!<br> <span>My name is Alex and<br>
             welcome to my fucking great website!</span></h2>
 </div>`};
+    
 const Works = {template: `<div class="blog-content works"><h3>There's nothing here...yet</h3></div>`};
-const Contact = {template: `<div class="blog-content">contact</div>`};
+
+const Contact = {template: `<div class="blog-content contact">
+        <h3>Contact</h3>
+       <form @submit.prevent="onSubmit" class="container">
+            <p class="contact-form-description">Say hello etc.</p>
+           <div class="form-group">
+               <label for="name">E-mail</label>
+               <input class="contact-email"
+                      name="email"/>
+           </div>
+           <div class="form-group">
+               <label for="description">Message</label>
+               <textarea class="contact-message"
+                      name="message"></textarea>
+           </div>
+           <div class="panel-body">
+               <button type="submit"
+                       class="btn btn-sm btn-primary">Send</button>
+           </div>
+       </form>
+   </div>`};
+    
 const About = {template: `<div class="blog-content about"><h3>About</h3>
 <p class="container">Hello! My name is Alex. I am 28 years old. I'm engaged in front-end development.
 Now we are working with the guys to develop a cool callback widget
@@ -47,7 +71,7 @@ Now we are working with the guys to develop a cool callback widget
 </div>`};
 
 const Blog = {
-    template: `<div class="blog-content">
+    template: `<div class="blog-content ">
     <h3>latest news</h3>
     <form name="postsForm" @submit.prevent="onSubmit">
         <input type="hidden" name="id" value="0" />
@@ -59,9 +83,9 @@ const Blog = {
         </div>
         <div class="form-group">
             <label for="description">Text</label>
-            <input class="form-control"
+            <textarea class="form-control"
                    name="description"
-                   v-model="description"/>
+                   v-model="description"></textarea>
         </div>
         <div class="panel-body">
             <button type="submit"
@@ -79,6 +103,7 @@ const Blog = {
         </li>
     </ul>
 </div>`,
+        
     data: function () {
         return {
             items: [],

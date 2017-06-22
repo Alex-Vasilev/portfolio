@@ -99,11 +99,14 @@ h2::after{
 }
 
 .container{
+    color: #5f5f5f;
     font-variant: small-caps;
     letter-spacing: 1px;
     font-size: 16px;
+    font-weight: 600;
     line-height: 1.6;
     width: 70%;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
 }
 
 h3{
@@ -112,6 +115,7 @@ h3{
     color: #2d2d2d;
     font-weight: initial;
     letter-spacing: 4px;
+    text-shadow: 0 0 9px rgba(0, 0, 0, 0.5);
 }
 
 /*  ============== */
@@ -121,7 +125,7 @@ h3{
 }
 /*  ============== */
 
-.about{
+.about, .contact{
     justify-content: flex-start;
 }
 
@@ -162,6 +166,7 @@ h3{
     text-decoration: none;
     position: relative;
     text-transform: uppercase;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
 .main-menu a:after {
@@ -184,3 +189,33 @@ h3{
     width: 0;
 }
 
+/*contact*/
+
+.form-group{
+    margin-bottom: 20px;
+}
+
+.form-group input,
+.form-group textarea{
+     width: 40%;
+     border: 0;
+     /* border-bottom: 1px solid rgba(95, 95, 95, 0.5); */
+     outline: none;
+     box-shadow: 0px 4px 10px rgba(170, 170, 170, 0.47);
+}
+
+textarea{
+    resize: none;
+}
+
+.contact-form-description{
+    text-align: center;
+}
+
+.component-fade-enter-active, .component-fade-leave-active {
+  transition: opacity .4s ease;
+}
+.component-fade-enter, .component-fade-leave-to
+/* .component-fade-leave-active для <2.1.8 */ {
+  opacity: 0;
+}
