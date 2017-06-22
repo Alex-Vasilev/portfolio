@@ -98,7 +98,7 @@ const Blog = {
             class="news-item">
             <p class="news-item-title">{{item.name}}</p>
             <p class="news-item-description">{{item.description}}</p>
-            <button >Edit</button>
+            <button @click="editPost(item)">Edit</button>
             <button @click="deletePost(item._id)">Delete</button>
         </li>
     </ul>
@@ -107,8 +107,10 @@ const Blog = {
     data: function () {
         return {
             items: [],
+            id: '',
             description: '',
-            name: ''
+            name: '',
+            edit: false
         };
     },
 
@@ -142,21 +144,55 @@ const Blog = {
         onSubmit: function () {
             var name = this.name;
             var description = this.description;
+            var id = this.id;
             var self = this;
-            $.ajax({
-                url: "api/posts",
-                contentType: "application/json",
-                method: "POST",
-                data: JSON.stringify({
-                    name: name,
-                    description: description
-                }),
-                success: function (post) {
-                    self.items.push(post);
-                    self.description = '';
-                    self.name = '';
-                }
-            });
+            if(this.edit){
+                $.ajax({
+                    url: "api/posts",
+                    contentType: "application/json",
+                    method: "PUT",
+                    data: JSON.stringify({
+                        id: id,
+                        name: name,
+                        description: description
+                    }),
+                    success: function (post) {
+                        for (var i = 0; i < self.items.length; i++) {
+                            if (self.items[i]._id == post._id) {
+                                self.items[i].name = name;
+                                self.items[i].description = description;
+                                break;
+                            }
+                        }
+                        self.description = '';
+                        self.name = '';
+                        self.edit = false;
+                        console.log(post);
+                    }
+                });
+            }else{
+                $.ajax({
+                    url: "api/posts",
+                    contentType: "application/json",
+                    method: "POST",
+                    data: JSON.stringify({
+                        name: name,
+                        description: description
+                    }),
+                    success: function (post) {
+                        self.items.push(post);
+                        self.description = '';
+                        self.name = '';
+                    }
+                });
+            }
+        },
+        
+        editPost: function(item){
+            this.name = item.name;
+            this.description  = item.description;
+            this.id = item._id;
+            this.edit = true;
         },
 
         deletePost: function (id) {
@@ -220,43 +256,7 @@ const app = new Vue({
 ////                    form.elements["description"].value = post.description;
 ////                }
 ////            });
-////        },
-
-////        EditUser:  function (userId, userName, userAge) {
-////                $.ajax({
-////                    url: "api/users",
-////                    contentType: "application/json",
-////                    method: "PUT",
-////                    data: JSON.stringify({
-////                        id: userId,
-////                        name: userName,
-////                        age: userAge
-////                    }),
-////                    success: function (user) {
-////                        reset();
-////                        console.log(user);
-//////                        $("tr[data-rowid='" + user._id + "']").replaceWith(row(user));
-////                    }
-////                })
-////            }
-//                            }
-//                    });
-
-//// нажимаем на ссылку Изменить
-////            $("body").on("click", ".editLink", function () {
-////                var id = $(this).data("id");
-////                GetUser(id);
-////            })
-
-$('.main-menu a').mouseenter(function(){
-    $(this).addClass("mouseenter")
-    $(this).removeClass("mouseleave")
-})
-
-$('.main-menu a').mouseleave(function(){
-    $(this).addClass("mouseleave")
-    $(this).removeClass("mouseenter")
-})
+////        }
         </script>
     </body>
 </html>

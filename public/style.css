@@ -99,14 +99,15 @@ h2::after{
 }
 
 .container{
-    color: #5f5f5f;
+    overflow: auto;
+    color: #2a2c31;
     font-variant: small-caps;
     letter-spacing: 1px;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 17px;
+    font-weight: 500;
     line-height: 1.6;
     width: 70%;
-    text-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
 }
 
 h3{
@@ -115,7 +116,7 @@ h3{
     color: #2d2d2d;
     font-weight: initial;
     letter-spacing: 4px;
-    text-shadow: 0 0 9px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
 /*  ============== */
@@ -166,31 +167,33 @@ h3{
     text-decoration: none;
     position: relative;
     text-transform: uppercase;
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
 }
 
 .main-menu a:after {
     content: '';
     width: 0;
-    height: 10px;
+    height: 100%;
     position: absolute;
-    top: 60%;
-    left: 0;
+    top: 0;
+    right: 0;
     display: block;
-    background: rgba(216, 195, 255, 0.5);
+    background: rgb(42, 44, 49);
     transition: width .3s ease-in-out;
+    z-index: -2;
 }
 
-.main-menu a.mouseenter::after { 
-   width: 100%; 
+.main-menu a:hover{
+   color: white;
+   text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
 }
 
-.main-menu a.mouseleave::after{
-    width: 0;
+.main-menu a:hover::after {
+   width: 100%;
+   left: 0;
 }
 
 /*contact*/
-
 .form-group{
     margin-bottom: 20px;
 }
