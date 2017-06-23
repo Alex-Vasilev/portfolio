@@ -19,7 +19,6 @@ app.get("/api/posts", function(req, res){
     });
 });
 
-
 app.get("/api/posts/:id", function(req, res){
       
     var id = new objectId(req.params.id);
@@ -68,25 +67,26 @@ app.delete("/api/posts/:id", function(req, res){
     });
 });
 
-//app.put("/api/users", jsonParser, function(req, res){
-//      
-//    if(!req.body) return res.sendStatus(400);
-//    var id = new objectId(req.body.id);
-//    var userName = req.body.name;
-//    var userAge = req.body.age;
-//     
-//    mongoClient.connect(url, function(err, db){
-//        db.collection("users").findOneAndUpdate({_id: id}, { $set: {age: userAge, name: userName}},
-//             {returnOriginal: false },function(err, result){
-//             
-//            if(err) return res.status(400).send();
-//             
-//            var user = result.value;
-//            res.send(user);
-//            db.close();
-//        });
-//    });
-//});
+app.put("/api/posts", jsonParser, function(req, res){
+      
+    if(!req.body) return res.sendStatus(400);
+    var id = new objectId(req.body.id);
+    var postName = req.body.name;
+    var postDescription = req.body.description;
+     
+    mongoClient.connect(url, function(err, db){
+        db.collection("posts").findOneAndUpdate({_id: id}, { $set: {name: postName, description: postDescription}},
+             {returnOriginal: false },function(err, result){
+             
+            if(err) return res.status(400).send();
+             
+            var post = result.value;
+            res.send(post);
+            console.log(post)
+            db.close();
+        });
+    });
+});
   
   
 app.listen(3000, function(){
