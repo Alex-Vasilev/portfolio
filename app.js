@@ -89,6 +89,31 @@ app.put("/api/posts", jsonParser, function(req, res){
 });
   
   
+  
+//var mailOptions, nodemailer, transporter;
+//nodemailer = require('nodemailer');
+//transporter = nodemailer.createTransport({
+//  service: 'Gmail',
+//  auth: {
+//    user: 'feronodemailer@gmail.com',
+//    pass: '***'
+//  }
+//});
+//mailOptions = {
+//  from: 'Slavik <feronodemailer@gmail.com>',
+//  to: '',
+//  subject: 'Hello',
+//  html: '<b>test</b>'
+//};
+//transporter.sendMail(mailOptions, function(err, info) {
+//  if (err) {
+//    return console.log(err);
+//  }
+//  return console.log("Message sent: " + info.response);
+//});
+
+
+  
 app.listen(3000, function(){
-    console.log("Сервер ожидает подключения...");
+    console.log("РЎРµСЂРІРµСЂ РѕР¶РёРґР°РµС‚ РїРѕРґРєР»СЋС‡РµРЅРёСЏ...");
 });
