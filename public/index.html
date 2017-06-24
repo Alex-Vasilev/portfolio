@@ -39,26 +39,67 @@ const Home = {template: `<div class="blog-content home">
     
 const Works = {template: `<div class="blog-content works"><h3>There's nothing here...yet</h3></div>`};
 
-const Contact = {template: `<div class="blog-content contact">
+const Contact = {
+    template: `<div class="blog-content contact">
         <h3>Contact</h3>
-       <form @submit.prevent="onSubmit" class="container">
+       <form @submit.prevent="onContactSubmit" class="container">
             <p class="contact-form-description">Say hello etc.</p>
-           <div class="form-group">
-               <label for="name">E-mail</label>
+           <div class="form-group">              
                <input class="contact-email"
-                      name="email"/>
+                      name="email"
+                      v-model="from"
+                      placeholder="E-mail"/>
            </div>
-           <div class="form-group">
-               <label for="description">Message</label>
+           <div class="form-group">              
                <textarea class="contact-message"
-                      name="message"></textarea>
+                        name="message" 
+                        v-model="message"
+                        placeholder="Message"></textarea>
            </div>
            <div class="panel-body">
                <button type="submit"
                        class="btn btn-sm btn-primary">Send</button>
            </div>
        </form>
-   </div>`};
+        <transition name="component-fade" mode="out-in">
+        <div v-if="success_message"
+             class="success_message">Cool that you decided to write to me! Wait for reply in the near future</div>
+        </transition>
+   </div>`,
+        data: function(){
+            return {
+              success_message: false,
+              from:'',
+              message: ''
+            };
+        },
+    methods: {
+        onContactSubmit: function(){
+            var self = this;
+            $.ajax({
+                url: "api/contact",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                        from: this.from,
+                        message: this.message
+                    }),
+                success: function () {  
+                    self.from = '';
+                    self.message = '';
+                    console.log('send');
+                    self.success_message = true;
+                    setTimeout(function(){
+                        self.success_message = false;
+                    }, 3000);
+                },
+                error: function () {
+                    console.log('ebanarot');
+                }
+            });
+        }
+    }
+};
     
 const About = {template: `<div class="blog-content about"><h3>About</h3>
 <p class="container">Hello! My name is Alex. I am 28 years old. I'm engaged in front-end development.
@@ -90,7 +131,7 @@ const Blog = {
         <div class="panel-body">
             <button type="submit"
                     class="btn btn-sm btn-primary">Save</button>
-            <a id="reset" class="btn btn-sm btn-primary">Cancel</a>
+            <button>Cancel</button>
         </div>
     </form>
     <ul class="news-item-list container">
@@ -186,6 +227,11 @@ const Blog = {
                     }
                 });
             }
+        },
+        
+        onCancel: function(){
+            this.description = '';
+            this.name = '';
         },
         
         editPost: function(item){

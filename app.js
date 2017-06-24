@@ -2,7 +2,8 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var mongoClient = require("mongodb").MongoClient;
 var objectId = require("mongodb").ObjectID;
- 
+const nodemailer = require('nodemailer');
+
 var app = express();
 var jsonParser = bodyParser.json();
 var url = "mongodb://localhost:27017/postsdb";
@@ -60,8 +61,8 @@ app.delete("/api/posts/:id", function(req, res){
              
             if(err) return res.status(400).send();
              
-            var user = result.value;
-            res.send(user);
+            var post = result.value;
+            res.send(post);
             db.close();
         });
     });
@@ -87,32 +88,38 @@ app.put("/api/posts", jsonParser, function(req, res){
         });
     });
 });
-  
-  
-  
-//var mailOptions, nodemailer, transporter;
-//nodemailer = require('nodemailer');
-//transporter = nodemailer.createTransport({
-//  service: 'Gmail',
-//  auth: {
-//    user: 'feronodemailer@gmail.com',
-//    pass: '***'
-//  }
-//});
-//mailOptions = {
-//  from: 'Slavik <feronodemailer@gmail.com>',
-//  to: '',
-//  subject: 'Hello',
-//  html: '<b>test</b>'
-//};
-//transporter.sendMail(mailOptions, function(err, info) {
-//  if (err) {
-//    return console.log(err);
-//  }
-//  return console.log("Message sent: " + info.response);
-//});
 
+app.post("/api/contact", jsonParser, function (req, res) {
+    if(!req.body) return res.sendStatus(400);
+     
+    var email = req.body.from;
+    var message = req.body.message;
+    var current_message = {email: email, message: message};
 
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: '',
+            pass: '*'
+        }
+    });
+
+    var mailOptions = {
+        from: 'authuser',
+        to: 'current email',
+        subject: 'AV',
+        text: 'Новое сообщение от: ' + email + '\n\n' + message
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            res.send(current_message)
+            console.log('Email sent: ' + info.response);
+        }
+    });
+});
   
 app.listen(3000, function(){
     console.log("РЎРµСЂРІРµСЂ РѕР¶РёРґР°РµС‚ РїРѕРґРєР»СЋС‡РµРЅРёСЏ...");
