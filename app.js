@@ -3,12 +3,62 @@ var bodyParser = require("body-parser");
 var mongoClient = require("mongodb").MongoClient;
 var objectId = require("mongodb").ObjectID;
 const nodemailer = require('nodemailer');
-
+var mongoose = require('mongoose');
 var app = express();
 var jsonParser = bodyParser.json();
 var url = "mongodb://localhost:27017/postsdb";
  
 app.use(express.static(__dirname + "/public"));
+
+//authorization
+
+var basicAuth = require('basic-auth');
+
+  function unauthorized(res) {
+    res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
+    return res.send(401);
+  };
+
+var auth = function (req, res, next) {
+ 
+  var user = basicAuth(req);
+ 
+  // Если пользователь не ввёл пароль или логин, снова показать форму.
+  if (!user || !user.name || !user.pass) {
+    return unauthorized(res);
+  };
+ 
+  // Если логин admin, а пароль superChargePassword перейти к
+  // следующему middleware.
+  if (user.name === 'admin' && user.pass === '12345') {
+    return next();
+  } else {
+    return unauthorized(res);
+  };
+ 
+  return unauthorized(res);
+};
+ 
+app.use('/admin', auth)
+
+app.get("/admin", function(req, res){
+      
+    mongoClient.connect(url, function(err, db){
+        db.collection("posts").find({}).toArray(function(err, posts){
+            res.send(posts);
+            console.log(posts)
+            db.close();
+        });
+    });
+});
+
+app.get("/logout", function(req, res){
+      unauthorized(res);
+//      return res.redirect('/');
+});
+
+// blog posts
+
 app.get("/api/posts", function(req, res){
       
     mongoClient.connect(url, function(err, db){
@@ -89,6 +139,8 @@ app.put("/api/posts", jsonParser, function(req, res){
     });
 });
 
+//send mail from contact page
+
 app.post("/api/contact", jsonParser, function (req, res) {
     if(!req.body) return res.sendStatus(400);
      
@@ -122,5 +174,5 @@ app.post("/api/contact", jsonParser, function (req, res) {
 });
   
 app.listen(3000, function(){
-    console.log("РЎРµСЂРІРµСЂ РѕР¶РёРґР°РµС‚ РїРѕРґРєР»СЋС‡РµРЅРёСЏ...");
+    console.log("run!");
 });

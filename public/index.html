@@ -114,44 +114,18 @@ Now we are working with the guys to develop a cool callback widget
 const Blog = {
     template: `<div class="blog-content ">
     <h3>latest news</h3>
-    <form name="postsForm" @submit.prevent="onSubmit">
-        <input type="hidden" name="id" value="0" />
-        <div class="form-group">
-            <label for="name">Title</label>
-            <input class="form-control"
-                   name="name"
-                   v-model="name"/>
-        </div>
-        <div class="form-group">
-            <label for="description">Text</label>
-            <textarea class="form-control"
-                   name="description"
-                   v-model="description"></textarea>
-        </div>
-        <div class="panel-body">
-            <button type="submit"
-                    class="btn btn-sm btn-primary">Save</button>
-            <button>Cancel</button>
-        </div>
-    </form>
     <ul class="news-item-list container">
         <li v-for="item in items"
             class="news-item">
             <p class="news-item-title">{{item.name}}</p>
             <p class="news-item-description">{{item.description}}</p>
-            <button @click="editPost(item)">Edit</button>
-            <button @click="deletePost(item._id)">Delete</button>
         </li>
     </ul>
 </div>`,
         
     data: function () {
         return {
-            items: [],
-            id: '',
-            description: '',
-            name: '',
-            edit: false
+            items: []
         };
     },
 
@@ -180,6 +154,93 @@ const Blog = {
                     console.log('sukablyat');
                 }
             });
+        }
+    }
+};
+
+const Admin = {
+    template: `<div class="blog-content" v-if="authorized">
+    <h3>latest news</h3>
+    <form name="postsForm" @submit.prevent="onSubmit">
+        <input type="hidden" name="id" value="0" />
+        <div class="form-group">
+            <input class="form-control"
+                   name="name"
+                   placeholder="Title"
+                   v-model="name"/>
+        </div>
+        <div class="form-group">
+            <textarea class="form-control"
+                   name="description"
+                   placeholder="Text"
+                   v-model="description"></textarea>
+        </div>
+        <div class="panel-body">
+            <button type="submit"
+                    class="btn btn-sm btn-primary">Save</button>
+            <button>Cancel</button>
+        </div>
+    </form>
+    <ul class="news-item-list container">
+        <li v-for="item in items"
+            class="news-item">
+            <p class="news-item-title">{{item.name}}</p>
+            <p class="news-item-description">{{item.description}}</p>
+            <button @click="editPost(item)">Edit</button>
+            <button @click="deletePost(item._id)">Delete</button>
+            <button @click="logout()">Log out</button>
+        </li>
+    </ul>
+</div>`,
+        
+    data: function () {
+        return {
+            items: [],
+            id: '',
+            description: '',
+            name: '',
+            edit: false,
+            authorized: false
+        };
+    },
+
+    created() {
+        this.fethPostsData();
+    },
+
+    watch: {
+        // в случае изменения маршрута запрашиваем данные вновь
+        '$route': 'fetchData'
+    },
+
+    methods: {
+        fethPostsData: function () {
+            console.log(1);
+            var self = this;
+            $.ajax({
+                url: "/admin",
+                type: "GET",
+                contentType: "application/json",
+                success: function (posts) {
+                    self.items = posts;
+                    console.log(self.items);
+                    self.authorized = true;
+                },
+                error: function () {
+                    console.log('sukablyat');
+                }
+            });
+        },
+        
+        logout: function(){
+             $.ajax({
+                    url: "/logout",
+                    contentType: "application/json",
+                    method: "GET",          
+                    success: function () {
+                        console.log('exit');
+                        }               
+                });
         },
 
         onSubmit: function () {
@@ -270,7 +331,8 @@ const routes = [
     {path: '/blog', component: Blog},
     {path: '/works', component: Works},
     {path: '/contact', component: Contact},
-    {path: '/about', component: About}
+    {path: '/about', component: About},
+    {path: '/admin', component: Admin}
 ];
 
 // 3. Создаём инстанс роутера с опцией `routes`
@@ -290,19 +352,19 @@ const app = new Vue({
     }
 });
 
-////        GetPost: function (id) {
-////            $.ajax({
-////                url: "/api/posts/" + id,
-////                type: "GET",
-////                contentType: "application/json",
-////                success: function (post) {
-////                    var form = document.forms["postsForm"];
-////                    form.elements["id"].value = post._id;
-////                    form.elements["name"].value = post.name;
-////                    form.elements["description"].value = post.description;
-////                }
-////            });
-////        }
+//        GetPost: function (id) {
+//            $.ajax({
+//                url: "/api/posts/" + id,
+//                type: "GET",
+//                contentType: "application/json",
+//                success: function (post) {
+//                    var form = document.forms["postsForm"];
+//                    form.elements["id"].value = post._id;
+//                    form.elements["name"].value = post.name;
+//                    form.elements["description"].value = post.description;
+//                }
+//            });
+//        }
         </script>
     </body>
 </html>
