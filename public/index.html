@@ -24,7 +24,6 @@
             </div>
 
             <!-- отображение компонента, для которого совпал путь -->
-<!--            <router-view></router-view>-->
             <transition name="component-fade" mode="out-in">
                <router-view></router-view>
             </transition>
@@ -179,6 +178,7 @@ const Admin = {
             <button type="submit"
                     class="btn btn-sm btn-primary">Save</button>
             <button>Cancel</button>
+            <button @click="logout()">Log out</button>
         </div>
     </form>
     <ul class="news-item-list container">
@@ -188,7 +188,6 @@ const Admin = {
             <p class="news-item-description">{{item.description}}</p>
             <button @click="editPost(item)">Edit</button>
             <button @click="deletePost(item._id)">Delete</button>
-            <button @click="logout()">Log out</button>
         </li>
     </ul>
 </div>`,

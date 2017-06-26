@@ -150,7 +150,6 @@ h3{
 }
 
 /*menu*/
-
 .main-menu {
     margin: 0;
     padding: 0;
@@ -276,11 +275,24 @@ button:hover::after {
    left: 0;
 }
 
-::-webkit-input-placeholder {color:#c0392b;    font-family: 'Josefin Sans', sans-serif;
+::-webkit-input-placeholder{
+    color:#c0392b;
+    font-family: 'Josefin Sans', sans-serif;
 }
-::-moz-placeholder          {color:#c0392b;    font-family: 'Josefin Sans', sans-serif;
-}/* Firefox 19+ */
-:-moz-placeholder           {color:#c0392b;    font-family: 'Josefin Sans', sans-serif;
-}/* Firefox 18- */
-:-ms-input-placeholder      {color:#c0392b;    font-family: 'Josefin Sans', sans-serif;
+
+::-moz-placeholder{
+    color:#c0392b;    
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+/* Firefox 19+ */
+:-moz-placeholder{
+    color:#c0392b;    
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+/* Firefox 18- */
+:-ms-input-placeholder{
+    color:#c0392b;    
+    font-family: 'Josefin Sans', sans-serif;
 }

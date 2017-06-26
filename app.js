@@ -27,7 +27,7 @@ var auth = function (req, res, next) {
   if (!user || !user.name || !user.pass) {
     return unauthorized(res);
   };
- 
+
   // Если логин admin, а пароль superChargePassword перейти к
   // следующему middleware.
   if (user.name === 'admin' && user.pass === '12345') {
@@ -39,14 +39,14 @@ var auth = function (req, res, next) {
   return unauthorized(res);
 };
  
-app.use('/admin', auth)
+app.use('/admin', auth);
 
 app.get("/admin", function(req, res){
       
     mongoClient.connect(url, function(err, db){
         db.collection("posts").find({}).toArray(function(err, posts){
             res.send(posts);
-            console.log(posts)
+            console.log(posts);
             db.close();
         });
     });
@@ -55,6 +55,7 @@ app.get("/admin", function(req, res){
 app.get("/logout", function(req, res){
       unauthorized(res);
 //      return res.redirect('/');
+
 });
 
 // blog posts
@@ -64,7 +65,7 @@ app.get("/api/posts", function(req, res){
     mongoClient.connect(url, function(err, db){
         db.collection("posts").find({}).toArray(function(err, posts){
             res.send(posts);
-            console.log(posts)
+            console.log(posts);
             db.close();
         });
     });
@@ -133,7 +134,7 @@ app.put("/api/posts", jsonParser, function(req, res){
              
             var post = result.value;
             res.send(post);
-            console.log(post)
+            console.log(post);
             db.close();
         });
     });
@@ -167,7 +168,7 @@ app.post("/api/contact", jsonParser, function (req, res) {
         if (error) {
             console.log(error);
         } else {
-            res.send(current_message)
+            res.send(current_message);
             console.log('Email sent: ' + info.response);
         }
     });
