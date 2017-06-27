@@ -53,7 +53,8 @@ const Contact = {
                <textarea class="contact-message"
                         name="message" 
                         v-model="message"
-                        placeholder="Message"></textarea>
+                        placeholder="Message"
+                        rows="4"></textarea>
            </div>
            <div class="panel-body">
                <button type="submit"
@@ -64,6 +65,9 @@ const Contact = {
         <div v-if="success_message"
              class="success_message">Cool that you decided to write to me! Wait for reply in the near future</div>
         </transition>
+        <p class="email">aleksandr_vasilev1989@list.ru</p>
+        <a class="phone" href="tel:+375445754785"> +375(44) 575 47 85 </a>
+        <p class="city">Minsk</p>
    </div>`,
         data: function(){
             return {

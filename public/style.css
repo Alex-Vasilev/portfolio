@@ -91,6 +91,7 @@ h2::after{
 }
 
 .blog-content{
+    padding: 0 10vw;
     height: 84vh;
     display: flex;
     justify-content: space-around;
@@ -99,6 +100,8 @@ h2::after{
 }
 
 .container{
+    box-sizing: border-box;
+    padding: 0 10vw;
     overflow: auto;
     color: #2a2c31;
     font-variant: small-caps;
@@ -106,7 +109,7 @@ h2::after{
     font-size: 17px;
     font-weight: 500;
     line-height: 1.6;
-    width: 60%;
+    width: 100%;
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
 }
 
@@ -202,7 +205,7 @@ h3{
 
 .form-group input,
 .form-group textarea{
-     width: 65%;
+     width: 50%;
      border: 0;
      border-bottom: 1px solid rgba(95, 95, 95, 0.5);
      outline: none;
@@ -215,7 +218,9 @@ textarea{
 }
 
 .contact-form-description{
-    text-align: center;
+    text-align: start;
+    font-size: 18px;
+    letter-spacing: 1.5px;
 }
 
 .component-fade-enter-active, .component-fade-leave-active {
@@ -239,17 +244,26 @@ textarea{
     color: #fff;
 }
 
+.email,
+.city,
+.phone{
+    align-self: flex-end;
+    margin-right: 10vw;
+}
+
 button{
     background: none;
     cursor: pointer;
     border: 0;
-    padding: 1vh 1vw;
+    padding: .8vh 1.5vw;
     color: rgb(92, 91, 99);
     font-size: 2.5vh;
     text-decoration: none;
     text-transform: uppercase;
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
     position: relative;
+    line-height: inherit;
+    letter-spacing: 1.3px;
 }
 
 button:after {
