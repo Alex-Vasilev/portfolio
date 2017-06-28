@@ -11,7 +11,6 @@ var url = "mongodb://localhost:27017/postsdb";
 app.use(express.static(__dirname + "/public"));
 
 //authorization
-
 var basicAuth = require('basic-auth');
 
   function unauthorized(res) {
@@ -59,7 +58,6 @@ app.get("/logout", function(req, res){
 });
 
 // blog posts
-
 app.get("/api/posts", function(req, res){
       
     mongoClient.connect(url, function(err, db){

@@ -48,6 +48,7 @@ const Contact = {
                       name="email"
                       v-model="from"
                       placeholder="E-mail"/>
+                <p v-show="from && !isEmailValid">Sasai</p>
            </div>
            <div class="form-group">              
                <textarea class="contact-message"
@@ -55,10 +56,12 @@ const Contact = {
                         v-model="message"
                         placeholder="Message"
                         rows="4"></textarea>
+                <p v-show="message && !isMessageValid">Or vishe gor</p>
            </div>
            <div class="panel-body">
                <button type="submit"
-                       class="btn btn-sm btn-primary">Send</button>
+                       class="btn btn-sm btn-primary"
+                       v-bind:disabled="fullInputs">Send</button>
            </div>
        </form>
         <transition name="component-fade" mode="out-in">
@@ -72,8 +75,9 @@ const Contact = {
         data: function(){
             return {
               success_message: false,
-              from:'',
-              message: ''
+              from: '',
+              message: '',
+              fullInputs: true
             };
         },
     methods: {
@@ -101,6 +105,19 @@ const Contact = {
                 }
             });
         }
+    },
+    
+    computed: {
+        isEmailValid() {
+            return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.from);
+        },
+        
+        isMessageValid(){
+            if(this.message.length > 3)
+            return  true;
+            else 
+            return false;
+        }
     }
 };
     
@@ -117,13 +134,15 @@ Now we are working with the guys to develop a cool callback widget
 const Blog = {
     template: `<div class="blog-content ">
     <h3>latest news</h3>
-    <ul class="news-item-list container">
+        <div class="container">
+    <ul class="news-item-list ">
         <li v-for="item in items"
             class="news-item">
             <p class="news-item-title">{{item.name}}</p>
             <p class="news-item-description">{{item.description}}</p>
         </li>
     </ul>
+        </div>
 </div>`,
         
     data: function () {

@@ -101,14 +101,15 @@ h2::after{
 
 .container{
     box-sizing: border-box;
-    padding: 0 10vw;
-    overflow: auto;
+    /* padding: 0 10vw; */
+    overflow: hidden;
     color: #2a2c31;
     font-variant: small-caps;
     letter-spacing: 1px;
     font-size: 17px;
     font-weight: 500;
     line-height: 1.6;
+    height: 100%;
     width: 100%;
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
 }
@@ -140,10 +141,13 @@ h3{
 }
 
 .news-item-list{
+    padding: 0;
     list-style: none;
-    margin: 0;
+    margin-right: -16px;
+    margin-top: 0;
     padding: 10px;
-    overflow: auto;
+    height: 100%;
+    overflow-y: scroll;
 }
 
 .news-item-title{
@@ -289,6 +293,10 @@ button:hover::after {
    left: 0;
 }
 
+button:disabled{
+    color: #999;
+}
+
 ::-webkit-input-placeholder{
     color:#c0392b;
     font-family: 'Josefin Sans', sans-serif;
@@ -310,3 +318,4 @@ button:hover::after {
     color:#c0392b;    
     font-family: 'Josefin Sans', sans-serif;
 }
+
