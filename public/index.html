@@ -68,9 +68,11 @@ const Contact = {
         <div v-if="success_message"
              class="success_message">Cool that you decided to write to me! Wait for reply in the near future</div>
         </transition>
-        <p class="email">aleksandr_vasilev1989@list.ru</p>
-        <a class="phone" href="tel:+375445754785"> +375(44) 575 47 85 </a>
-        <p class="city">Minsk</p>
+        <div>
+            <p class="email">aleksandr_vasilev1989@list.ru</p>
+            <a class="phone" href="tel:+375445754785"> +375(44) 575 47 85 </a>
+            <p class="city">Minsk</p>
+        </div>
    </div>`,
         data: function(){
             return {
@@ -140,6 +142,11 @@ const Blog = {
             class="news-item">
             <p class="news-item-title">{{item.name}}</p>
             <p class="news-item-description">{{item.description}}</p>
+            <div>
+                <span class="posted-date">19 jun 2017</span>
+                <span class="updated-date">Last updated: 21 jun 2017</span>
+                <span class="share-post">Share</span>
+            </div>
         </li>
     </ul>
         </div>

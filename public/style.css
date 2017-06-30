@@ -91,7 +91,7 @@ h2::after{
 }
 
 .blog-content{
-    padding: 0 10vw;
+    padding: 0 20vw;
     height: 84vh;
     display: flex;
     justify-content: space-around;
@@ -162,10 +162,12 @@ h3{
     padding: 0;
     list-style: none;
 }
+
 .main-menu li{
     display: inline-block;
     margin-left: -4px;
 }
+
 .main-menu a {
     display: block;
     padding: 1vh 1vw;
