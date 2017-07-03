@@ -2,6 +2,14 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/D:/Design/GitHub/portfolio/home.js</file>
+            <file>file:/D:/Design/GitHub/portfolio/public/build.js</file>
+            <file>file:/D:/Design/GitHub/portfolio/app.js</file>
+            <file>file:/D:/Design/GitHub/portfolio/webpack.config.js</file>
+            <file>file:/D:/Design/GitHub/portfolio/welcome.js</file>
+            <file>file:/D:/Design/GitHub/portfolio/package.json</file>
+            <file>file:/D:/Design/GitHub/portfolio/public/index.html</file>
+        </group>
     </open-files>
 </project-private>

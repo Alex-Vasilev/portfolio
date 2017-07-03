@@ -6,6 +6,7 @@
         <script src="https://unpkg.com/vue@2.1.4/dist/vue.js"></script>
         <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css">
+        <!--<script src="build.js"></script>-->
         <meta name="viewport" content="width=device-width">
         <meta charset="utf-8">
         <title>avawesome</title>
@@ -13,6 +14,7 @@
     <body>
         <div class="content"
              id="main-page">
+            
             <div class="header">
                 <router-link to="/" class="logo"></router-link>               
                 <ul class="main-menu">
@@ -23,13 +25,15 @@
                 </ul>   
             </div>
 
-            <!-- отображение компонента, для которого совпал путь -->
+             отображение компонента, для которого совпал путь 
             <transition name="component-fade" mode="out-in">
                <router-view></router-view>
             </transition>
         </div>
+        <script src="build.js"></script>
 
         <script>
+//home.welcome('Pidra');
 
 const Home = {template: `<div class="blog-content home"> 
     <h2>Hello people!<br> <span>My name is Alex and<br>
@@ -364,11 +368,15 @@ const routes = [
     {path: '/admin', component: Admin}
 ];
 
+//import Vue from 'vue';
+//import VueRouter from 'vue-router';
+
 // 3. Создаём инстанс роутера с опцией `routes`
 // Можно передать и другие опции, но пока не будем усложнять
 const router = new VueRouter({
     routes
 });
+
 
 // 4. Создаём и монтируем корневой инстанс Vue нашего приложения.
 // Удостоверьтесь, что передали инстанс роутера в опции `router`,
@@ -395,5 +403,7 @@ const app = new Vue({
 //            });
 //        }
         </script>
+
+
     </body>
 </html>
