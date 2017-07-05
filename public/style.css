@@ -203,6 +203,10 @@ h3{
 }
 
 /*contact*/
+.contact-page-body{
+    display: flex;
+}
+
 .form-group{
     margin-bottom: 30px;
     display: flex;

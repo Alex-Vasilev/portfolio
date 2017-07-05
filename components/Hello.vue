@@ -1,7 +1,11 @@
 <template>          
 <div class="blog-content home"> 
-    <h2>Hello people!<br> <span>My name is Alex and<br>
-            welcome to my fucking great website!</span></h2>
+    <h2>Hello people!<br> 
+        <span>
+            My name is Alex and<br>
+            welcome to my fucking great website!
+        </span>
+    </h2>
 </div>
 </template>
 

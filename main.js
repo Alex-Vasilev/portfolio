@@ -9,15 +9,13 @@ import Works from './components/Works.vue'
 import Contact from './components/Contact.vue'
 import Admin from './components/Admin.vue'
 
-
-
 const routes = [
-	{ path: '/', component: Hello },
-	{ path: '/about', component: About },
-        {path: '/blog', component: Blog},
-        {path: '/works', component: Works},
-        {path: '/contact', component: Contact},
-        {path: '/admin', component: Admin}
+    { path: '/', component: Hello },
+    { path: '/about', component: About },
+    { path: '/blog', component: Blog},
+    { path: '/works', component: Works},
+    { path: '/contact', component: Contact},
+    { path: '/admin', component: Admin}
 ];
 
 const router = new VueRouter({

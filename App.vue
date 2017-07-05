@@ -10,7 +10,6 @@
                 <li><router-link to="/works">Works</router-link></li>
             </ul>   
         </div>
-
     <!--             отображение компонента, для которого совпал путь -->
         <transition name="component-fade" mode="out-in">
            <router-view></router-view>

@@ -15,6 +15,16 @@
                           placeholder="Text"
                           v-model="description"></textarea>
             </div>
+            <div class="panel-body" v-if="!image">
+                <input class="form-control"
+                       name="file"
+                       type="file"
+                       @change="onFileChange"/>
+            </div>
+            <div v-else>
+                <img class="img" :src="image"/>
+                <button @click="removeImage">Remove image</button>
+            </div>
             <div class="panel-body">
                 <button type="submit"
                         class="btn btn-sm btn-primary">Save</button>
@@ -44,7 +54,8 @@
                 description: '',
                 name: '',
                 edit: false,
-                authorized: false
+                authorized: false,
+                image: ''
             };
         },
 
@@ -161,7 +172,33 @@
                         }
                     }
                 });
+            },
+            onFileChange(e) {
+                var files = e.target.files || e.dataTransfer.files;
+                if (!files.length)return;
+                this.createImage(files[0]);
+            },
+            createImage(file) {
+                var image = new Image();
+                var reader = new FileReader();
+                var vm = this;
+
+                reader.onload = (e) => {
+                  vm.image = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            },
+            removeImage: function (e) {
+                this.image = '';
             }
         }
     }
 </script>
+<style>
+        .img {
+  width: 30%;
+  margin: auto;
+  display: block;
+  margin-bottom: 10px;
+}
+</style>
