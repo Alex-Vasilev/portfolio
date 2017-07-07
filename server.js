@@ -7,6 +7,8 @@ var mongoose = require('mongoose');
 var app = express();
 var jsonParser = bodyParser.json();
 var url = "mongodb://localhost:27017/postsdb";
+var formidable = require('formidable');
+var fs = require('fs');
  
 app.use(express.static(__dirname + "/public"));
 
@@ -98,6 +100,45 @@ app.post("/api/posts", jsonParser, function (req, res) {
              
             res.send(post);
             db.close();
+        });
+    });
+});
+
+app.post("/dd", function (req, res) {
+     
+    var form = new formidable.IncomingForm();
+    var fileName;
+    var postObj = {};
+    
+    form.parse(req);
+    
+    form.on('fileBegin', function (name, file){
+        file.path = __dirname + '/img/' + file.name;
+        fileName = file.name;
+    });
+    
+    form.on('field', function(field, value){
+        console.log(field, value);
+        postObj[field] = value;
+    });
+
+    form.on('file', function (name, file){
+        console.log('Uploaded ' + file.name);
+    });
+
+    form.on('end', function() {
+        var post = {
+            name: postObj.name,
+            description: postObj.description,
+            file: fileName
+        };
+        mongoClient.connect(url, function(err, db){
+            db.collection("posts").insertOne(post, function(err, result){
+                 console.log(result.ops);
+                if(err) return res.status(400).send();        
+                res.send(post);
+                db.close();
+            });
         });
     });
 });
