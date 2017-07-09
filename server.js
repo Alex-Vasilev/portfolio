@@ -8,7 +8,7 @@ var app = express();
 var jsonParser = bodyParser.json();
 var url = "mongodb://localhost:27017/postsdb";
 var formidable = require('formidable');
-var fs = require('fs');
+//var fs = require('fs');
  
 app.use(express.static(__dirname + "/public"));
 
@@ -56,7 +56,6 @@ app.get("/admin", function(req, res){
 app.get("/logout", function(req, res){
       unauthorized(res);
 //      return res.redirect('/');
-
 });
 
 // blog posts
@@ -85,26 +84,27 @@ app.get("/api/posts/:id", function(req, res){
     });
 });
  
-app.post("/api/posts", jsonParser, function (req, res) {
-     
-    if(!req.body) return res.sendStatus(400);
-     
-    var postName = req.body.name;
-    var postDescription = req.body.description;
-    var post = {name: postName, description: postDescription};
-     
-    mongoClient.connect(url, function(err, db){
-        db.collection("posts").insertOne(post, function(err, result){
-             console.log(result.ops);
-            if(err) return res.status(400).send();
-             
-            res.send(post);
-            db.close();
-        });
-    });
-});
+//app.post("/api/posts", jsonParser, function (req, res) {
+//     
+//    if(!req.body) return res.sendStatus(400);
+//     
+//    var postName = req.body.name;
+//    var postDescription = req.body.description;
+//    var post = {name: postName, description: postDescription};
+//     
+//    mongoClient.connect(url, function(err, db){
+//        db.collection("posts").insertOne(post, function(err, result){
+//             console.log(result.ops);
+//            if(err) return res.status(400).send();
+//             
+//            res.send(post);
+//            db.close();
+//        });
+//    });
+//});
 
-app.post("/dd", function (req, res) {
+
+app.post("/api/posts", function (req, res) {
      
     var form = new formidable.IncomingForm();
     var fileName;
@@ -113,7 +113,7 @@ app.post("/dd", function (req, res) {
     form.parse(req);
     
     form.on('fileBegin', function (name, file){
-        file.path = __dirname + '/img/' + file.name;
+        file.path = __dirname + '/public/assets/img/' + file.name;
         fileName = file.name;
     });
     
@@ -159,24 +159,65 @@ app.delete("/api/posts/:id", function(req, res){
 });
 
 app.put("/api/posts", jsonParser, function(req, res){
-      
-    if(!req.body) return res.sendStatus(400);
-    var id = new objectId(req.body.id);
-    var postName = req.body.name;
-    var postDescription = req.body.description;
-     
-    mongoClient.connect(url, function(err, db){
-        db.collection("posts").findOneAndUpdate({_id: id}, { $set: {name: postName, description: postDescription}},
-             {returnOriginal: false },function(err, result){
-             
-            if(err) return res.status(400).send();
-             
-            var post = result.value;
-            res.send(post);
-            console.log(post);
-            db.close();
+    
+    var form = new formidable.IncomingForm();
+    var fileName;
+    var postObj = {};
+    
+    form.parse(req);
+    
+    form.on('fileBegin', function (name, file){
+        file.path = __dirname + '/img/' + file.name;
+        fileName = file.name;
+    });
+    
+    form.on('field', function(field, value){
+        console.log(field, value);
+        postObj[field] = value;
+    });
+
+    form.on('file', function (name, file){
+        console.log('Uploaded ' + file.name);
+    });
+
+    form.on('end', function() {
+        var id = new objectId(postObj.id);
+        var name = postObj.name;
+        var description = postObj.description;
+
+        mongoClient.connect(url, function (err, db) {
+            db.collection("posts").findOneAndUpdate({_id: id}, {$set: {name: name, description: description, file: fileName}},
+                    {returnOriginal: false}, function (err, result) {
+                if (err)
+                    return res.status(400).send();
+
+                var post = result.value;
+                res.send(post);
+                console.log(post);
+                db.close();
+            });
         });
     });
+    
+    
+      
+//    if(!req.body) return res.sendStatus(400);
+//    var id = new objectId(req.body.id);
+//    var postName = req.body.name;
+//    var postDescription = req.body.description;
+//     
+//    mongoClient.connect(url, function(err, db){
+//        db.collection("posts").findOneAndUpdate({_id: id}, { $set: {name: postName, description: postDescription}},
+//             {returnOriginal: false },function(err, result){
+//             
+//            if(err) return res.status(400).send();
+//             
+//            var post = result.value;
+//            res.send(post);
+//            console.log(post);
+//            db.close();
+//        });
+//    });
 });
 
 //send mail from contact page

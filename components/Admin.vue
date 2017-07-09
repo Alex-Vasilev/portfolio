@@ -15,14 +15,16 @@
                           placeholder="Text"
                           v-model="description"></textarea>
             </div>
-            <div class="panel-body" v-if="!image">
+            <div class="panel-body"
+                 v-if="!image">
                 <input class="form-control"
                        name="file"
                        type="file"
                        @change="onFileChange"/>
             </div>
             <div v-else>
-                <img class="img" :src="image"/>
+                <img class="img"
+                     v-bind:src="image"/>
                 <button @click="removeImage">Remove image</button>
             </div>
             <div class="panel-body">
@@ -56,7 +58,9 @@
                 name: '',
                 edit: false,
                 authorized: false,
-                image: ''
+                image: '',
+                files: null,
+                file: ''
             };
         },
 
@@ -101,72 +105,60 @@
 
             onSubmit: function () {
                 var name = this.name;
-                var description = this.description;
-                var id = this.id;
+                var description = this.description;                             
                 var self = this;
+                
                 var formData = new FormData();
-
                 formData.append('name', name);
                 formData.append('description', description);
                 formData.append('file', this.files[0]);
 
+                if (this.edit){
+                    var file = this.file;
+                    var id = this.id; 
+                    formData.append('id', id);
+
                     $.ajax({
-                        url: "dd",
+                        url: "api/posts",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        method: "PUT",
+                        data: formData,
+                        success: function (post) {
+                            for (var i = 0; i < self.items.length; i++) {
+                                if (self.items[i]._id == post._id){
+                                    self.items[i].name = name;
+                                    self.items[i].description = description;
+                                    self.items[i].file = file;
+                                    break;
+                                }
+                            }
+                            self.description = '';
+                            self.name = '';
+                            self.files = null;
+                            self.edit = false;
+                            self.image = '';
+                            console.log(post);
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: "api/posts",
                         method: "POST",
                         cache: false,
                         contentType: false,
                         processData: false,
                         data: formData,
                         success: function (post) {
-                            console.log(post)
-//                            if(post === 'zaebis'){
-//                                this.image = '';
-//                                this.name = '';
-//                                this.description = '';
-//                            }
-                                
+                            self.items.push(post);
+                            self.description = '';
+                            self.name = '';
+                            self.image = '';
+                            self.files = null;
                         }
                     });
-//                if (this.edit) {
-//                    $.ajax({
-//                        url: "api/posts",
-//                        contentType: "application/json",
-//                        method: "PUT",
-//                        data: JSON.stringify({
-//                            id: id,
-//                            name: name,
-//                            description: description
-//                        }),
-//                        success: function (post) {
-//                            for (var i = 0; i < self.items.length; i++) {
-//                                if (self.items[i]._id == post._id) {
-//                                    self.items[i].name = name;
-//                                    self.items[i].description = description;
-//                                    break;
-//                                }
-//                            }
-//                            self.description = '';
-//                            self.name = '';
-//                            self.edit = false;
-//                            console.log(post);
-//                        }
-//                    });
-//                } else {
-//                    $.ajax({
-//                        url: "api/posts",
-//                        contentType: "application/json",
-//                        method: "POST",
-//                        data: JSON.stringify({
-//                            name: name,
-//                            description: description
-//                        }),
-//                        success: function (post) {
-//                            self.items.push(post);
-//                            self.description = '';
-//                            self.name = '';
-//                        }
-//                    });
-//                }
+                }
             },
 
             onCancel: function () {
@@ -177,6 +169,8 @@
             editPost: function (item) {
                 this.name = item.name;
                 this.description = item.description;
+                this.file = item.file;
+                
                 this.id = item._id;
                 this.edit = true;
             },
@@ -199,12 +193,12 @@
             },
             onFileChange(e) {
                 this.files = e.target.files || e.dataTransfer.files;
-        console.log(this.files)
+                console.log(this.files);
                 if (!this.files.length)return;
                 this.createImage(this.files[0]);
             },
             createImage(file) {
-                var image = new Image();
+//                var image = new Image();
                 var reader = new FileReader();
                 var vm = this;
                 
@@ -220,10 +214,10 @@
     }
 </script>
 <style>
-        .img {
-  width: 30%;
-  margin: auto;
-  display: block;
-  margin-bottom: 10px;
-}
+    .img {
+        width: 30%;
+        margin: auto;
+        display: block;
+        margin-bottom: 10px;
+    }
 </style>

@@ -8,6 +8,8 @@ import Blog from './components/Blog.vue'
 import Works from './components/Works.vue'
 import Contact from './components/Contact.vue'
 import Admin from './components/Admin.vue'
+import PostPage from './components/PostPage.vue'
+
 
 const routes = [
     { path: '/', component: Hello },
@@ -15,7 +17,8 @@ const routes = [
     { path: '/blog', component: Blog},
     { path: '/works', component: Works},
     { path: '/contact', component: Contact},
-    { path: '/admin', component: Admin}
+    { path: '/admin', component: Admin},
+    { path: '/blog/:id', component: PostPage}
 ];
 
 const router = new VueRouter({
