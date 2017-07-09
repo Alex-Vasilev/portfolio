@@ -246,6 +246,7 @@ app.post("/api/contact", jsonParser, function (req, res) {
 
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
+//            res.send(error);
             console.log(error);
         } else {
             res.send(current_message);

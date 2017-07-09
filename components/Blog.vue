@@ -1,15 +1,15 @@
 <template>
     <div class="blog-content ">
-        <h3>latest news</h3>
         <div class="container">
-            <div class="news-item-list ">
+            <div class="inner-container">
+                <h3>latest news</h3>
                 <router-link v-for="(item, index) in items"
                              v-bind:to="'/blog/'+item._id"
                              class="news-item"
                              rrr='uiu'>                  
                     <p class="news-item-title">{{item.name}}</p>
                     <p class="news-item-description">{{item.description}}</p>
-                    <div>
+                    <div class='footer-post'>
                         <span class="posted-date">19 jun 2017</span>
                         <span class="updated-date">Last updated: 21 jun 2017</span>
                         <span class="share-post">Share</span>

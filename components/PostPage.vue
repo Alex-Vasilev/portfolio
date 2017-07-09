@@ -1,8 +1,16 @@
 <template>          
     <div class="blog-content"> 
-        <p class="news-item-title">{{post.name}}</p>
-        <p class="news-item-description">{{post.description}}</p>
-        <img v-bind:src="'../assets/img/'+ post.file" alt=""/>
+        <div class="container">
+            <div class="inner-container">
+                <div class="head-post-container">
+                    <p class="news-item-title post-page-title">{{post.name}}</p>
+                    <div class="img-container">
+                        <img v-bind:src="'../assets/img/'+ post.file" alt=""/>
+                    </div>             
+                </div>
+                <p class="news-item-description">{{post.description}}</p>               
+            </div>
+        </div>
     </div>
 </template>
 <script>

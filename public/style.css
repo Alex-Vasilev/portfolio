@@ -19,11 +19,14 @@ body{
 }
 
 .header{
+    border-bottom: 1px solid #eee;
+    background: white;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 5vh 5vw;
+    padding: 3vh 5vw;
+    z-index: 999;
 }
 
 .logo{
@@ -92,7 +95,7 @@ h2::after{
 
 .blog-content{
     padding: 0 20vw;
-    height: 84vh;
+    height: 88vh;
     display: flex;
     justify-content: space-around;
     flex-direction: column;
@@ -101,7 +104,6 @@ h2::after{
 
 .container{
     box-sizing: border-box;
-    /* padding: 0 10vw; */
     overflow: hidden;
     color: #2a2c31;
     font-variant: small-caps;
@@ -135,16 +137,16 @@ h3{
 }
 
 .news-item{
-    border: 1px solid rgb(213, 215, 219);
-    margin: 10px;
+    box-shadow: 2px 2px 85px rgba(0, 0, 0, .1);
+    margin: 50px 15px;
     padding: 20px;
     display: block;
     text-decoration: none;
     color: inherit;
 }
 
-.news-item-list{
-    margin-right: -17px;
+.inner-container{
+    margin-right: -18px;
     margin-top: 0;
     padding: 10px;
     height: 100%;
@@ -155,6 +157,57 @@ h3{
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 1px;
+    font-size: 20px;
+}
+
+.news-item-description{
+    margin-bottom: 30px;
+}
+
+.footer-post{
+    display: flex;
+    justify-content: space-between;
+}
+
+.posted-date{
+    color: #bdbdbd;
+}
+
+.updated-date{
+    color: #c0bfc9;
+    font-size: small;
+    padding: 5px;
+    align-self: center;
+}
+
+.share-post{
+    color: #c0392b;
+}
+
+/*post page*/
+.head-post-container{
+    position: relative;
+}
+
+.img-container{
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    overflow: hidden;
+}
+
+.img-container img{
+    width: 100%;
+}
+
+.post-page-title{
+    position: absolute;
+    margin: 0;
+    background: rgba(0, 0, 0, 0.52);
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    color: white;
 }
 
 /*menu*/
@@ -204,8 +257,17 @@ h3{
 }
 
 /*contact*/
-.contact-page-body{
-    display: flex;
+
+.contact-form{
+    box-shadow: 2px 2px 85px rgba(0, 0, 0, .1);
+    margin: 50px 15px 30px 15px;
+    padding: 20px;
+}
+
+.contact-current{
+    padding: 0 20px;
+    text-align: right;
+    color: #848588;
 }
 
 .form-group{
@@ -216,12 +278,11 @@ h3{
 
 .form-group input,
 .form-group textarea{
-     width: 50%;
+     width: 70%;
      border: 0;
      border-bottom: 1px solid rgba(95, 95, 95, 0.5);
      outline: none;
      padding: 6px;
-     /* box-shadow: 0px 4px 10px rgba(170, 170, 170, 0.47); */
 }
 
 textarea{
@@ -242,7 +303,7 @@ textarea{
   opacity: 0;
 }
 
-.success_message{
+.info-message{
     background: #5c5b63;
     position: absolute;
     width: 300px;
@@ -258,8 +319,12 @@ textarea{
 .email,
 .city,
 .phone{
+    margin: 10px;
     align-self: flex-end;
-    margin-right: 10vw;
+}
+
+.phone{
+    color: #205aab;
 }
 
 button{
@@ -305,7 +370,7 @@ button:disabled{
 }
 
 ::-webkit-input-placeholder{
-    color:#c0392b;
+    color: #c0392b;
     font-family: 'Josefin Sans', sans-serif;
 }
 
