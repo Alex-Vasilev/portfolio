@@ -60,7 +60,9 @@
                 authorized: false,
                 image: '',
                 files: null,
-                file: ''
+                file: '',
+                updateDate: '',
+                createDate: ''              
             };
         },
 
@@ -102,6 +104,19 @@
                     }
                 });
             },
+            
+            getPostDate: function(){
+                var date = new Date();
+                var day = date.getDate();
+                var monthArr = ['jan', 'feb', 'mar',
+                                'apr', 'may', 'june',
+                                'july', 'aug', 'spet',
+                                'oct', 'nov', 'dec'];
+                var month = date.getMonth();
+                var year = date.getFullYear();
+                var fullDate = '' + day + ' ' + monthArr[month] + ' ' + year;
+                return fullDate;
+            },
 
             onSubmit: function () {
                 var name = this.name;
@@ -114,9 +129,13 @@
                 formData.append('file', this.files[0]);
 
                 if (this.edit){
-                    var file = this.file;
+                    var updateDate = this.getPostDate();
+                    formData.append('updateDate', updateDate);
+                    formData.append('createDate', this.createDate);
                     var id = this.id; 
                     formData.append('id', id);
+                    
+                    var file = this.file;
 
                     $.ajax({
                         url: "api/posts",
@@ -130,6 +149,7 @@
                                 if (self.items[i]._id == post._id){
                                     self.items[i].name = name;
                                     self.items[i].description = description;
+                                    self.items[i].updateDate = updateDate;
                                     self.items[i].file = file;
                                     break;
                                 }
@@ -139,10 +159,16 @@
                             self.files = null;
                             self.edit = false;
                             self.image = '';
+                            self.updateDate = '';
+                            self.createDate = '';
                             console.log(post);
                         }
                     });
                 } else {
+                    var createDate = this.getPostDate();
+                    formData.append('createDate', createDate);
+                    formData.append('updateDate', '');
+
                     $.ajax({
                         url: "api/posts",
                         method: "POST",
@@ -156,6 +182,8 @@
                             self.name = '';
                             self.image = '';
                             self.files = null;
+                            self.updateDate = '';
+                            self.createDate = '';
                         }
                     });
                 }
@@ -170,7 +198,7 @@
                 this.name = item.name;
                 this.description = item.description;
                 this.file = item.file;
-                
+                this.createDate = item.createDate;
                 this.id = item._id;
                 this.edit = true;
             },

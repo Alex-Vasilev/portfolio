@@ -3,15 +3,17 @@
         <div class="container">
             <div class="inner-container">
                 <h3>latest news</h3>
-                <router-link v-for="(item, index) in items"
+                <router-link v-for="item in items"
                              v-bind:to="'/blog/'+item._id"
-                             class="news-item"
-                             rrr='uiu'>                  
+                             v-bind:data="item"
+                             v-bind:key="item._id"
+                             class="news-item">                  
                     <p class="news-item-title">{{item.name}}</p>
                     <p class="news-item-description">{{item.description}}</p>
                     <div class='footer-post'>
-                        <span class="posted-date">19 jun 2017</span>
-                        <span class="updated-date">Last updated: 21 jun 2017</span>
+                        <span class="posted-date">{{item.createDate}}</span>
+                        <span class="updated-date"
+                              v-if="item.updateDate">Last updated: {{item.updateDate}}</span>
                         <span class="share-post">Share</span>
                     </div>
                 </router-link>

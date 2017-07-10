@@ -130,6 +130,7 @@ app.post("/api/posts", function (req, res) {
         var post = {
             name: postObj.name,
             description: postObj.description,
+            createDate: postObj.createDate,
             file: fileName
         };
         mongoClient.connect(url, function(err, db){
@@ -167,7 +168,7 @@ app.put("/api/posts", jsonParser, function(req, res){
     form.parse(req);
     
     form.on('fileBegin', function (name, file){
-        file.path = __dirname + '/img/' + file.name;
+        file.path = __dirname + '/public/assets/img/' + file.name;
         fileName = file.name;
     });
     
@@ -184,10 +185,24 @@ app.put("/api/posts", jsonParser, function(req, res){
         var id = new objectId(postObj.id);
         var name = postObj.name;
         var description = postObj.description;
+        var updateDate = postObj.updateDate;
+        var createDate = postObj.createDate;
+
+        
 
         mongoClient.connect(url, function (err, db) {
-            db.collection("posts").findOneAndUpdate({_id: id}, {$set: {name: name, description: description, file: fileName}},
-                    {returnOriginal: false}, function (err, result) {
+            db.collection("posts").findOneAndUpdate({_id: id}, 
+            {$set: {
+                    name: name, 
+                    description: description, 
+                    file: fileName,
+                    updateDate: updateDate,
+                    createDate: createDate
+                }
+            },
+            {
+                returnOriginal: false
+            }, function (err, result) {
                 if (err)
                     return res.status(400).send();
 
