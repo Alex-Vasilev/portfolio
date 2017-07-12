@@ -2,7 +2,9 @@
     <div class="content"
          id="app">           
         <div class="header">
-            <router-link to="/" class="logo"></router-link>               
+            <router-link to="/" class="logo"></router-link>
+            <input type="text"
+                   @input="queryValue($event.target.value)">
             <ul class="main-menu">
                 <li><router-link to="/about">About</router-link></li>
                 <li><router-link to="/contact">Contact</router-link></li>
@@ -19,6 +21,34 @@
 
 <script>
 export default {
-  name: 'App'
+    name: 'App',
+    data: function(){
+        return {
+            find: []
+        };
+    },
+      
+    methods: {
+        queryValue(value){
+            console.log(value);
+            if(!value) return;
+            var self = this;
+            $.ajax({
+                url: "api/search",
+                type: "POST",
+                data: JSON.stringify({
+                        query: value
+                    }),
+                contentType: "application/json",
+                success: function (posts) {
+                    self.find = posts;
+                    console.log(self.find);
+                },
+                error: function () {
+                    console.log('sukablyat');
+                }
+            });
+        }
+    }
 }
 </script>

@@ -187,9 +187,7 @@ app.put("/api/posts", jsonParser, function(req, res){
         var description = postObj.description;
         var updateDate = postObj.updateDate;
         var createDate = postObj.createDate;
-
         
-
         mongoClient.connect(url, function (err, db) {
             db.collection("posts").findOneAndUpdate({_id: id}, 
             {$set: {
@@ -236,7 +234,6 @@ app.put("/api/posts", jsonParser, function(req, res){
 });
 
 //send mail from contact page
-
 app.post("/api/contact", jsonParser, function (req, res) {
     if(!req.body) return res.sendStatus(400);
      
@@ -267,6 +264,26 @@ app.post("/api/contact", jsonParser, function (req, res) {
             res.send(current_message);
             console.log('Email sent: ' + info.response);
         }
+    });
+});
+
+//search
+app.post("/api/search", jsonParser, function(req, res){ 
+    if(!req.body) return res.sendStatus(400);
+     var currentQuery = req.body.query;
+    console.log(currentQuery)
+    var re = new RegExp(currentQuery)
+    mongoClient.connect(url, function (err, db) {
+        if (err)
+            throw err;
+        var query = {description: re};
+        db.collection("posts").find(query).toArray(function (err, result) {
+            if (err)
+                throw err;
+            console.log(result);
+            res.send(result);
+            db.close();
+        });
     });
 });
   
