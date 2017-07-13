@@ -45,7 +45,9 @@ app.use('/admin', auth);
 app.get("/admin", function(req, res){
       
     mongoClient.connect(url, function(err, db){
-        db.collection("posts").find({}).toArray(function(err, posts){
+        db.collection("posts")
+        .find({})
+        .toArray(function(err, posts){
             res.send(posts);
             console.log(posts);
             db.close();
@@ -60,24 +62,35 @@ app.get("/logout", function(req, res){
 
 // blog posts
 app.get("/api/posts", function(req, res){
-//     var data; 
     mongoClient.connect(url, function(err, db){
-        db.collection("posts").find({categories:1}).toArray(function(err, posts){
+        db.collection("posts")
+        .find({}, {_id: 1, 
+                    name: 1, 
+                    description: 1, 
+                    createDate: 1, 
+                    updateDate: 1, 
+                    categories: 1})
+        .toArray(function(err, posts){
             res.send(posts);
-//            data = posts;
             console.log(posts);
             db.close();
         });
-//                db.collection("posts").find({categories}).toArray(function(err, categories){
-////            res.send(posts);
-//            
-//            console.log(posts);
-//            db.close();
-//        });
-
     });
 });
 
+//categories
+app.get("/api/categories", function(req, res){
+    mongoClient.connect(url, function(err, db){
+        db.collection("posts").distinct('categories')
+        .then(function(val){
+            res.send(val);
+            console.log(val);
+            db.close();
+        });
+    });
+});
+
+//get current post
 app.get("/api/posts/:id", function(req, res){
       
     var id = new objectId(req.params.id);
@@ -111,7 +124,7 @@ app.get("/api/posts/:id", function(req, res){
 //    });
 //});
 
-
+//add post
 app.post("/api/posts", function (req, res) {
      
     var form = new formidable.IncomingForm();
@@ -142,6 +155,7 @@ app.post("/api/posts", function (req, res) {
         var post = {
             name: postObj.name,
             description: postObj.description,
+            text: postObj.text,
             createDate: postObj.createDate,
             file: fileName,
             categories: categories
@@ -158,6 +172,7 @@ app.post("/api/posts", function (req, res) {
     });
 });
 
+//delete post
 app.delete("/api/posts/:id", function(req, res){
       
     var id = new objectId(req.params.id);
@@ -173,6 +188,7 @@ app.delete("/api/posts/:id", function(req, res){
     });
 });
 
+//change post
 app.put("/api/posts", jsonParser, function(req, res){
     
     var form = new formidable.IncomingForm();
@@ -199,17 +215,22 @@ app.put("/api/posts", jsonParser, function(req, res){
         var id = new objectId(postObj.id);
         var name = postObj.name;
         var description = postObj.description;
+        var text = postObj.text;
         var updateDate = postObj.updateDate;
         var createDate = postObj.createDate;
+        var categories = postObj.categories;
+
         
         mongoClient.connect(url, function (err, db) {
             db.collection("posts").findOneAndUpdate({_id: id}, 
             {$set: {
                     name: name, 
-                    description: description, 
+                    description: description,
+                    text: text,
                     file: fileName,
                     updateDate: updateDate,
-                    createDate: createDate
+                    createDate: createDate,
+                    categories: categories
                 }
             },
             {

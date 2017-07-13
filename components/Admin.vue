@@ -12,8 +12,14 @@
             <div class="form-group">
                 <textarea class="form-control"
                           name="description"
-                          placeholder="Text"
+                          placeholder="Description"
                           v-model="description"></textarea>
+            </div>
+            <div class="form-group">
+                <textarea class="form-control"
+                          name="text"
+                          placeholder="Text"
+                          v-model="text"></textarea>
             </div>
             <div class="form-group">
                 <textarea class="form-control"
@@ -36,7 +42,8 @@
             <div class="panel-body">
                 <button type="submit"
                         class="btn btn-sm btn-primary">Save</button>
-                <button>Cancel</button>
+                <button type="reset"
+                        @click="onCancel">Cancel</button>
                 <button @click="logout()">Log out</button>
             </div>
         </form>
@@ -62,6 +69,7 @@
                 id: '',
                 description: '',
                 name: '',
+                text: '',
                 edit: false,
                 authorized: false,
                 image: '',
@@ -128,14 +136,17 @@
             onSubmit: function () {
                 var name = this.name;
                 var description = this.description;
+                var text = this.text;
                 var categories = this.categories;
                 var self = this;
                 
                 var formData = new FormData();
                 formData.append('name', name);
                 formData.append('description', description);
+                formData.append('text', text);
                 formData.append('categories', categories);
-                formData.append('file', this.files[0]);
+                if(this.files !== null) 
+                    formData.append('file', this.files[0]);
 
                 if (this.edit){
                     var updateDate = this.getPostDate();
@@ -160,11 +171,14 @@
                                     self.items[i].description = description;
                                     self.items[i].updateDate = updateDate;
                                     self.items[i].file = file;
+                                    self.items[i].categories = categories;
                                     break;
                                 }
                             }
                             self.description = '';
                             self.name = '';
+                            self.text = '';
+                            self.categories = '';
                             self.files = null;
                             self.edit = false;
                             self.image = '';
@@ -176,7 +190,7 @@
                 } else {
                     var createDate = this.getPostDate();
                     formData.append('createDate', createDate);
-                    formData.append('updateDate', '');
+//                    formData.append('updateDate', '');
 
                     $.ajax({
                         url: "api/posts",
@@ -188,11 +202,12 @@
                         success: function (post) {
                             self.items.push(post);
                             self.description = '';
+                            self.text = '';
                             self.name = '';
                             self.image = '';
                             self.files = null;
-                            self.updateDate = '';
-                            self.createDate = '';
+//                            self.updateDate = '';
+//                            self.createDate = '';
                             self.categories = '';
                         }
                     });
@@ -202,15 +217,21 @@
             onCancel: function () {
                 this.description = '';
                 this.name = '';
+                this.text = '';
+                this.image = '';
+                this.files = null;
+                this.categories = '';
             },
 
             editPost: function (item) {
                 this.name = item.name;
                 this.description = item.description;
+                this.text = item.text;
                 this.file = item.file;
                 this.createDate = item.createDate;
                 this.id = item._id;
                 this.edit = true;
+                this.categories = item.categories.join(', ');
             },
 
             deletePost: function (id) {
@@ -229,12 +250,14 @@
                     }
                 });
             },
+            
             onFileChange(e) {
                 this.files = e.target.files || e.dataTransfer.files;
                 console.log(this.files);
                 if (!this.files.length)return;
                 this.createImage(this.files[0]);
             },
+            
             createImage(file) {
 //                var image = new Image();
                 var reader = new FileReader();
@@ -245,6 +268,7 @@
                 };
                 reader.readAsDataURL(file);
             },
+            
             removeImage: function (e) {
                 this.image = '';
             }

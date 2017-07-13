@@ -8,7 +8,8 @@
                         <img v-bind:src="'../assets/img/'+ post.file" alt=""/>
                     </div>             
                 </div>
-                <p class="news-item-description">{{post.description}}</p>               
+                <p class="news-item-description">{{post.description}}</p>
+                <p class="news-item-description">{{post.text}}</p>
             </div>
         </div>
     </div>

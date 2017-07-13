@@ -33,12 +33,14 @@
         name: 'Blog',
         data: function () {
             return {
-                items: []
+                items: [],
+                categories: []
             };
         },
 
         created() {
             this.fethPostsData();
+            this.fethCategoriesData(); 
         },
 
         watch: {
@@ -60,6 +62,23 @@
                     },
                     error: function () {
                         console.log('sukablyat');
+                    }
+                });
+            },
+            
+            fethCategoriesData: function () {
+                console.log(2);
+                var self = this;
+                $.ajax({
+                    url: "api/categories",
+                    type: "GET",
+                    contentType: "application/json",
+                    success: function (categories) {
+                        self.categories = categories;
+                        console.log(self.categories);
+                    },
+                    error: function () {
+                        console.log('ebanarot');
                     }
                 });
             },
@@ -112,8 +131,7 @@
 
             popup: function (url) {
                 window.open(url, '', 'toolbar=0,status=0,width=626,height=436');
-            }
-        
+            }     
         }
     }
 </script>
