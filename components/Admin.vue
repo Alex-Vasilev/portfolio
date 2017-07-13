@@ -15,6 +15,12 @@
                           placeholder="Text"
                           v-model="description"></textarea>
             </div>
+            <div class="form-group">
+                <textarea class="form-control"
+                          name="categories"
+                          placeholder="Categories"
+                          v-model="categories"></textarea>
+            </div>
             <div class="panel-body"
                  v-if="!image">
                 <input class="form-control"
@@ -62,7 +68,8 @@
                 files: null,
                 file: '',
                 updateDate: '',
-                createDate: ''              
+                createDate: '',
+                categories: ''
             };
         },
 
@@ -120,12 +127,14 @@
 
             onSubmit: function () {
                 var name = this.name;
-                var description = this.description;                             
+                var description = this.description;
+                var categories = this.categories;
                 var self = this;
                 
                 var formData = new FormData();
                 formData.append('name', name);
                 formData.append('description', description);
+                formData.append('categories', categories);
                 formData.append('file', this.files[0]);
 
                 if (this.edit){
@@ -184,6 +193,7 @@
                             self.files = null;
                             self.updateDate = '';
                             self.createDate = '';
+                            self.categories = '';
                         }
                     });
                 }

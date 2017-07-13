@@ -60,13 +60,21 @@ app.get("/logout", function(req, res){
 
 // blog posts
 app.get("/api/posts", function(req, res){
-      
+//     var data; 
     mongoClient.connect(url, function(err, db){
-        db.collection("posts").find({}).toArray(function(err, posts){
+        db.collection("posts").find({categories:1}).toArray(function(err, posts){
             res.send(posts);
+//            data = posts;
             console.log(posts);
             db.close();
         });
+//                db.collection("posts").find({categories}).toArray(function(err, categories){
+////            res.send(posts);
+//            
+//            console.log(posts);
+//            db.close();
+//        });
+
     });
 });
 
@@ -127,12 +135,18 @@ app.post("/api/posts", function (req, res) {
     });
 
     form.on('end', function() {
+        
+        console.log(postObj.categories);
+        var categories = postObj.categories.split(',');
+        
         var post = {
             name: postObj.name,
             description: postObj.description,
             createDate: postObj.createDate,
-            file: fileName
+            file: fileName,
+            categories: categories
         };
+        
         mongoClient.connect(url, function(err, db){
             db.collection("posts").insertOne(post, function(err, result){
                  console.log(result.ops);
@@ -211,26 +225,6 @@ app.put("/api/posts", jsonParser, function(req, res){
             });
         });
     });
-    
-    
-      
-//    if(!req.body) return res.sendStatus(400);
-//    var id = new objectId(req.body.id);
-//    var postName = req.body.name;
-//    var postDescription = req.body.description;
-//     
-//    mongoClient.connect(url, function(err, db){
-//        db.collection("posts").findOneAndUpdate({_id: id}, { $set: {name: postName, description: postDescription}},
-//             {returnOriginal: false },function(err, result){
-//             
-//            if(err) return res.status(400).send();
-//             
-//            var post = result.value;
-//            res.send(post);
-//            console.log(post);
-//            db.close();
-//        });
-//    });
 });
 
 //send mail from contact page
@@ -271,8 +265,8 @@ app.post("/api/contact", jsonParser, function (req, res) {
 app.post("/api/search", jsonParser, function(req, res){ 
     if(!req.body) return res.sendStatus(400);
      var currentQuery = req.body.query;
-    console.log(currentQuery)
-    var re = new RegExp(currentQuery)
+    console.log(currentQuery);
+    var re = new RegExp(currentQuery);
     mongoClient.connect(url, function (err, db) {
         if (err)
             throw err;
