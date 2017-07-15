@@ -161,7 +161,14 @@ h3{
 }
 
 .news-item-description{
-    margin-bottom: 30px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    border-bottom: 1px solid #eeeeee;
 }
 
 .footer-post{
@@ -182,6 +189,14 @@ h3{
 
 .share-post{
     color: #c0392b;
+}
+
+.category{
+    color: #2a2c31;
+    display: inline-block;
+    background: #e4e4e4;
+    padding: 0 12px;
+    margin: 3px;
 }
 
 /*post page*/

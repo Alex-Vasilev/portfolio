@@ -8,8 +8,10 @@
                         <img v-bind:src="'../assets/img/'+ post.file" alt=""/>
                     </div>             
                 </div>
+                <div v-for="item in post.categories"
+                     class="category">{{item}}</div>
                 <p class="news-item-description">{{post.description}}</p>
-                <p class="news-item-description">{{post.text}}</p>
+                <p class="news-item-text">{{post.text}}</p>
             </div>
         </div>
     </div>
@@ -19,8 +21,7 @@
         name: 'PostPage',
         data () {
           return {
-              post: {},
-              image: ''
+              post: {}
           };
         },
     
@@ -34,7 +35,6 @@
                     success: function (post) {              
                         console.log(post.file);
                         self.post = post;
-//                        self.image = '../img/' + post.file;
                     },
                     error: function () {
                         console.log('ebalovo');

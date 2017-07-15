@@ -9,6 +9,8 @@
                              v-bind:key="item._id"
                              class="news-item">                  
                     <p class="news-item-title">{{item.name}}</p>
+                    <div v-for="category in item.categories"
+                         class="category">{{category}}</div>
                     <p class="news-item-description">{{item.description}}</p>
                     <div class='footer-post'>
                         <span class="posted-date">{{item.createDate}}</span>
@@ -16,12 +18,12 @@
                               v-if="item.updateDate">Last updated: {{item.updateDate}}</span>
                         <span class="share-post">Share</span>
                     </div>
-                    <div>
-                        <a href="#" target="_blank" @click="vkontakte($event, 'http://localhost:3000/#/blog/' + item._id, item.name, 'lol', '/assets/img/IrXwrfE9gts.jpg')"> {шарь меня правильно}</a>
-                        <a href="#" target="_blank" @click="me">{шарь меня правильно}</a>
-                        <a href="#" target="_blank" @click="me">{шарь меня правильно}</a>
-                        <!--<img src="../public/assets/img/IrXwrfE9gts.jpg" alt=""/>-->
-                    </div>
+<!--                    <div>
+                        <a href="#" target="_blank" @click="vkontakte($event, 'http://localhost:3000/#/blog/' + item._id, item.name, 'lol', '/assets/img/IrXwrfE9gts.jpg')">
+                            vk</a>
+                        <a href="#" target="_blank" @click="facebook($event, 'http://localhost:3000/#/blog/' + item._id, item.name, 'lol', '/assets/img/IrXwrfE9gts.jpg')">fb</a>
+                        <a href="#" target="_blank" @click="twitter()">tw</a>
+                    </div>-->
                 </router-link>
             </div>
         </div>
@@ -95,7 +97,7 @@
                 this.popup(url);
             },
     
-            facebook: function(purl, ptitle, pimg, text) {
+            facebook: function(event, purl, ptitle, text,  pimg) {
                 event.stopPropagation();
                 event.preventDefault();
                 
@@ -107,7 +109,7 @@
                 this.popup(url);
             },
           
-            twitter: function(purl, ptitle) {
+            twitter: function(event, purl, ptitle) {
                 event.stopPropagation();
                 event.preventDefault();
                 
@@ -116,16 +118,6 @@
                 url += '&url=' + encodeURIComponent(purl);
                 url += '&counturl=' + encodeURIComponent(purl);
                 this.popup(url);
-            },
-
-            me: function (event) {
-                event.stopPropagation();
-                event.preventDefault();
-
-                console.log(event.target.href);
-//                console.log(el.href);
-                this.popup(event.target.href);
-                return false;
             },
 
             popup: function (url) {
