@@ -43,6 +43,10 @@
             }
         },
         
+        watch:{
+            '$route': 'fetch'
+        },
+        
         created () {
             this.fetch();
         }

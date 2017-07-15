@@ -64,8 +64,7 @@ app.get("/logout", function(req, res){
 app.get("/api/posts", function(req, res){
     mongoClient.connect(url, function(err, db){
         db.collection("posts")
-        .find({}, {_id: 1, 
-                    name: 1, 
+        .find({}, { name: 1, 
                     description: 1, 
                     createDate: 1, 
                     updateDate: 1, 
@@ -291,8 +290,11 @@ app.post("/api/search", jsonParser, function(req, res){
     mongoClient.connect(url, function (err, db) {
         if (err)
             throw err;
-        var query = {description: re};
-        db.collection("posts").find(query).toArray(function (err, result) {
+        var query = {text: re};
+        db.collection("posts")
+        .find(query, {name: 1,
+                      description: 1})
+        .toArray(function (err, result) {
             if (err)
                 throw err;
             console.log(result);

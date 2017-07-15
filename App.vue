@@ -3,8 +3,33 @@
          id="app">           
         <div class="header">
             <router-link to="/" class="logo"></router-link>
-            <input type="text"
+            <div class="form-group search">
+                <input type="text"
+                   class="search"
+                   placeholder="Search"
                    @input="queryValue($event.target.value)">
+                <transition name="component-fade" mode="out-in">
+                    <div class="results" 
+                         v-if="results">
+                        <ul>
+                            <li v-for="item in find"
+                                class="result-item">
+                                <router-link  v-bind:to="'/blog/'+item._id">
+                                    <h4>{{item.name}}</h4>
+                                    <p>{{item.description}}</p>
+                                </router-link>
+                            </li>
+                        </ul>
+                    </div>
+                </transition>
+                <transition name="component-fade"
+                            mode="out-in">
+                    <div v-if="fail_result"
+                         class="fail-result">
+                        Wtf is it '{{query}}'??
+                    </div>
+                </transition>
+            </div>
             <ul class="main-menu">
                 <li><router-link to="/about">About</router-link></li>
                 <li><router-link to="/contact">Contact</router-link></li>
@@ -24,14 +49,22 @@ export default {
     name: 'App',
     data: function(){
         return {
-            find: []
+            find: [],
+            results: false,
+            fail_result: false,
+            query: ''
         };
     },
       
     methods: {
         queryValue(value){
             console.log(value);
-            if(!value) return;
+            if(!value || value.length<2){
+                this.results = false;
+                this.fail_result = false;
+                return;
+            }
+            this.query = value;
             var self = this;
             $.ajax({
                 url: "api/search",
@@ -43,11 +76,29 @@ export default {
                 success: function (posts) {
                     self.find = posts;
                     console.log(self.find);
+                    self.showResults(posts); 
                 },
                 error: function () {
                     console.log('sukablyat');
                 }
             });
+        },
+        
+        showResults(posts){
+            if(posts.length){
+               this.results = true; 
+               this.fail_result = false;
+            } else {
+                this.results = false; 
+                this.fail_result = true;
+            }
+        }    
+    },
+    
+    watch:{
+        '$route': function(){
+            this.results = false;
+            this.fail_result = false;
         }
     }
 }
