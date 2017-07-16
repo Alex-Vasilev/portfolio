@@ -4,7 +4,7 @@
             <div class="inner-container">
                 <h3>latest news</h3>
                 <div class="categories-container">
-                    <p>Categories</p>
+                    <p>Categories:</p>
                     <ul>
                         <li class="category"
                             v-bind:class="{ 'active-category': isActive }"
@@ -49,7 +49,8 @@
             return {
                 items: [],
                 categories: [],
-                isActive: true
+                isActive: true,
+                activeCategories: []
             };
         },
 
@@ -93,8 +94,7 @@
                                 cat: i,
                                 isActive: false
                             };
-                        });
-                                
+                        });                                
                         self.categories = data;
                     },
                     error: function () {
@@ -103,19 +103,49 @@
                 });
             },
             
+            fetchDataByCategory(data){
+                console.log(data);
+                var self = this;
+                $.ajax({
+                    url: "api/by_category",
+                    type: "POST",
+                    data: JSON.stringify({
+                            query: data
+                        }),
+                    contentType: "application/json",
+                    success: function (posts) {
+                        self.items = posts;
+                        console.log(posts);
+                    },
+                    error: function () {
+                        console.log('ohuet');
+                    }
+                });
+            },
+                     
             checkActive(category){
                 this.isActive = false;
-                if(!category.isActive)
+                if(!category.isActive){
                     category.isActive = true;
-                else                 
+                    this.activeCategories.push(category.cat);
+                    var data = this.activeCategories.join('|');
+                    this.fetchDataByCategory(data);
+                }else{                 
                     category.isActive = false;
+                    var idx = this.activeCategories.indexOf(category.cat);
+                    this.activeCategories.splice(idx, 1);
+                    var data = this.activeCategories.join('|');
+                    this.fetchDataByCategory(data);
+                }
             },
             
             checkAllActive(){
+                this.activeCategories = [];
                 this.isActive = true;
                 this.categories.forEach(function(i){
                     i.isActive = false;
                 });
+                this.fethPostsData();
             },
             
             vkontakte: function(event, purl, ptitle, text, pimg) {

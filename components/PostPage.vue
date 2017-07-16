@@ -9,9 +9,17 @@
                     </div>             
                 </div>
                 <div v-for="item in post.categories"
-                     class="category">{{item}}</div>
-                <p class="news-item-description">{{post.description}}</p>
-                <p class="news-item-text">{{post.text}}</p>
+                     class="category">{{item}}
+                </div>
+                <div class='footer-post'>
+                    <span class="posted-date">{{post.createDate}}</span>
+                    <span class="updated-date"
+                          v-if="post.updateDate">Last updated: {{post.updateDate}}</span>
+                    <span class="share-post">Share</span>
+                </div>
+                <p class="">{{post.description}}</p>
+                <p class="news-item-text"
+                   v-html="post.text"></p>
             </div>
         </div>
     </div>

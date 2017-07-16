@@ -304,7 +304,33 @@ app.post("/api/search", jsonParser, function(req, res){
         });
     });
 });
-  
+
+//find by category
+app.post("/api/by_category", jsonParser, function(req, res){ 
+    if(!req.body) return res.sendStatus(400);
+     var currentQuery = req.body.query;
+    console.log(currentQuery);
+    var re = new RegExp(currentQuery);
+    mongoClient.connect(url, function (err, db) {
+        if (err)
+            throw err;
+        var query = {categories: re};
+        db.collection("posts")
+        .find(query, { name: 1, 
+                       description: 1, 
+                       createDate: 1, 
+                       updateDate: 1, 
+                       categories: 1})
+        .toArray(function (err, result) {
+            if (err)
+                throw err;
+            console.log(result);
+            res.send(result);
+            db.close();
+        });
+    });
+});
+ 
 app.listen(3000, function(){
     console.log("run!");
 });

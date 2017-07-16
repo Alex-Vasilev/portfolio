@@ -20,7 +20,7 @@
                 <div class="contact-page-body">
                     <form @submit.prevent="onContactSubmit"
                            class='contact-form'>
-                        <p class="contact-form-description">Say hello etc.</p>
+                        <p class="contact-form-description">say hello etc.</p>
                         <div class="form-group">              
                             <input class="contact-email"
                                    name="email"
