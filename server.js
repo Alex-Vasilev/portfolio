@@ -149,7 +149,8 @@ app.post("/api/posts", function (req, res) {
     form.on('end', function() {
         
         console.log(postObj.categories);
-        var categories = postObj.categories.split(',');
+        var re = /\s*,\s*/;
+        var categories = postObj.categories.split(re);
         
         var post = {
             name: postObj.name,

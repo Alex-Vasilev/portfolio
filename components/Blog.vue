@@ -3,14 +3,26 @@
         <div class="container">
             <div class="inner-container">
                 <h3>latest news</h3>
+                <div class="categories-container">
+                    <p>Categories</p>
+                    <ul>
+                        <li class="category"
+                            v-bind:class="{ 'active-category': isActive }"
+                            @click="checkAllActive()">all</li>
+                        <li class="category"
+                            v-bind:class="{ 'active-category': category.isActive }"
+                            v-for="category in categories"
+                            @click="checkActive(category)">{{category.cat}}</li>
+                    </ul>
+                </div>
                 <router-link v-for="item in items"
                              v-bind:to="'/blog/'+item._id"
                              v-bind:data="item"
                              v-bind:key="item._id"
                              class="news-item">                  
                     <p class="news-item-title">{{item.name}}</p>
-                    <div v-for="category in item.categories"
-                         class="category">{{category}}</div>
+                    <div v-for="itemCategory in item.categories"
+                         class="category">{{itemCategory}}</div>
                     <p class="news-item-description">{{item.description}}</p>
                     <div class='footer-post'>
                         <span class="posted-date">{{item.createDate}}</span>
@@ -36,7 +48,8 @@
         data: function () {
             return {
                 items: [],
-                categories: []
+                categories: [],
+                isActive: true
             };
         },
 
@@ -75,12 +88,33 @@
                     type: "GET",
                     contentType: "application/json",
                     success: function (categories) {
-                        self.categories = categories;
-                        console.log(self.categories);
+                        var data = categories.map(function(i, v){
+                          return  v = { 
+                                cat: i,
+                                isActive: false
+                            };
+                        });
+                                
+                        self.categories = data;
                     },
                     error: function () {
                         console.log('ebanarot');
                     }
+                });
+            },
+            
+            checkActive(category){
+                this.isActive = false;
+                if(!category.isActive)
+                    category.isActive = true;
+                else                 
+                    category.isActive = false;
+            },
+            
+            checkAllActive(){
+                this.isActive = true;
+                this.categories.forEach(function(i){
+                    i.isActive = false;
                 });
             },
             

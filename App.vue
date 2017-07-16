@@ -5,9 +5,11 @@
             <router-link to="/" class="logo"></router-link>
             <div class="form-group search">
                 <input type="text"
-                   class="search"
+                   class="input-search"
                    placeholder="Search"
-                   @input="queryValue($event.target.value)">
+                   @input="queryValue($event.target.value)"
+                   @keypress="onEnter($event)"
+                   @blur="close()">
                 <transition name="component-fade" mode="out-in">
                     <div class="results" 
                          v-if="results">
@@ -82,6 +84,17 @@ export default {
                     console.log('sukablyat');
                 }
             });
+        },
+        
+        close(){
+            this.results = false; 
+            this.fail_result = false;
+        },
+        
+        onEnter(e){          
+        if(e.keyCode==13){
+            this.queryValue(e.target.value);
+            }
         },
         
         showResults(posts){
