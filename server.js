@@ -103,25 +103,6 @@ app.get("/api/posts/:id", function(req, res){
         });
     });
 });
- 
-//app.post("/api/posts", jsonParser, function (req, res) {
-//     
-//    if(!req.body) return res.sendStatus(400);
-//     
-//    var postName = req.body.name;
-//    var postDescription = req.body.description;
-//    var post = {name: postName, description: postDescription};
-//     
-//    mongoClient.connect(url, function(err, db){
-//        db.collection("posts").insertOne(post, function(err, result){
-//             console.log(result.ops);
-//            if(err) return res.status(400).send();
-//             
-//            res.send(post);
-//            db.close();
-//        });
-//    });
-//});
 
 //add post
 app.post("/api/posts", function (req, res) {

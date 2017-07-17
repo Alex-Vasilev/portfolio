@@ -289,6 +289,52 @@ h3{
    left: 0;
 }
 
+.hamburger{
+    display: none;
+    width: 20px;
+    height: 18px;
+    position: relative;
+}
+
+.hamburger span {
+    position: absolute;
+    top: 50%;
+    margin-top: -1px;
+    display: inline-block;
+    width: 100%;
+    height: 2px;
+    background: #1E2022;
+}
+
+.hamburger span::before,
+.hamburger span::after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 0;
+    display: inline-block;
+    width: 100%;
+    height: 2px;
+    background: #1E2022;
+    transition: transform .3s;
+}
+
+.hamburger span::after {
+    top: 6px;
+}
+
+.hamburger.active-hamburger span {
+    height: 0;
+}
+
+.hamburger.active-hamburger span::before {
+    transform: rotate(45deg) translateY(7px) translateX(1.5px);
+}
+
+.hamburger.active-hamburger span::after {
+    transform: rotate(-45deg) translateY(-7px) translateX(1.5px);
+}
+
 /*search*/
 .form-group.search{
     margin-bottom: 0;
@@ -358,7 +404,7 @@ h3{
 
 /*contact*/
 .contact-form{
-    margin: 50px 15px 30px 15px;
+    margin: 30px 15px 30px 15px;
     padding: 20px;
     border: 1px solid rgba(174, 174, 174, 0.43);
     border-radius: 3px;
@@ -492,3 +538,54 @@ button:disabled{
     font-family: 'Josefin Sans', sans-serif;
 }
 
+   @media screen and (max-width: 800px) {
+     .blog-content{
+    padding: 0 10vw;
+     }
+   }
+   
+   @media screen and (max-width: 666px) {
+       .header{position: relative;}
+        .main-menu{
+           position: absolute;
+           right: -100px;
+           top: 12vh;
+           transition: all .3s;
+       }
+       
+       .main-menu.show-menu{
+           transform: translateX(-120px);
+           top: 12vh;
+       }
+
+       .main-menu li{
+           display: block;
+           background: white;
+       }
+
+       .main-menu a:after{
+           display: none;
+       }
+
+       .main-menu a:hover{
+           color:  rgb(42, 44, 49);
+       }
+       
+       .main-menu li{
+        margin-left: 0;
+       }
+       
+       .main-menu a:active{
+           background:  rgb(42, 44, 49);
+           color: white;
+       }
+       
+       .hamburger{
+           display: block;
+       }
+   }
+
+    @media screen and (max-width: 500px) {
+     .blog-content{
+    padding: 0 5vw;}
+   }

@@ -32,12 +32,18 @@
                     </div>
                 </transition>
             </div>
-            <ul class="main-menu">
+            <ul class="main-menu"
+                v-bind:class="{'show-menu': active_menu}">
                 <li><router-link to="/about">About</router-link></li>
                 <li><router-link to="/contact">Contact</router-link></li>
                 <li><router-link to="/blog">Blog</router-link></li>
                 <li><router-link to="/works">Works</router-link></li>
-            </ul>   
+            </ul>
+            <div class="hamburger"
+                 @click="triggerMenu()"
+                 v-bind:class="{'active-hamburger': active_menu}">
+                <span></span>
+            </div>
         </div>
     <!--             отображение компонента, для которого совпал путь -->
         <transition name="component-fade" mode="out-in">
@@ -54,7 +60,8 @@ export default {
             find: [],
             results: false,
             fail_result: false,
-            query: ''
+            query: '',
+            active_menu: false
         };
     },
       
@@ -105,13 +112,21 @@ export default {
                 this.results = false; 
                 this.fail_result = true;
             }
-        }    
+        },
+        
+        triggerMenu(){
+            if(this.active_menu)
+                this.active_menu = false;
+            else 
+                this.active_menu = true;
+        }
     },
     
     watch:{
         '$route': function(){
             this.results = false;
             this.fail_result = false;
+            this.active_menu = false;
         }
     }
 }
