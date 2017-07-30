@@ -21,7 +21,10 @@ body{
 
 .header{
     border-bottom: 1px solid #eee;
-    background: white;
+    position: fixed;
+    width: 100%;
+    box-sizing: border-box;
+    /* background: white; */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -70,7 +73,7 @@ h2 > span{
     letter-spacing: 4px;
 }
 
-h2::after{
+/*h2::after{
     content: '';
     position: absolute;
     width: 230px;
@@ -81,7 +84,7 @@ h2::after{
     border-radius: 50%;
     z-index: -1;
     box-shadow: 3px -3px 12px rgb(208, 202, 201);
-}
+}*/
 
 @keyframes text {
     from { 
@@ -95,12 +98,14 @@ h2::after{
 }
 
 .blog-content{
-    padding: 0 20vw;
-    height: 88vh;
+    padding: 80px 20vw 0;
+    height: 100vh;
+    box-sizing: border-box;
     display: flex;
     justify-content: space-around;
     flex-direction: column;
     align-items: center;
+    /* box-sizing: border-box; */
 }
 
 .container{
@@ -115,6 +120,11 @@ h2::after{
     height: 100%;
     width: 100%;
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.home{
+    /* background: url(assets//img/bg/sea-coast-ocean-horizon-mountain-cloud-92118-pxhere.com.jpg) no-repeat 50% 50% / cover; */
+    background: url(assets/img/bg/landscape-sea-coast-water-nature-outdoor-738209-pxhere.com.jpg) no-repeat 50% 50% / cover;
 }
 
 h3{
@@ -155,6 +165,7 @@ h3{
     padding: 0 20px;
     height: 100%;
     overflow-y: scroll;
+    box-sizing: border-box;
 }
 
 .news-item-title{
@@ -248,6 +259,7 @@ h3{
     margin: 0;
     padding: 0;
     list-style: none;
+    /* box-shadow: 2px 2px 16px #e4e3e3; */
 }
 
 .main-menu li{
@@ -343,6 +355,7 @@ h3{
 
 .form-group .input-search{
     width: 100%;
+    background: transparent;
 }
 
 .results{
@@ -540,12 +553,12 @@ button:disabled{
 
    @media screen and (max-width: 800px) {
      .blog-content{
-    padding: 0 10vw;
-     }
+    padding: 80px 10vw 0;
+    }
    }
    
    @media screen and (max-width: 666px) {
-       .header{position: relative;}
+       .header{/* position: relative; */}
         .main-menu{
            position: absolute;
            right: -100px;
@@ -560,7 +573,7 @@ button:disabled{
 
        .main-menu li{
            display: block;
-           background: white;
+           background: #ffffff;
        }
 
        .main-menu a:after{
@@ -587,5 +600,6 @@ button:disabled{
 
     @media screen and (max-width: 500px) {
      .blog-content{
-    padding: 0 5vw;}
+    padding: 80px 5vw 0;
+    }
    }
