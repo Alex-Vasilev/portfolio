@@ -24,7 +24,6 @@ body{
     position: fixed;
     width: 100%;
     box-sizing: border-box;
-    /* background: white; */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -73,19 +72,6 @@ h2 > span{
     letter-spacing: 4px;
 }
 
-/*h2::after{
-    content: '';
-    position: absolute;
-    width: 230px;
-    height: 230px;
-    top:-8vh;
-    left: 50%;
-    margin-left: -115px;
-    border-radius: 50%;
-    z-index: -1;
-    box-shadow: 3px -3px 12px rgb(208, 202, 201);
-}*/
-
 @keyframes text {
     from { 
         opacity: 0;
@@ -106,7 +92,6 @@ h2 > span{
     justify-content: space-around;
     flex-direction: column;
     align-items: center;
-    /* box-sizing: border-box; */
 }
 
 .container{
@@ -114,7 +99,6 @@ h2 > span{
     box-sizing: border-box;
     overflow: hidden;
     color: #2a2c31;
-    /*font-variant: small-caps;*/
     letter-spacing: 1px;
     font-size: 17px;
     font-weight: 400;
@@ -122,11 +106,6 @@ h2 > span{
     height: 100%;
     width: 100%;
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
-}
-
-.home{
-    /* background: url(bg/sea-coast-ocean-horizon-mountain-cloud-92118-pxhere.com.jpg) no-repeat 50% 50% / cover; */
-    /* background: url(bg/landscape-sea-coast-water-nature-outdoor-738209-pxhere.com.jpg) no-repeat 50% 50% / cover; */
 }
 
 h3{
@@ -151,13 +130,13 @@ h3{
 }
 
 .news-item{
-    border: 1px solid rgba(174, 174, 174, 0.43);
+    border: 1px solid rgb(217, 217, 217);
     margin: 30px 15px;
     padding: 20px;
     display: block;
     text-decoration: none;
     color: inherit;
-    background: #363636;
+    background: rgba(243, 243, 243, 0.4);
     border-radius: 3px;
 }
 
@@ -175,7 +154,7 @@ h3{
     font-weight: 600;
     letter-spacing: 1px;
     font-size: 20px;
-    color: #fff;
+    color: #2a2c31;
 }
 
 .news-item-description{
@@ -186,8 +165,8 @@ h3{
     display: -webkit-box;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
-    border-bottom: 1px solid #aeaeae;
-    color: #eee;
+    border-bottom: 1px solid rgba(42, 44, 49, 0.4);
+    color: #383838;
 }
 
 .footer-post{
@@ -214,7 +193,7 @@ h3{
     color: #2a2c31;
     border: 1px solid rgba(174, 174, 174, 0.43);
     display: inline-block;
-    background: #f3f3f3;
+    /* background: #f3f3f3; */
     padding: 0 12px;
     margin: 3px;
     transition: all .3s;
@@ -263,7 +242,6 @@ h3{
     margin: 0;
     padding: 0;
     list-style: none;
-    /* box-shadow: 2px 2px 16px #e4e3e3; */
 }
 
 .main-menu li{
@@ -423,8 +401,9 @@ h3{
 .contact-form{
     margin: 30px 15px 30px 15px;
     padding: 20px;
-    border: 1px solid rgba(42, 44, 49, 0.31);
+    border: 1px solid rgba(42, 44, 49, 0.12);
     border-radius: 3px;
+    background: rgba(243, 243, 243, 0.4);
 }
 
 .contact-current{
@@ -457,7 +436,7 @@ textarea{
     text-align: start;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    font-size: 2.5vh;
+    font-size: 2.8vh;
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
 }
 
@@ -496,6 +475,7 @@ textarea{
 
 button{
     background: none;
+    font-family: 'Catamaran';
     cursor: pointer;
     border: 0;
     color: rgb(42, 44, 49);
