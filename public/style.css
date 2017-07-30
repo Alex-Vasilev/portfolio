@@ -99,6 +99,7 @@ h2 > span{
 
 .blog-content{
     padding: 80px 20vw 0;
+    background: url(bg/landscape-sea-coast-water-nature-outdoor-738209-pxhere.com.jpg) no-repeat 50% 50% / cover;
     height: 100vh;
     box-sizing: border-box;
     display: flex;
@@ -109,6 +110,7 @@ h2 > span{
 }
 
 .container{
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.68), transparent);
     box-sizing: border-box;
     overflow: hidden;
     color: #2a2c31;
@@ -124,7 +126,7 @@ h2 > span{
 
 .home{
     /* background: url(bg/sea-coast-ocean-horizon-mountain-cloud-92118-pxhere.com.jpg) no-repeat 50% 50% / cover; */
-    background: url(bg/landscape-sea-coast-water-nature-outdoor-738209-pxhere.com.jpg) no-repeat 50% 50% / cover;
+    /* background: url(bg/landscape-sea-coast-water-nature-outdoor-738209-pxhere.com.jpg) no-repeat 50% 50% / cover; */
 }
 
 h3{
@@ -155,7 +157,7 @@ h3{
     display: block;
     text-decoration: none;
     color: inherit;
-    background: #ffffff;
+    background: #363636;
     border-radius: 3px;
 }
 
@@ -173,6 +175,7 @@ h3{
     font-weight: 600;
     letter-spacing: 1px;
     font-size: 20px;
+    color: #fff;
 }
 
 .news-item-description{
@@ -184,6 +187,7 @@ h3{
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
     border-bottom: 1px solid #aeaeae;
+    color: #eee;
 }
 
 .footer-post{
@@ -419,7 +423,7 @@ h3{
 .contact-form{
     margin: 30px 15px 30px 15px;
     padding: 20px;
-    border: 1px solid rgba(174, 174, 174, 0.43);
+    border: 1px solid rgba(42, 44, 49, 0.31);
     border-radius: 3px;
 }
 
@@ -442,6 +446,7 @@ h3{
      border-bottom: 1px solid rgba(95, 95, 95, 0.5);
      outline: none;
      padding: 6px;
+     background: transparent;
 }
 
 textarea{
