@@ -123,8 +123,8 @@ h2 > span{
 }
 
 .home{
-    /* background: url(assets//img/bg/sea-coast-ocean-horizon-mountain-cloud-92118-pxhere.com.jpg) no-repeat 50% 50% / cover; */
-    background: url(assets/img/bg/landscape-sea-coast-water-nature-outdoor-738209-pxhere.com.jpg) no-repeat 50% 50% / cover;
+    /* background: url(bg/sea-coast-ocean-horizon-mountain-cloud-92118-pxhere.com.jpg) no-repeat 50% 50% / cover; */
+    background: url(bg/landscape-sea-coast-water-nature-outdoor-738209-pxhere.com.jpg) no-repeat 50% 50% / cover;
 }
 
 h3{
