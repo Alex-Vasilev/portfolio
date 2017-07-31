@@ -130,7 +130,7 @@ h3{
 }
 
 .news-item{
-    border: 1px solid rgb(217, 217, 217);
+    /* border: 1px solid rgb(217, 217, 217); */
     margin: 30px 15px;
     padding: 20px;
     display: block;
@@ -138,6 +138,7 @@ h3{
     color: inherit;
     background: rgba(243, 243, 243, 0.4);
     border-radius: 3px;
+    box-shadow: 2px 2px 35px rgba(0, 0, 0, 0.2);
 }
 
 .inner-container{
@@ -401,9 +402,10 @@ h3{
 .contact-form{
     margin: 30px 15px 30px 15px;
     padding: 20px;
-    border: 1px solid rgba(42, 44, 49, 0.12);
+    /* border: 1px solid rgba(42, 44, 49, 0.12); */
     border-radius: 3px;
     background: rgba(243, 243, 243, 0.4);
+    box-shadow: 2px 2px 35px rgba(0, 0, 0, 0.2);
 }
 
 .contact-current{
