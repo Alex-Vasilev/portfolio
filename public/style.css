@@ -17,6 +17,7 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background: url(bg/landscape-sea-coast-water-nature-outdoor-738209-pxhere.com.jpg) no-repeat 50% 50% / cover;
 }
 
 .header{
@@ -85,7 +86,7 @@ h2 > span{
 
 .blog-content{
     padding: 80px 20vw 0;
-    background: url(bg/landscape-sea-coast-water-nature-outdoor-738209-pxhere.com.jpg) no-repeat 50% 50% / cover;
+    /*background: url(bg/landscape-sea-coast-water-nature-outdoor-738209-pxhere.com.jpg) no-repeat 50% 50% / cover;*/
     height: 100vh;
     box-sizing: border-box;
     display: flex;
@@ -129,6 +130,10 @@ h3{
     justify-content: flex-start;
 }
 
+.about p{
+    padding: 0px 20px;
+}
+
 .news-item{
     /* border: 1px solid rgb(217, 217, 217); */
     margin: 30px 15px;
@@ -159,15 +164,13 @@ h3{
 }
 
 .news-item-description{
+    position: relative;
     margin-bottom: 10px;
     padding-bottom: 10px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 5;
-    -webkit-box-orient: vertical;
     border-bottom: 1px solid rgba(42, 44, 49, 0.4);
     color: #383838;
+    /* height: 130px; */
+    /* overflow: hidden; */
 }
 
 .footer-post{
@@ -192,6 +195,7 @@ h3{
 
 .category{
     color: #2a2c31;
+    cursor: pointer;
     border: 1px solid rgba(174, 174, 174, 0.43);
     display: inline-block;
     /* background: #f3f3f3; */
@@ -356,7 +360,7 @@ h3{
     padding: 0;
     height: 100%;
     overflow: auto;
-    width: 109%;
+    width: 100%;
     padding-top: 1px;
 }
 
@@ -381,7 +385,7 @@ h3{
 
 .result-item a:hover{
     color: #2a2c31;
-    background: #fff;
+    background: rgb(247, 247, 247);
 }
 
 .fail-result{

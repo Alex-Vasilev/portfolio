@@ -23,7 +23,7 @@
                     <p class="news-item-title">{{item.name}}</p>
                     <div v-for="itemCategory in item.categories"
                          class="category">{{itemCategory}}</div>
-                    <p class="news-item-description">{{item.description}}</p>
+                    <p class="news-item-description" v-slice="{size: descriptionSize}">{{item.description}}</p>
                     <div class='footer-post'>
                         <span class="posted-date">{{item.createDate}}</span>
                         <span class="updated-date"
@@ -50,7 +50,8 @@
                 items: [],
                 categories: [],
                 isActive: true,
-                activeCategories: []
+                activeCategories: [],
+                descriptionSize: 320
             };
         },
 
@@ -73,7 +74,11 @@
                     contentType: "application/json",
                     success: function (posts) {
                         self.items = posts;
-                        console.log(self.items);
+//                        self.items.forEach(function(i){
+//                            if(i['description'].length > self.descriptionSize){
+//                                i['description'] = i['description'].slice(0, self.descriptionSize)+'...';
+//                            }
+//                        });
                     },
                     error: function () {
                         console.log('sukablyat');

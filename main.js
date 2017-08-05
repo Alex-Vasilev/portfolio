@@ -26,6 +26,14 @@ const router = new VueRouter({
 //  mode: 'history'
 });
 
+Vue.directive('slice', {
+    inserted: function (el, size) {
+        if (el.innerText.length >= size.value.size) {
+            el.innerText = el.innerText.slice(0, size.value.size) + '...';
+        }
+    }
+})
+
 //instatinat the vue instance
 new Vue({
   el: '#app',
@@ -34,3 +42,4 @@ new Vue({
   components: {App} ,
   router
 }).$mount('#app');
+

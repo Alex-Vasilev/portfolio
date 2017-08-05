@@ -18,7 +18,9 @@
                                 class="result-item">
                                 <router-link  v-bind:to="'/blog/'+item._id">
                                     <h4>{{item.name}}</h4>
-                                    <p>{{item.description}}</p>
+                                    <p v-slice="{size: resultsDescriptionLength}">
+                                        {{item.description}}
+                                    </p>
                                 </router-link>
                             </li>
                         </ul>
@@ -45,7 +47,6 @@
                 <span></span>
             </div>
         </div>
-    <!--             отображение компонента, для которого совпал путь -->
         <transition name="component-fade" mode="out-in">
            <router-view></router-view>
         </transition>
@@ -61,7 +62,8 @@ export default {
             results: false,
             fail_result: false,
             query: '',
-            active_menu: false
+            active_menu: false,
+            resultsDescriptionLength: 80
         };
     },
       
