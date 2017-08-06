@@ -26,7 +26,8 @@
                                    name="email"
                                    v-model="from"
                                    placeholder="E-mail"/>
-                            <p v-show="from && !isEmailValid">Sasai</p>
+                            <p class="invalid-contact-data"
+                               v-show="from && !isEmailValid">Not correct e-mail</p>
                         </div>
                         <div class="form-group">              
                             <textarea class="contact-message"
@@ -34,12 +35,15 @@
                                       v-model="message"
                                       placeholder="Message"
                                       rows="4"></textarea>
-                            <p v-show="message && !isMessageValid">Or vishe gor</p>
+                            <p class="invalid-contact-data"
+                                v-show="message && !isMessageValid">
+                                Message must be more than 5 symbols
+                            </p>
                         </div>
                         <div class="panel-body">
                             <button type="submit"
                                     class="btn btn-sm btn-primary"
-                                    >Send</button>
+                                    :disabled="!message || !isMessageValid || !from || !isEmailValid">Send</button>
                         </div>
                     </form>
                     <div class="contact-current">
@@ -65,34 +69,33 @@
                 fullInputs: true
             };
         },
+      
         methods: {
             onContactSubmit: function () {
-                var self = this;
-                $.ajax({
-                    url: "api/contact",
-                    type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify({
-                        from: this.from,
-                        message: this.message
-                    }),
-                    success: function () {
-                        self.from = '';
-                        self.message = '';
-                        console.log('send');
-                        self.success_message = true;
-                        setTimeout(function () {
-                            self.success_message = false;
-                        }, 3000);
-                    },
-                    error: function (error) {
-                        console.log('ebanarot');
-                        self.error_message = true;
-                        setTimeout(function () {
-                            self.error_message = false;
-                        }, 3000);
-                    }
+                let self = this;
+                let data = JSON.stringify({
+                    from: this.from,
+                    message: this.message
                 });
+                                    self.error_message = true;
+
+//                this.$http.post('api/contact', data, {
+//                    headers: {"contentType": "application/json"}
+//                }).then(response => {
+//                    self.from = '';
+//                    self.message = '';
+//                    console.log('send');
+//                    self.success_message = true;
+//                    setTimeout(function () {
+//                        self.success_message = false;
+//                    }, 3000);
+//                }, response => {
+//                    console.log('fail');
+//                    self.error_message = true;
+//                    setTimeout(function () {
+//                        self.error_message = false;
+//                    }, 3000);
+//                });
             }
         },
 
@@ -102,7 +105,7 @@
             },
 
             isMessageValid() {
-                if (this.message.length > 3)
+                if (this.message.length > 5)
                     return  true;
                 else
                     return false;

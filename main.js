@@ -1,7 +1,12 @@
 import Vue from 'vue'
 import App from './App.vue'
+
 import VueRouter from 'vue-router'
 Vue.use(VueRouter);
+
+import VueResource from 'vue-resource'
+Vue.use(VueResource);
+
 import Hello from './components/Hello.vue'
 import About from './components/About.vue'
 import Blog from './components/Blog.vue'

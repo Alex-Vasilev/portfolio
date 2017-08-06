@@ -8,8 +8,10 @@
                         <img v-bind:src="'../assets/img/'+ post.file" alt=""/>
                     </div>             
                 </div>
-                <div v-for="item in post.categories"
-                     class="category">{{item}}
+                <div class="post-page-categories">
+                    <div v-for="item in post.categories"
+                         class="category">{{item}}
+                    </div>
                 </div>
                 <div class='footer-post'>
                     <span class="posted-date">{{post.createDate}}</span>
@@ -17,7 +19,7 @@
                           v-if="post.updateDate">Last updated: {{post.updateDate}}</span>
                     <span class="share-post">Share</span>
                 </div>
-                <p class="">{{post.description}}</p>
+                <p class="post-page-description">{{post.description}}</p>
                 <p class="news-item-text"
                    v-html="post.text"></p>
             </div>
@@ -35,19 +37,14 @@
     
         methods:{
             fetch(){
-                var self = this;
-                $.ajax({
-                    url: "api/posts/" + this.$route.params.id,
-                    type: "GET",
-                    contentType: "application/json",
-                    success: function (post) {              
-                        console.log(post.file);
-                        self.post = post;
-                    },
-                    error: function () {
-                        console.log('ebalovo');
-                    }
-                });
+                var self = this;             
+                this.$http.get("api/posts/" + this.$route.params.id, {
+                    headers: {"contentType": "application/json"}
+                }).then(response => {
+                    self.post = response.data;
+                }, response => {
+                    console.log(6);
+                });               
             }
         },
         

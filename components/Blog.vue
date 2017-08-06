@@ -30,12 +30,12 @@
                               v-if="item.updateDate">Last updated: {{item.updateDate}}</span>
                         <span class="share-post">Share</span>
                     </div>
-<!--                    <div>
-                        <a href="#" target="_blank" @click="vkontakte($event, 'http://localhost:3000/#/blog/' + item._id, item.name, 'lol', '/assets/img/IrXwrfE9gts.jpg')">
-                            vk</a>
-                        <a href="#" target="_blank" @click="facebook($event, 'http://localhost:3000/#/blog/' + item._id, item.name, 'lol', '/assets/img/IrXwrfE9gts.jpg')">fb</a>
-                        <a href="#" target="_blank" @click="twitter()">tw</a>
-                    </div>-->
+                    <!--                    <div>
+                                            <a href="#" target="_blank" @click="vkontakte($event, 'http://localhost:3000/#/blog/' + item._id, item.name, 'lol', '/assets/img/IrXwrfE9gts.jpg')">
+                                                vk</a>
+                                            <a href="#" target="_blank" @click="facebook($event, 'http://localhost:3000/#/blog/' + item._id, item.name, 'lol', '/assets/img/IrXwrfE9gts.jpg')">fb</a>
+                                            <a href="#" target="_blank" @click="twitter()">tw</a>
+                                        </div>-->
                 </router-link>
             </div>
         </div>
@@ -57,7 +57,7 @@
 
         created() {
             this.fethPostsData();
-            this.fethCategoriesData(); 
+            this.fethCategoriesData();
         },
 
         watch: {
@@ -68,74 +68,54 @@
             fethPostsData: function () {
                 console.log(1);
                 var self = this;
-                $.ajax({
-                    url: "api/posts",
-                    type: "GET",
-                    contentType: "application/json",
-                    success: function (posts) {
-                        self.items = posts;
-//                        self.items.forEach(function(i){
-//                            if(i['description'].length > self.descriptionSize){
-//                                i['description'] = i['description'].slice(0, self.descriptionSize)+'...';
-//                            }
-//                        });
-                    },
-                    error: function () {
-                        console.log('sukablyat');
-                    }
+                this.$http.get('api/posts', {
+                    headers: {"contentType": "application/json"}
+                }).then(response => {
+                    self.items = response.data;
+                }, response => {
+                    console.log(1);
                 });
             },
-            
+
             fethCategoriesData: function () {
                 console.log(2);
                 var self = this;
-                $.ajax({
-                    url: "api/categories",
-                    type: "GET",
-                    contentType: "application/json",
-                    success: function (categories) {
-                        var data = categories.map(function(i, v){
-                          return  v = { 
-                                cat: i,
-                                isActive: false
-                            };
-                        });                                
-                        self.categories = data;
-                    },
-                    error: function () {
-                        console.log('ebanarot');
-                    }
+                this.$http.get('api/categories', {
+                    headers: {"contentType": "application/json"}
+                }).then(response => {
+                    var data = response.data.map(function (i, v) {
+                        return  v = {
+                            cat: i,
+                            isActive: false
+                        };
+                    });
+                    self.categories = data;
+                }, response => {
+                    console.log(2);
                 });
             },
-            
-            fetchDataByCategory(data){
+
+            fetchDataByCategory(data) {
                 console.log(data);
                 var self = this;
-                $.ajax({
-                    url: "api/by_category",
-                    type: "POST",
-                    data: JSON.stringify({
-                            query: data
-                        }),
-                    contentType: "application/json",
-                    success: function (posts) {
-                        self.items = posts;
-                        console.log(posts);
-                    },
-                    error: function () {
-                        console.log('ohuet');
-                    }
+                var data = JSON.stringify({query: data});
+                this.$http.post('api/by_category', data, {
+                    headers: {"contentType": "application/json"}
+                }).then(response => {
+                    self.items = response.data;
+                }, response => {
+                    console.log(3);
                 });
             },
-                     
-            checkActive(category){
+
+            checkActive(category) {
                 this.isActive = false;
-                if(!category.isActive){
+                if (!category.isActive) {
                     category.isActive = true;
                     this.activeCategories.push(category.cat);
                     var data = this.activeCategories.join('|');
                     this.fetchDataByCategory(data);
-                }else{                 
+                } else {
                     category.isActive = false;
                     var idx = this.activeCategories.indexOf(category.cat);
                     this.activeCategories.splice(idx, 1);
@@ -143,46 +123,46 @@
                     this.fetchDataByCategory(data);
                 }
             },
-            
-            checkAllActive(){
+
+            checkAllActive() {
                 this.activeCategories = [];
                 this.isActive = true;
-                this.categories.forEach(function(i){
+                this.categories.forEach(function (i) {
                     i.isActive = false;
                 });
                 this.fethPostsData();
             },
-            
-            vkontakte: function(event, purl, ptitle, text, pimg) {
+
+            vkontakte: function (event, purl, ptitle, text, pimg) {
                 event.stopPropagation();
                 event.preventDefault();
 
-               var url  = 'http://vkontakte.ru/share.php?';
-                url += 'url='          + encodeURIComponent(purl);
-                url += '&title='       + encodeURIComponent(ptitle);
+                var url = 'http://vkontakte.ru/share.php?';
+                url += 'url=' + encodeURIComponent(purl);
+                url += '&title=' + encodeURIComponent(ptitle);
                 url += '&description=' + encodeURIComponent(text);
-                url += '&image='       + encodeURIComponent(pimg);
+                url += '&image=' + encodeURIComponent(pimg);
                 url += '&noparse=true';
                 this.popup(url);
             },
-    
-            facebook: function(event, purl, ptitle, text,  pimg) {
+
+            facebook: function (event, purl, ptitle, text, pimg) {
                 event.stopPropagation();
                 event.preventDefault();
-                
-                var url  = 'http://www.facebook.com/sharer.php?s=100';
-                url += '&p[title]='     + encodeURIComponent(ptitle);
-                url += '&p[summary]='   + encodeURIComponent(text);
-                url += '&p[url]='       + encodeURIComponent(purl);
+
+                var url = 'http://www.facebook.com/sharer.php?s=100';
+                url += '&p[title]=' + encodeURIComponent(ptitle);
+                url += '&p[summary]=' + encodeURIComponent(text);
+                url += '&p[url]=' + encodeURIComponent(purl);
                 url += '&p[images][0]=' + encodeURIComponent(pimg);
                 this.popup(url);
             },
-          
-            twitter: function(event, purl, ptitle) {
+
+            twitter: function (event, purl, ptitle) {
                 event.stopPropagation();
                 event.preventDefault();
-                
-                var url  = 'http://twitter.com/share?';
+
+                var url = 'http://twitter.com/share?';
                 url += 'text=' + encodeURIComponent(ptitle);
                 url += '&url=' + encodeURIComponent(purl);
                 url += '&counturl=' + encodeURIComponent(purl);
@@ -191,7 +171,7 @@
 
             popup: function (url) {
                 window.open(url, '', 'toolbar=0,status=0,width=626,height=436');
-            }     
+            }
         }
     }
 </script>

@@ -5,23 +5,23 @@
             <router-link to="/" class="logo"></router-link>
             <div class="form-group search">
                 <input type="text"
-                   class="input-search"
-                   placeholder="Search"
-                   @input="queryValue($event.target.value)"
-                   @keypress="onEnter($event)"
-                   @blur="close()">
+                       class="input-search"
+                       placeholder="Search"
+                       @input="queryValue($event.target.value)"
+                       @keypress="onEnter($event)"
+                       @blur="close()">
                 <transition name="component-fade" mode="out-in">
                     <div class="results" 
                          v-if="results">
                         <ul>
                             <li v-for="item in find"
                                 class="result-item">
-                                <router-link  v-bind:to="'/blog/'+item._id">
-                                    <h4>{{item.name}}</h4>
-                                    <p v-slice="{size: resultsDescriptionLength}">
-                                        {{item.description}}
-                                    </p>
-                                </router-link>
+                            <router-link  v-bind:to="'/blog/'+item._id">
+                                <h4>{{item.name}}</h4>
+                                <p v-slice="{size: resultsDescriptionLength}">
+                                    {{item.description}}
+                                </p>
+                            </router-link>
                             </li>
                         </ul>
                     </div>
@@ -48,88 +48,81 @@
             </div>
         </div>
         <transition name="component-fade" mode="out-in">
-           <router-view></router-view>
+            <router-view></router-view>
         </transition>
     </div>
 </template>
 
 <script>
-export default {
-    name: 'App',
-    data: function(){
-        return {
-            find: [],
-            results: false,
-            fail_result: false,
-            query: '',
-            active_menu: false,
-            resultsDescriptionLength: 80
-        };
-    },
-      
-    methods: {
-        queryValue(value){
-            console.log(value);
-            if(!value || value.length<2){
+    export default {
+        name: 'App',
+        data: function () {
+            return {
+                find: [],
+                results: false,
+                fail_result: false,
+                query: '',
+                active_menu: false,
+                resultsDescriptionLength: 80
+            };
+        },
+
+        methods: {
+            queryValue(value) {
+                console.log(value);
+                if (!value || value.length < 2) {
+                    this.results = false;
+                    this.fail_result = false;
+                    return;
+                }
+                this.query = value;
+                var self = this;
+                let data = JSON.stringify({query: value});
+                this.$http.post('api/search', data, {
+                    headers: {"contentType": "application/json"}
+                }).then(response => {
+                    self.find = response.data;
+                    self.showResults();
+                }, response => {
+                    console.log(4);
+                });
+            },
+
+            close() {
                 this.results = false;
                 this.fail_result = false;
-                return;
-            }
-            this.query = value;
-            var self = this;
-            $.ajax({
-                url: "api/search",
-                type: "POST",
-                data: JSON.stringify({
-                        query: value
-                    }),
-                contentType: "application/json",
-                success: function (posts) {
-                    self.find = posts;
-                    console.log(self.find);
-                    self.showResults(posts); 
-                },
-                error: function () {
-                    console.log('sukablyat');
+            },
+
+            onEnter(e) {
+                if (e.keyCode == 13) {
+                    this.queryValue(e.target.value);
                 }
-            });
-        },
-        
-        close(){
-            this.results = false; 
-            this.fail_result = false;
-        },
-        
-        onEnter(e){          
-        if(e.keyCode==13){
-            this.queryValue(e.target.value);
+            },
+
+            showResults() {
+                if (this.find.length) {
+                    this.results = true;
+                    this.fail_result = false;
+                } else {
+                    this.results = false;
+                    this.fail_result = true;
+                }
+            },
+
+            triggerMenu() {
+                if (this.active_menu)
+                    this.active_menu = false;
+                else
+                    this.active_menu = true;
             }
         },
-        
-        showResults(posts){
-            if(posts.length){
-               this.results = true; 
-               this.fail_result = false;
-            } else {
-                this.results = false; 
-                this.fail_result = true;
-            }
-        },
-        
-        triggerMenu(){
-            if(this.active_menu)
+
+        watch: {
+            '$route': function () {
+                this.results = false;
+                this.fail_result = false;
                 this.active_menu = false;
-            else 
-                this.active_menu = true;
-        }
-    },
-    
-    watch:{
-        '$route': function(){
-            this.results = false;
-            this.fail_result = false;
-            this.active_menu = false;
+            }
         }
     }
-}
 </script>
