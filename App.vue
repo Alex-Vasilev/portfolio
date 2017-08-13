@@ -10,6 +10,7 @@
                        @input="queryValue($event.target.value)"
                        @keypress="onEnter($event)"
                        @blur="close()">
+                <i class="fa fa-search" aria-hidden="true"></i>
                 <transition name="component-fade" mode="out-in">
                     <div class="results" 
                          v-if="results">

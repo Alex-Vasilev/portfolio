@@ -28,7 +28,7 @@
                         <span class="posted-date">{{item.createDate}}</span>
                         <span class="updated-date"
                               v-if="item.updateDate">Last updated: {{item.updateDate}}</span>
-                        <span class="share-post">Share</span>
+                        <!--<span class="share-post">Share</span>-->
                     </div>
                     <!--                    <div>
                                             <a href="#" target="_blank" @click="vkontakte($event, 'http://localhost:3000/#/blog/' + item._id, item.name, 'lol', '/assets/img/IrXwrfE9gts.jpg')">
@@ -90,6 +90,7 @@
                         };
                     });
                     self.categories = data;
+                    console.log(self.categories)
                 }, response => {
                     console.log(2);
                 });
@@ -133,45 +134,45 @@
                 this.fethPostsData();
             },
 
-            vkontakte: function (event, purl, ptitle, text, pimg) {
-                event.stopPropagation();
-                event.preventDefault();
-
-                var url = 'http://vkontakte.ru/share.php?';
-                url += 'url=' + encodeURIComponent(purl);
-                url += '&title=' + encodeURIComponent(ptitle);
-                url += '&description=' + encodeURIComponent(text);
-                url += '&image=' + encodeURIComponent(pimg);
-                url += '&noparse=true';
-                this.popup(url);
-            },
-
-            facebook: function (event, purl, ptitle, text, pimg) {
-                event.stopPropagation();
-                event.preventDefault();
-
-                var url = 'http://www.facebook.com/sharer.php?s=100';
-                url += '&p[title]=' + encodeURIComponent(ptitle);
-                url += '&p[summary]=' + encodeURIComponent(text);
-                url += '&p[url]=' + encodeURIComponent(purl);
-                url += '&p[images][0]=' + encodeURIComponent(pimg);
-                this.popup(url);
-            },
-
-            twitter: function (event, purl, ptitle) {
-                event.stopPropagation();
-                event.preventDefault();
-
-                var url = 'http://twitter.com/share?';
-                url += 'text=' + encodeURIComponent(ptitle);
-                url += '&url=' + encodeURIComponent(purl);
-                url += '&counturl=' + encodeURIComponent(purl);
-                this.popup(url);
-            },
-
-            popup: function (url) {
-                window.open(url, '', 'toolbar=0,status=0,width=626,height=436');
-            }
+//            vkontakte: function (event, purl, ptitle, text, pimg) {
+//                event.stopPropagation();
+//                event.preventDefault();
+//
+//                var url = 'http://vkontakte.ru/share.php?';
+//                url += 'url=' + encodeURIComponent(purl);
+//                url += '&title=' + encodeURIComponent(ptitle);
+//                url += '&description=' + encodeURIComponent(text);
+//                url += '&image=' + encodeURIComponent(pimg);
+//                url += '&noparse=true';
+//                this.popup(url);
+//            },
+//
+//            facebook: function (event, purl, ptitle, text, pimg) {
+//                event.stopPropagation();
+//                event.preventDefault();
+//
+//                var url = 'http://www.facebook.com/sharer.php?s=100';
+//                url += '&p[title]=' + encodeURIComponent(ptitle);
+//                url += '&p[summary]=' + encodeURIComponent(text);
+//                url += '&p[url]=' + encodeURIComponent(purl);
+//                url += '&p[images][0]=' + encodeURIComponent(pimg);
+//                this.popup(url);
+//            },
+//
+//            twitter: function (event, purl, ptitle) {
+//                event.stopPropagation();
+//                event.preventDefault();
+//
+//                var url = 'http://twitter.com/share?';
+//                url += 'text=' + encodeURIComponent(ptitle);
+//                url += '&url=' + encodeURIComponent(purl);
+//                url += '&counturl=' + encodeURIComponent(purl);
+//                this.popup(url);
+//            },
+//
+//            popup: function (url) {
+//                window.open(url, '', 'toolbar=0,status=0,width=626,height=436');
+//            }
         }
     }
 </script>

@@ -37,7 +37,7 @@
                                       rows="4"></textarea>
                             <p class="invalid-contact-data"
                                 v-show="message && !isMessageValid">
-                                Message must be more than 5 symbols
+                                Message must be more than 5 symbols e.g. 'Hello!'
                             </p>
                         </div>
                         <div class="panel-body">
@@ -47,9 +47,18 @@
                         </div>
                     </form>
                     <div class="contact-current">
-                        <p class="email">aleksandr_vasilev1989@list.ru</p>
-                        <a class="phone" href="tel:+375445754785"> +375(44) 575 47 85 </a>
-                        <p class="city">Minsk, Belarus</p>
+                        <p class="email">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            aleksandr_vasilev1989@list.ru
+                        </p>
+                        <a class="phone" href="tel:+375445754785">
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            +375(44) 575 47 85
+                        </a>
+                        <p class="city">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            Minsk, Belarus
+                        </p>
                     </div>         
                 </div>
             </div>

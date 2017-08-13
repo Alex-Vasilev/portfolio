@@ -103,7 +103,7 @@
                         console.log(self.items);
                         self.authorized = true;
                     },
-                    error: function () {
+                    error: function () {                       
                         console.log('sukablyat');
                     }
                 });
@@ -224,6 +224,7 @@
             },
 
             editPost: function (item) {
+                console.log(item)
                 this.name = item.name;
                 this.description = item.description;
                 this.text = item.text;

@@ -199,9 +199,10 @@ app.put("/api/posts", jsonParser, function(req, res){
         var text = postObj.text;
         var updateDate = postObj.updateDate;
         var createDate = postObj.createDate;
-        var categories = postObj.categories;
-
-        
+        var re = /\s*,\s*/;
+        var categories = postObj.categories.split(re);
+//        var categories = postObj.categories;
+       
         mongoClient.connect(url, function (err, db) {
             db.collection("posts").findOneAndUpdate({_id: id}, 
             {$set: {
