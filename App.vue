@@ -31,7 +31,7 @@
                             mode="out-in">
                     <div v-if="fail_result"
                          class="fail-result">
-                        Wtf is it '{{query}}'??
+                        Not found '{{query}}'??
                     </div>
                 </transition>
             </div>

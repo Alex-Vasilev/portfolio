@@ -43,7 +43,9 @@
                         <div class="panel-body">
                             <button type="submit"
                                     class="btn btn-sm btn-primary"
-                                    :disabled="!message || !isMessageValid || !from || !isEmailValid">Send</button>
+                                    :disabled="!message || !isMessageValid || !from || !isEmailValid">
+                                <span>Send</span>
+                                Send</button>
                         </div>
                     </form>
                     <div class="contact-current">
