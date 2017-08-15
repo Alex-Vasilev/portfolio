@@ -30,9 +30,10 @@ body{
 
 .header{
     /* filter: blur(3px); */
-    background: rgba(247, 247, 247, 0.8);
+    background: rgba(247, 247, 247, 0.85);
     border-bottom: 1px solid #eee;
     position: fixed;
+    top: 0px;
     width: 100%;
     box-sizing: border-box;
     display: flex;
@@ -102,7 +103,7 @@ h2 > span{
 
 .container{
     box-sizing: border-box;
-    background: rgba(255, 255, 255, 0.27);
+    background: rgba(247, 247, 247, 0.5);
     color: #2a2c31;
     letter-spacing: 1px;
     font-size: 17px;
@@ -271,6 +272,7 @@ h3{
 
 .news-item-text{
     padding: 0 15px 50px;
+    color: #2a2c31;
 }
 
 .share-icons{
@@ -541,11 +543,11 @@ textarea + .invalid-contact-data{
   transition: all .3s ease;
 }
 .slide-fade-leave-active {
-  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
-.slide-fade-enter, .slide-fade-leave-to
- .slide-fade-leave-active до версии 2.1.8  {
-  transform: translateX(25px);
+.slide-fade-enter, .slide-fade-leave-to,
+ .slide-fade-leave-active {
+  transform: translateX(10px);
   opacity: 0;
 }*/
 

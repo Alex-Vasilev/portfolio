@@ -1,53 +1,53 @@
 <template>
     <div class="content"
-         id="app">           
-        <div class="header">
-            <router-link to="/" class="logo"></router-link>
-            <div class="form-group search">
-                <input type="text"
-                       class="input-search"
-                       placeholder="Search"
-                       @input="queryValue($event.target.value)"
-                       @keypress="onEnter($event)"
-                       @blur="close()">
-                <i class="fa fa-search" aria-hidden="true"></i>
-                <transition name="component-fade" mode="out-in">
-                    <div class="results" 
-                         v-if="results">
-                        <ul>
-                            <li v-for="item in find"
-                                class="result-item">
-                            <router-link  v-bind:to="'/blog/'+item._id">
-                                <h4>{{item.name}}</h4>
-                                <p v-slice="{size: resultsDescriptionLength}">
-                                    {{item.description}}
-                                </p>
-                            </router-link>
-                            </li>
-                        </ul>
-                    </div>
-                </transition>
-                <transition name="component-fade"
-                            mode="out-in">
-                    <div v-if="fail_result"
-                         class="fail-result">
-                        Not found '{{query}}'??
-                    </div>
-                </transition>
+         id="app"> 
+            <div class="header">
+                <router-link to="/" class="logo"></router-link>
+                <div class="form-group search">
+                    <input type="text"
+                           class="input-search"
+                           placeholder="Search"
+                           @input="queryValue($event.target.value)"
+                           @keypress="onEnter($event)"
+                           @blur="close()">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                    <transition name="component-fade" mode="out-in">
+                        <div class="results" 
+                             v-if="results">
+                            <ul>
+                                <li v-for="item in find"
+                                    class="result-item">
+                                <router-link  v-bind:to="'/blog/'+item._id">
+                                    <h4>{{item.name}}</h4>
+                                    <p v-slice="{size: resultsDescriptionLength}">
+                                        {{item.description}}
+                                    </p>
+                                </router-link>
+                                </li>
+                            </ul>
+                        </div>
+                    </transition>
+                    <transition name="component-fade"
+                                mode="out-in">
+                        <div v-if="fail_result"
+                             class="fail-result">
+                            Not found '{{query}}'??
+                        </div>
+                    </transition>
+                </div>
+                <ul class="main-menu"
+                    v-bind:class="{'show-menu': active_menu}">
+                    <li><router-link to="/about">About</router-link></li>
+                    <li><router-link to="/contact">Contact</router-link></li>
+                    <li><router-link to="/blog">Blog</router-link></li>
+                    <li><router-link to="/works">Works</router-link></li>
+                </ul>
+                <div class="hamburger"
+                     @click="triggerMenu()"
+                     v-bind:class="{'active-hamburger': active_menu}">
+                    <span></span>
+                </div>
             </div>
-            <ul class="main-menu"
-                v-bind:class="{'show-menu': active_menu}">
-                <li><router-link to="/about">About</router-link></li>
-                <li><router-link to="/contact">Contact</router-link></li>
-                <li><router-link to="/blog">Blog</router-link></li>
-                <li><router-link to="/works">Works</router-link></li>
-            </ul>
-            <div class="hamburger"
-                 @click="triggerMenu()"
-                 v-bind:class="{'active-hamburger': active_menu}">
-                <span></span>
-            </div>
-        </div>
         <div class="background"></div>
         <transition name="component-fade" mode="out-in">
             <router-view></router-view>
@@ -65,7 +65,8 @@
                 fail_result: false,
                 query: '',
                 active_menu: false,
-                resultsDescriptionLength: 80
+                resultsDescriptionLength: 80,
+//                headerVisible: true
             };
         },
 
@@ -116,7 +117,10 @@
                     this.active_menu = false;
                 else
                     this.active_menu = true;
-            }
+            },
+                   handleScroll: function (event) {
+             console.log(1)
+        }
         },
 
         watch: {
@@ -125,6 +129,13 @@
                 this.fail_result = false;
                 this.active_menu = false;
             }
+        },
+
+        created () {
+            window.addEventListener('scroll', this.handleScroll);
+        },
+        destroyed () {
+            window.removeEventListener('scroll', this.handleScroll);
         }
     }
 </script>
