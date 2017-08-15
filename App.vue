@@ -48,6 +48,7 @@
                 <span></span>
             </div>
         </div>
+        <div class="background"></div>
         <transition name="component-fade" mode="out-in">
             <router-view></router-view>
         </transition>

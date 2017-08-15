@@ -1,7 +1,6 @@
 <template>
     <div class="blog-content">
         <div class="container">
-            <div class="inner-container">
                 <h3>Contact</h3>
                 <transition name="component-fade"
                             mode="out-in">
@@ -63,7 +62,6 @@
                         </p>
                     </div>         
                 </div>
-            </div>
         </div>
     </div>
 </template>

@@ -1,62 +1,64 @@
 <template>
     <div class="blog-content" v-if="authorized">
-        <h3>latest news</h3>
-        <form name="postsForm" @submit.prevent="onSubmit">
-            <input type="hidden" name="id" value="0" />
-            <div class="form-group">
-                <input class="form-control"
-                       name="name"
-                       placeholder="Title"
-                       v-model="name"/>
-            </div>
-            <div class="form-group">
-                <textarea class="form-control"
-                          name="description"
-                          placeholder="Description"
-                          v-model="description"></textarea>
-            </div>
-            <div class="form-group">
-                <textarea class="form-control"
-                          name="text"
-                          placeholder="Text"
-                          v-model="text"></textarea>
-            </div>
-            <div class="form-group">
-                <textarea class="form-control"
-                          name="categories"
-                          placeholder="Categories"
-                          v-model="categories"></textarea>
-            </div>
-            <div class="panel-body"
-                 v-if="!image">
-                <input class="form-control"
-                       name="file"
-                       type="file"
-                       @change="onFileChange"/>
-            </div>
-            <div v-else>
-                <img class="img"
-                     v-bind:src="image"/>
-                <button @click="removeImage">Remove image</button>
-            </div>
-            <div class="panel-body">
-                <button type="submit"
-                        class="btn btn-sm btn-primary">Save</button>
-                <button type="reset"
-                        @click="onCancel">Cancel</button>
-                <button @click="logout()">Log out</button>
-            </div>
-        </form>
-        <ul class="news-item-list container">
-            <li v-for="item in items"
-                class="news-item">
-                <p><img src=""></p>
-                <p class="news-item-title">{{item.name}}</p>
-                <p class="news-item-description">{{item.description}}</p>
-                <button @click="editPost(item)">Edit</button>
-                <button @click="deletePost(item._id)">Delete</button>
-            </li>
-        </ul>
+        <div class="container">
+            <h3>latest news</h3>
+            <form name="postsForm" @submit.prevent="onSubmit">
+                <input type="hidden" name="id" value="0" />
+                <div class="form-group">
+                    <input class="form-control"
+                           name="name"
+                           placeholder="Title"
+                           v-model="name"/>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control"
+                              name="description"
+                              placeholder="Description"
+                              v-model="description"></textarea>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control"
+                              name="text"
+                              placeholder="Text"
+                              v-model="text"></textarea>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control"
+                              name="categories"
+                              placeholder="Categories"
+                              v-model="categories"></textarea>
+                </div>
+                <div class="panel-body"
+                     v-if="!image">
+                    <input class="form-control"
+                           name="file"
+                           type="file"
+                           @change="onFileChange"/>
+                </div>
+                <div v-else>
+                    <img class="img"
+                         v-bind:src="image"/>
+                    <button @click="removeImage">Remove image</button>
+                </div>
+                <div class="panel-body">
+                    <button type="submit"
+                            class="btn btn-sm btn-primary">Save</button>
+                    <button type="reset"
+                            @click="onCancel">Cancel</button>
+                    <button @click="logout()">Log out</button>
+                </div>
+            </form>
+            <ul class="news-item-list container">
+                <li v-for="item in items"
+                    class="news-item">
+                    <p><img src=""></p>
+                    <p class="news-item-title">{{item.name}}</p>
+                    <p class="news-item-description">{{item.description}}</p>
+                    <button @click="editPost(item)">Edit</button>
+                    <button @click="deletePost(item._id)">Delete</button>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
@@ -103,7 +105,7 @@
                         console.log(self.items);
                         self.authorized = true;
                     },
-                    error: function () {                       
+                    error: function () {
                         console.log('sukablyat');
                     }
                 });
@@ -119,14 +121,14 @@
                     }
                 });
             },
-            
-            getPostDate: function(){
+
+            getPostDate: function () {
                 var date = new Date();
                 var day = date.getDate();
                 var monthArr = ['jan', 'feb', 'mar',
-                                'apr', 'may', 'june',
-                                'july', 'aug', 'spet',
-                                'oct', 'nov', 'dec'];
+                    'apr', 'may', 'june',
+                    'july', 'aug', 'spet',
+                    'oct', 'nov', 'dec'];
                 var month = date.getMonth();
                 var year = date.getFullYear();
                 var fullDate = '' + day + ' ' + monthArr[month] + ' ' + year;
@@ -139,22 +141,22 @@
                 var text = this.text;
                 var categories = this.categories;
                 var self = this;
-                
+
                 var formData = new FormData();
                 formData.append('name', name);
                 formData.append('description', description);
                 formData.append('text', text);
                 formData.append('categories', categories);
-                if(this.files !== null) 
+                if (this.files !== null)
                     formData.append('file', this.files[0]);
 
-                if (this.edit){
+                if (this.edit) {
                     var updateDate = this.getPostDate();
                     formData.append('updateDate', updateDate);
                     formData.append('createDate', this.createDate);
-                    var id = this.id; 
+                    var id = this.id;
                     formData.append('id', id);
-                    
+
                     var file = this.file;
 
                     $.ajax({
@@ -166,7 +168,7 @@
                         data: formData,
                         success: function (post) {
                             for (var i = 0; i < self.items.length; i++) {
-                                if (self.items[i]._id == post._id){
+                                if (self.items[i]._id == post._id) {
                                     self.items[i].name = name;
                                     self.items[i].description = description;
                                     self.items[i].updateDate = updateDate;
@@ -251,25 +253,26 @@
                     }
                 });
             },
-            
+
             onFileChange(e) {
                 this.files = e.target.files || e.dataTransfer.files;
                 console.log(this.files);
-                if (!this.files.length)return;
+                if (!this.files.length)
+                    return;
                 this.createImage(this.files[0]);
             },
-            
+
             createImage(file) {
 //                var image = new Image();
                 var reader = new FileReader();
                 var vm = this;
-                
+
                 reader.onload = (e) => {
-                  vm.image = e.target.result;
+                    vm.image = e.target.result;
                 };
                 reader.readAsDataURL(file);
             },
-            
+
             removeImage: function (e) {
                 this.image = '';
             }

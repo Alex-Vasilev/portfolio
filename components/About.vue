@@ -1,7 +1,6 @@
 <template>
     <div class="blog-content about">
         <div class="container"> 
-            <div class="inner-container">
                 <h3>About</h3>
                 <p> Hello! My name is Alex. I am 28 years old. I'm engaged in front-end development.
                     Now we are working with the guys to develop a cool callback widget
@@ -17,7 +16,6 @@
                     topics - write here or in the comments, I will be happy.</p>
             </div>
         </div>
-    </div>
 </template>
 
 <script>
