@@ -30,7 +30,7 @@ body{
 
 .header{
     /* filter: blur(3px); */
-    background: rgba(247, 247, 247, 0.85);
+    background: rgba(248, 248, 248, 0.9);
     border-bottom: 1px solid #eee;
     position: fixed;
     top: 0px;
@@ -103,7 +103,7 @@ h2 > span{
 
 .container{
     box-sizing: border-box;
-    background: rgba(247, 247, 247, 0.5);
+    background: rgba(247, 247, 247, 0.65);
     color: #2a2c31;
     letter-spacing: 1px;
     font-size: 17px;
@@ -113,6 +113,10 @@ h2 > span{
     width: 100%;
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     padding: 30px 15px 20px;
+}
+
+.page-container{
+    padding: 0 15px 20px;
 }
 
 h3{
@@ -146,7 +150,7 @@ h3{
     display: block;
     text-decoration: none;
     background: rgba(248, 248, 248, 0.54);
-    box-shadow: 2px 2px 35px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 35px rgba(0, 0, 0, 0.15);
 }
 
 .inner-container{
@@ -470,13 +474,13 @@ h3{
     padding: 20px;
     border-radius: 3px;
     background: rgba(243, 243, 243, 0.4);
-    box-shadow: 2px 2px 35px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 35px rgba(0, 0, 0, 0.15);
 }
 
 .contact-current{
     display: inline-block;
     padding: 0 20px;
-    color: rgb(248, 248, 248);
+    color: rgba(42, 44, 49, 0.81);
 }
 
 .contact-current i{
@@ -569,11 +573,11 @@ textarea + .invalid-contact-data{
 .phone{
     margin: 10px;
     font-variant: normal;
-    text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.6);
+    /* text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.6); */
 }
 
 .phone{
-    color: #f8f8f8;
+    color: rgba(42, 44, 49, 0.81);
 }
 
 button{

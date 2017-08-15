@@ -1,6 +1,6 @@
 <template>          
     <div class="blog-content"> 
-        <div class="container">
+        <div class="container page-container">
             <div class="head-post-container">
                 <p class="news-item-title post-page-title">{{post.name}}</p>
                 <div class="img-container">
