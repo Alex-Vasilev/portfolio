@@ -6,6 +6,9 @@
 
 <script>
 export default {
-  name: 'Works'
+    name: 'Works',
+    created(){
+        ga('send', 'pageview', 'works');
+    }  
 }
 </script>

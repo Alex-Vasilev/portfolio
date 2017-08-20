@@ -119,6 +119,10 @@
                 else
                     return false;
             }
-        }
+        },
+        
+        created(){
+            ga('send', 'pageview', 'contact');
+        }   
     }
 </script>

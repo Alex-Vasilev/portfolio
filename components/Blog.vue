@@ -50,6 +50,7 @@
         created() {
             this.fethPostsData();
             this.fethCategoriesData();
+            ga('send', 'pageview', 'blog');
         },
 
         watch: {

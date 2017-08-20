@@ -2,7 +2,7 @@
     <div class="blog-content home"> 
         <h2>Hello people!<br> 
             <span>
-                If you like frontend<br> development how I like it <br> enjoy..
+                Welcome to my blog dedicated to frontend development
             </span>
         </h2>
     </div>

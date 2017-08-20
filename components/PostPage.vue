@@ -22,17 +22,17 @@
                     <div class="share-icons">
                         <a href="#"
                            target="_blank"
-                           @click.stop.prevent="vkontakte('http://188.127.237.173/#/blog/' + post._id, post.name, post.description, '../assets/img/'+ post.file)">
+                           @click.stop.prevent="vkontakte('http://avdevelop.com/#/blog/' + post._id, post.name, post.description, './public/assets/img/'+ post.file)">
                             <i class="fa fa-vk" aria-hidden="true"></i>
                         </a>
                         <a href="#"
                            target="_blank"
-                           @click.stop.prevent="facebook('http://188.127.237.173/#/blog/' + post._id, post.name, post.description, '../assets/img/'+ post.file)">
+                           @click.stop.prevent="facebook('http://avdevelop.com/#/blog/' + post._id, post.name, post.description, '../assets/img/'+ post.file)">
                             <i class="fa fa-facebook-official" aria-hidden="true"></i>
                         </a>
                         <a href="#"
                            target="_blank"
-                           @click.stop.prevent="twitter('http://188.127.237.173/#/blog/' + post._id, post.name)">
+                           @click.stop.prevent="twitter('http://avdevelop.com/#/blog/' + post._id, post.name)">
                             <i class="fa fa-twitter" aria-hidden="true"></i>
                         </a>
                     </div>
@@ -108,6 +108,7 @@
 
         created() {
             this.fetch();
+            ga('send', 'pageview', 'postpage');
         }
     }
 </script>

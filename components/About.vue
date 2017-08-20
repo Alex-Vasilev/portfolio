@@ -20,6 +20,9 @@
 
 <script>
 export default {
-  name: 'About'
+    name: 'About',      
+    created(){
+        ga('send', 'pageview', 'about');
+    }   
 }
 </script>
