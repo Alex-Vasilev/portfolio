@@ -1,7 +1,7 @@
 <template>
     <div class="content"
          id="app"> 
-            <div class="header">
+            <div class="header"  v-bind:class="{ 'black-head': blackHead}">
                 <router-link to="/" class="logo"></router-link>
                 <div class="form-group search">
                     <input type="text"
@@ -67,6 +67,7 @@
                 active_menu: false,
                 resultsDescriptionLength: 80,
 //                headerVisible: true
+blackHead: true
             };
         },
 
@@ -128,6 +129,10 @@
                 this.results = false;
                 this.fail_result = false;
                 this.active_menu = false;
+                if(this.$route.path == '/')
+                    this.blackHead = true
+                else
+                    this.blackHead = false
             }
         },
 
