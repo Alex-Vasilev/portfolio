@@ -4,61 +4,144 @@ var mongoClient = require("mongodb").MongoClient;
 var objectId = require("mongodb").ObjectID;
 const nodemailer = require('nodemailer');
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 var app = express();
 var jsonParser = bodyParser.json();
 var url = "mongodb://localhost:27017/postsdb";
 var formidable = require('formidable');
 //var fs = require('fs');
+var api = require('./api.js')
+
+var session = require('express-session')
+var MongoStore = require('connect-mongo')(session);
+
+app.use(session({
+  secret: 'i need more beers',
+  resave: false,
+  saveUninitialized: false,
+  // Место хранения можно выбрать из множества вариантов, это и БД и файлы и Memcached.
+  store: new MongoStore({ 
+    url: 'mongodb://localhost:27017/store',
+  })
+}))
+
  
 app.use(express.static(__dirname + "/public"));
 
-//authorization
-var basicAuth = require('basic-auth');
 
-  function unauthorized(res) {
-    res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
-    return res.send(401);
-  };
+app.post('/login', function(req, res, next) {
+	if (req.session.user) return res.redirect('/')
+ 
+	api.checkUser(req.body)
+		.then(function(user){
+			if(user){
+				req.session.user = {id: user._id, name: user.name}
+				res.redirect('/')
+			} else {
+				return next(error)
+			}
+		})
+		.catch(function(error){
+			return next(error)
+		})
+ 
+});
+ 
+app.post('/', function (req, res, next) {
 
-var auth = function (req, res, next) {
- 
-  var user = basicAuth(req);
- 
-  // Если пользователь не ввёл пароль или логин, снова показать форму.
-  if (!user || !user.name || !user.pass) {
-    return unauthorized(res);
-  };
+    var form = new formidable.IncomingForm();
 
-  // Если логин admin, а пароль superChargePassword перейти к
-  // следующему middleware.
-  if (user.name === 'admin' && user.pass === '12345') {
-    return next();
-  } else {
-    return unauthorized(res);
-  };
- 
-  return unauthorized(res);
-};
- 
-app.use('/admin', auth);
+    form.parse(req);
+    var userObj = {};
 
-app.get("/admin", function(req, res){
-      
-    mongoClient.connect(url, function(err, db){
-        db.collection("posts")
-        .find({})
-        .toArray(function(err, posts){
-            res.send(posts);
-            console.log(posts);
-            db.close();
-        });
+    form.on('field', function (field, value) {
+        console.log(field, value);
+        userObj[field] = value;
+    });
+
+    form.on('end', function () {
+        api.createUser(userObj)
+                .then(function (result) {
+                    console.log("User created")
+                })
+                .catch(function (err) {
+                    if (err.toJSON().code == 11000) {
+                        res.status(500).send("This email already exist")
+                    }
+                })
     });
 });
-
-app.get("/logout", function(req, res){
-      unauthorized(res);
-//      return res.redirect('/');
+ 
+app.post('/logout', function(req, res, next) {
+	if (req.session.user) {
+		delete req.session.user;
+		res.redirect('/')
+	}
 });
+
+
+app.get('/admin', function(req, res, next) {
+	if(req.session.user){
+		var data = {
+			title: 'Express',
+			user : req.session.user
+		}
+		res.render('index', data);
+	} else {
+		var data = {
+		  	title: 'Express',
+		}
+		res.render('index', data);
+	}
+});
+
+//authorization
+//var basicAuth = require('basic-auth');
+//
+//  function unauthorized(res) {
+//    res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
+//    return res.send(401);
+//  };
+//
+//var auth = function (req, res, next) {
+// 
+//  var user = basicAuth(req);
+// 
+//  // Если пользователь не ввёл пароль или логин, снова показать форму.
+//  if (!user || !user.name || !user.pass) {
+//    return unauthorized(res);
+//  };
+//
+//  // Если логин admin, а пароль superChargePassword перейти к
+//  // следующему middleware.
+//  if (user.name === 'admin' && user.pass === '12345') {
+//    return next();
+//  } else {
+//    return unauthorized(res);
+//  };
+// 
+//  return unauthorized(res);
+//};
+// 
+//app.use('/admin', auth);
+//
+//app.get("/admin", function(req, res){
+//      
+//    mongoClient.connect(url, function(err, db){
+//        db.collection("posts")
+//        .find({})
+//        .toArray(function(err, posts){
+//            res.send(posts);
+//            console.log(posts);
+//            db.close();
+//        });
+//    });
+//});
+//
+//app.get("/logout", function(req, res){
+//      unauthorized(res);
+////      return res.redirect('/');
+//});
 
 // blog posts
 app.get("/api/posts", function(req, res){

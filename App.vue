@@ -35,6 +35,14 @@
                     </div>
                 </transition>
             </div>
+            <form method='post'
+                  action='/'>
+                <input type='text' name='name'>
+                <input type='text' name='email'>
+                <input type='password' name='password'>
+                <input type='submit' value="Submit">
+
+            </form>
             <ul class="main-menu"
                 v-bind:class="{'show-menu': active_menu}">
                 <li><router-link to="/about">About</router-link></li>
