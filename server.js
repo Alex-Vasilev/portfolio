@@ -29,22 +29,23 @@ app.use(session({
 app.use(express.static(__dirname + "/public"));
 
 
-app.post('/login', function(req, res, next) {
-	if (req.session.user) return res.redirect('/')
- 
-	api.checkUser(req.body)
-		.then(function(user){
-			if(user){
-				req.session.user = {id: user._id, name: user.name}
-				res.redirect('/')
-			} else {
-				return next(error)
-			}
-		})
-		.catch(function(error){
-			return next(error)
-		})
- 
+app.post('/login', function (req, res, next) {
+    if (req.session.user)
+        return res.redirect('/')
+
+    api.checkUser(req.body)
+            .then(function (user) {
+                if (user) {
+                    req.session.user = {id: user._id, name: user.name}
+                    res.redirect('/')
+                } else {
+                    return next(error)
+                }
+            })
+            .catch(function (error) {
+                return next(error)
+            })
+
 });
  
 app.post('/', function (req, res, next) {
@@ -55,44 +56,45 @@ app.post('/', function (req, res, next) {
     var userObj = {};
 
     form.on('field', function (field, value) {
-        console.log(field, value);
+//        console.log(field, value);
         userObj[field] = value;
     });
 
     form.on('end', function () {
         api.createUser(userObj)
                 .then(function (result) {
-                    console.log("User created")
+                    console.log("User created");
                 })
                 .catch(function (err) {
+                    console.log(err);
                     if (err.toJSON().code == 11000) {
-                        res.status(500).send("This email already exist")
+                        res.status(500).send("This email already exist");
                     }
-                })
+                });
     });
 });
  
-app.post('/logout', function(req, res, next) {
-	if (req.session.user) {
-		delete req.session.user;
-		res.redirect('/')
-	}
+app.post('/logout', function (req, res, next) {
+    if (req.session.user) {
+        delete req.session.user;
+        res.redirect('/');
+    }
 });
 
 
-app.get('/admin', function(req, res, next) {
-	if(req.session.user){
-		var data = {
-			title: 'Express',
-			user : req.session.user
-		}
-		res.render('index', data);
-	} else {
-		var data = {
-		  	title: 'Express',
-		}
-		res.render('index', data);
-	}
+app.get('/', function (req, res, next) {
+    if (req.session.user) {
+        var data = {
+            title: 'Express',
+            user: req.session.user
+        };
+        res.render('index', data);
+    } else {
+        var data = {
+            title: 'Express',
+        };
+        res.render('index', data);
+    }
 });
 
 //authorization

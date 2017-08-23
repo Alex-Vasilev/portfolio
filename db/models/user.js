@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-var User = new mongoose.Schema({
+var User = mongoose.Schema({
     username : {
         type: String,
         unique: true,
@@ -9,7 +9,11 @@ var User = new mongoose.Schema({
     password : {
         type: String,
         required: true
-    }
+    },
+    
+    email :{
+            type: String
+        }
 });
  
 module.exports = mongoose.model('User', User);

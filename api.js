@@ -1,45 +1,47 @@
 var mongoose = require('mongoose')
 var crypto = require('crypto')
- mongoose.Promise = global.Promise;
-var db = mongoose.connect("mongodb://mongodb:@localhost:27017/usersdb")
-var User = require('./db/models/User.js')
- 
+mongoose.Promise = global.Promise;
+mongoose.connect("mongodb://mongodb:@localhost:27017/usersdb")
+var User = require('./db/models/user.js')
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+    // we're connected!
+    console.log('ds')
+});
+
 // User API
- 
-exports.createUser = function(userData){
-//    console.log(crypto)
-    console.log(userData.password)
-        console.log(userData.name)
-    console.log(userData.email)
-        console.log(userData)
 
+exports.createUser = function (userData) {
+    var user = {
+        username: userData.name,
+        email: userData.email,
+        password: hash(userData.password)
+    };
+    var current = new User(user);
+    console.log(current);
+    return current.save();
+}
 
-	var user = {
-		name: userData.name,
-		email: userData.email,
-		password: hash(userData.password)
-	}
-	return new User(user).save()
+exports.getUser = function (id) {
+    return User.findOne(id)
 }
- 
-exports.getUser = function(id) {
-	return User.findOne(id)
+
+exports.checkUser = function (userData) {
+    console.log(userData)
+//    return User
+//            .findOne({email: userData.email})
+//            .then(function (doc) {
+//                if (doc.password == hash(userData.password)) {
+//                    console.log("User password is ok");
+//                    return Promise.resolve(doc)
+//                } else {
+//                    return Promise.reject("Error wrong")
+//                }
+//            })
 }
- 
-exports.checkUser = function(userData) {
-	return User
-		.findOne({email: userData.email})
-		.then(function(doc){
-			if ( doc.password == hash(userData.password) ){
-				console.log("User password is ok");
-				return Promise.resolve(doc)
-			} else {
-				return Promise.reject("Error wrong")
-			}
-		})
-}
- 
+
 function hash(text) {
-	return crypto.createHash('sha1')
-	.update(text).digest('base64')
+    return crypto.createHash('sha1')
+            .update(text).digest('base64')
 }
