@@ -21,9 +21,9 @@ app.use(session({
   saveUninitialized: false,
   // Место хранения можно выбрать из множества вариантов, это и БД и файлы и Memcached.
   store: new MongoStore({ 
-    url: 'mongodb://localhost:27017/store',
+    url: 'mongodb://mongodb:@localhost:27017/store'
   })
-}))
+}));
 
  
 app.use(express.static(__dirname + "/public"));
@@ -33,19 +33,29 @@ app.post('/login', function (req, res, next) {
     if (req.session.user)
         return res.redirect('/')
 
-    api.checkUser(req.body)
-            .then(function (user) {
-                if (user) {
-                    req.session.user = {id: user._id, name: user.name}
-                    res.redirect('/')
-                } else {
-                    return next(error)
-                }
-            })
-            .catch(function (error) {
-                return next(error)
-            })
+    var form = new formidable.IncomingForm();
 
+    form.parse(req);
+    var userObj = {};
+
+    form.on('field', function (field, value) {
+//        console.log(field, value);
+        userObj[field] = value;
+    });
+    form.on('end', function () {
+        api.checkUser(userObj)
+                .then(function (user) {
+                    if (user) {
+                        req.session.user = {id: user._id, name: user.name}
+                        res.redirect('/')
+                    } else {
+                        return next(error)
+                    }
+                })
+                .catch(function (error) {
+                    return next(error)
+                })
+    });
 });
  
 app.post('/', function (req, res, next) {
@@ -76,6 +86,7 @@ app.post('/', function (req, res, next) {
  
 app.post('/logout', function (req, res, next) {
     if (req.session.user) {
+        console.log(req, req.session, req.session.user);
         delete req.session.user;
         res.redirect('/');
     }

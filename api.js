@@ -9,7 +9,6 @@ db.once('open', function () {
     // we're connected!
     console.log('ds')
 });
-
 // User API
 
 exports.createUser = function (userData) {
@@ -29,16 +28,16 @@ exports.getUser = function (id) {
 
 exports.checkUser = function (userData) {
     console.log(userData)
-//    return User
-//            .findOne({email: userData.email})
-//            .then(function (doc) {
-//                if (doc.password == hash(userData.password)) {
-//                    console.log("User password is ok");
-//                    return Promise.resolve(doc)
-//                } else {
-//                    return Promise.reject("Error wrong")
-//                }
-//            })
+    return User
+            .findOne({email: userData.email})
+            .then(function (doc) {
+                if (doc.password == hash(userData.password)) {
+                    console.log("User password is ok");
+                    return Promise.resolve(doc)
+                } else {
+                    return Promise.reject("Error wrong")
+                }
+            })
 }
 
 function hash(text) {

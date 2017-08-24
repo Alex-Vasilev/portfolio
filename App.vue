@@ -51,6 +51,8 @@
                 <input type='submit' value="Submit">
 
             </form>
+            
+            <button @click="logout">logout</button>
             <ul class="main-menu"
                 v-bind:class="{'show-menu': active_menu}">
                 <li><router-link to="/about">About</router-link></li>
@@ -105,6 +107,14 @@
                     self.showResults();
                 }, response => {
                     console.log(4);
+                });
+            },
+            
+            logout(){
+                this.$http.post('logout').then(response => {
+                    console.log('out')
+                }, response => {
+                    console.log('error');
                 });
             },
 
