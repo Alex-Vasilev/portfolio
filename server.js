@@ -12,22 +12,38 @@ var formidable = require('formidable');
 //var fs = require('fs');
 var api = require('./api.js')
 
+const jwt = require('jsonwebtoken')
+//const checkToken = require('./middlewares/checkToken.js')
 var session = require('express-session')
 var MongoStore = require('connect-mongo')(session);
 
 app.use(session({
-  secret: 'i need more beers',
-  resave: false,
-  saveUninitialized: false,
-  // Место хранения можно выбрать из множества вариантов, это и БД и файлы и Memcached.
-  store: new MongoStore({ 
-    url: 'mongodb://mongodb:@localhost:27017/store'
-  })
+    secret: 'i need more beers',
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({
+        url: 'mongodb://mongodb:@localhost:27017/store'
+    })
 }));
 
- 
+
 app.use(express.static(__dirname + "/public"));
 
+
+
+app.get('/test', function (req, res, next) {
+    const token = req.headers['authorization'];
+    if (!token) {
+        return next({
+            status: 403,
+            message: 'Forbidden. No Token!'
+        });
+    }
+    console.log(req.headers)
+//  var tokenObj = jwt.verify(token, 'balalaika');
+//  req.token = tokenObj;
+//    res.json('test')
+})
 
 app.post('/login', function (req, res, next) {
     if (req.session.user)
@@ -46,8 +62,12 @@ app.post('/login', function (req, res, next) {
         api.checkUser(userObj)
                 .then(function (user) {
                     if (user) {
+                        const token = jwt.sign({_id: user._id, name: user.name}, 'balalaika')
+
+
                         req.session.user = {id: user._id, name: user.name}
-                        res.redirect('/')
+                        res.json(token)
+//                      res.redirect('/')
                     } else {
                         return next(error)
                     }
@@ -57,7 +77,7 @@ app.post('/login', function (req, res, next) {
                 })
     });
 });
- 
+
 app.post('/', function (req, res, next) {
 
     var form = new formidable.IncomingForm();
@@ -83,7 +103,7 @@ app.post('/', function (req, res, next) {
                 });
     });
 });
- 
+
 app.post('/logout', function (req, res, next) {
     if (req.session.user) {
         console.log(req, req.session, req.session.user);
@@ -157,43 +177,44 @@ app.get('/', function (req, res, next) {
 //});
 
 // blog posts
-app.get("/api/posts", function(req, res){
-    mongoClient.connect(url, function(err, db){
+app.get("/api/posts", function (req, res) {
+    mongoClient.connect(url, function (err, db) {
         db.collection("posts")
-        .find({}, { name: 1, 
-                    description: 1, 
-                    createDate: 1, 
-                    updateDate: 1, 
+                .find({}, {name: 1,
+                    description: 1,
+                    createDate: 1,
+                    updateDate: 1,
                     categories: 1})
-        .toArray(function(err, posts){
-            res.send(posts);
-            console.log(posts);
-            db.close();
-        });
+                .toArray(function (err, posts) {
+                    res.send(posts);
+                    console.log(posts);
+                    db.close();
+                });
     });
 });
 
 //categories
-app.get("/api/categories", function(req, res){
-    mongoClient.connect(url, function(err, db){
+app.get("/api/categories", function (req, res) {
+    mongoClient.connect(url, function (err, db) {
         db.collection("posts").distinct('categories')
-        .then(function(val){
-            res.send(val);
-            console.log(val);
-            db.close();
-        });
+                .then(function (val) {
+                    res.send(val);
+                    console.log(val);
+                    db.close();
+                });
     });
 });
 
 //get current post
-app.get("/api/posts/:id", function(req, res){
-      
+app.get("/api/posts/:id", function (req, res) {
+
     var id = new objectId(req.params.id);
-    mongoClient.connect(url, function(err, db){
-        db.collection("posts").findOne({_id: id}, function(err, post){
-             
-            if(err) return res.status(400).send();
-             
+    mongoClient.connect(url, function (err, db) {
+        db.collection("posts").findOne({_id: id}, function (err, post) {
+
+            if (err)
+                return res.status(400).send();
+
             res.send(post);
             db.close();
         });
@@ -202,33 +223,33 @@ app.get("/api/posts/:id", function(req, res){
 
 //add post
 app.post("/api/posts", function (req, res) {
-     
+
     var form = new formidable.IncomingForm();
     var fileName;
     var postObj = {};
-    
+
     form.parse(req);
-    
-    form.on('fileBegin', function (name, file){
+
+    form.on('fileBegin', function (name, file) {
         file.path = __dirname + '/public/assets/img/' + file.name;
         fileName = file.name;
     });
-    
-    form.on('field', function(field, value){
+
+    form.on('field', function (field, value) {
         console.log(field, value);
         postObj[field] = value;
     });
 
-    form.on('file', function (name, file){
+    form.on('file', function (name, file) {
         console.log('Uploaded ' + file.name);
     });
 
-    form.on('end', function() {
-        
+    form.on('end', function () {
+
         console.log(postObj.categories);
         var re = /\s*,\s*/;
         var categories = postObj.categories.split(re);
-        
+
         var post = {
             name: postObj.name,
             description: postObj.description,
@@ -237,11 +258,12 @@ app.post("/api/posts", function (req, res) {
             file: fileName,
             categories: categories
         };
-        
-        mongoClient.connect(url, function(err, db){
-            db.collection("posts").insertOne(post, function(err, result){
-                 console.log(result.ops);
-                if(err) return res.status(400).send();        
+
+        mongoClient.connect(url, function (err, db) {
+            db.collection("posts").insertOne(post, function (err, result) {
+                console.log(result.ops);
+                if (err)
+                    return res.status(400).send();
                 res.send(post);
                 db.close();
             });
@@ -250,14 +272,15 @@ app.post("/api/posts", function (req, res) {
 });
 
 //delete post
-app.delete("/api/posts/:id", function(req, res){
-      
+app.delete("/api/posts/:id", function (req, res) {
+
     var id = new objectId(req.params.id);
-    mongoClient.connect(url, function(err, db){
-        db.collection("posts").findOneAndDelete({_id: id}, function(err, result){
-             
-            if(err) return res.status(400).send();
-             
+    mongoClient.connect(url, function (err, db) {
+        db.collection("posts").findOneAndDelete({_id: id}, function (err, result) {
+
+            if (err)
+                return res.status(400).send();
+
             var post = result.value;
             res.send(post);
             db.close();
@@ -266,29 +289,29 @@ app.delete("/api/posts/:id", function(req, res){
 });
 
 //change post
-app.put("/api/posts", jsonParser, function(req, res){
-    
+app.put("/api/posts", jsonParser, function (req, res) {
+
     var form = new formidable.IncomingForm();
     var fileName;
     var postObj = {};
-    
+
     form.parse(req);
-    
-    form.on('fileBegin', function (name, file){
+
+    form.on('fileBegin', function (name, file) {
         file.path = __dirname + '/public/assets/img/' + file.name;
         fileName = file.name;
     });
-    
-    form.on('field', function(field, value){
+
+    form.on('field', function (field, value) {
         console.log(field, value);
         postObj[field] = value;
     });
 
-    form.on('file', function (name, file){
+    form.on('file', function (name, file) {
         console.log('Uploaded ' + file.name);
     });
 
-    form.on('end', function() {
+    form.on('end', function () {
         var id = new objectId(postObj.id);
         var name = postObj.name;
         var description = postObj.description;
@@ -298,22 +321,22 @@ app.put("/api/posts", jsonParser, function(req, res){
         var re = /\s*,\s*/;
         var categories = postObj.categories.split(re);
 //        var categories = postObj.categories;
-       
+
         mongoClient.connect(url, function (err, db) {
-            db.collection("posts").findOneAndUpdate({_id: id}, 
-            {$set: {
-                    name: name, 
-                    description: description,
-                    text: text,
-                    file: fileName,
-                    updateDate: updateDate,
-                    createDate: createDate,
-                    categories: categories
-                }
-            },
-            {
-                returnOriginal: false
-            }, function (err, result) {
+            db.collection("posts").findOneAndUpdate({_id: id},
+                    {$set: {
+                            name: name,
+                            description: description,
+                            text: text,
+                            file: fileName,
+                            updateDate: updateDate,
+                            createDate: createDate,
+                            categories: categories
+                        }
+                    },
+                    {
+                        returnOriginal: false
+                    }, function (err, result) {
                 if (err)
                     return res.status(400).send();
 
@@ -328,8 +351,9 @@ app.put("/api/posts", jsonParser, function(req, res){
 
 //send mail from contact page
 app.post("/api/contact", jsonParser, function (req, res) {
-    if(!req.body) return res.sendStatus(400);
-     
+    if (!req.body)
+        return res.sendStatus(400);
+
     var email = req.body.from;
     var message = req.body.message;
     var current_message = {email: email, message: message};
@@ -361,9 +385,10 @@ app.post("/api/contact", jsonParser, function (req, res) {
 });
 
 //search
-app.post("/api/search", jsonParser, function(req, res){ 
-    if(!req.body) return res.sendStatus(400);
-     var currentQuery = req.body.query;
+app.post("/api/search", jsonParser, function (req, res) {
+    if (!req.body)
+        return res.sendStatus(400);
+    var currentQuery = req.body.query;
     console.log(currentQuery);
     var re = new RegExp(currentQuery);
     mongoClient.connect(url, function (err, db) {
@@ -371,22 +396,23 @@ app.post("/api/search", jsonParser, function(req, res){
             throw err;
         var query = {text: re};
         db.collection("posts")
-        .find(query, {name: 1,
-                      description: 1})
-        .toArray(function (err, result) {
-            if (err)
-                throw err;
-            console.log(result);
-            res.send(result);
-            db.close();
-        });
+                .find(query, {name: 1,
+                    description: 1})
+                .toArray(function (err, result) {
+                    if (err)
+                        throw err;
+                    console.log(result);
+                    res.send(result);
+                    db.close();
+                });
     });
 });
 
 //find by category
-app.post("/api/by_category", jsonParser, function(req, res){ 
-    if(!req.body) return res.sendStatus(400);
-     var currentQuery = req.body.query;
+app.post("/api/by_category", jsonParser, function (req, res) {
+    if (!req.body)
+        return res.sendStatus(400);
+    var currentQuery = req.body.query;
     console.log(currentQuery);
     var re = new RegExp(currentQuery);
     mongoClient.connect(url, function (err, db) {
@@ -394,22 +420,22 @@ app.post("/api/by_category", jsonParser, function(req, res){
             throw err;
         var query = {categories: re};
         db.collection("posts")
-        .find(query, { name: 1, 
-                       description: 1, 
-                       createDate: 1, 
-                       updateDate: 1, 
-                       categories: 1})
-        .toArray(function (err, result) {
-            if (err)
-                throw err;
-            console.log(result);
-            res.send(result);
-            db.close();
-        });
+                .find(query, {name: 1,
+                    description: 1,
+                    createDate: 1,
+                    updateDate: 1,
+                    categories: 1})
+                .toArray(function (err, result) {
+                    if (err)
+                        throw err;
+                    console.log(result);
+                    res.send(result);
+                    db.close();
+                });
     });
 });
- 
-app.listen(3000, function(){
+
+app.listen(3000, function () {
     console.log("run!");
 });
 

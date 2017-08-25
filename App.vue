@@ -41,18 +41,25 @@
                 <input type='text' name='email'>
                 <input type='password' name='password'>
                 <input type='submit' value="Submit">
-
             </form>
-            <form method='post'
-                  action='/login'>
-                <input type='text' name='name'>
-                <input type='text' name='email'>
-                <input type='password' name='password'>
-                <input type='submit' value="Submit">
+<!--            <form action="/login" method='POST'>-->
+<div>
+                <input v-model="name"
+                       type='text'
+                       name='name'>
+                <input v-model='email'
+                       type='text'
+                       name='email'>
+                <input v-model='password'
+                        type='password'
+                       name='password'>
+                <button @click='onSubmit()'>btn</button>
+                </div>
+            <!--</form>-->
 
-            </form>
-            
             <button @click="logout">logout</button>
+                        <button @click="test">dd</button>
+
             <ul class="main-menu"
                 v-bind:class="{'show-menu': active_menu}">
                 <li><router-link to="/about">About</router-link></li>
@@ -78,6 +85,9 @@
         name: 'App',
         data: function () {
             return {
+                name: '',
+                email: '',
+                password: '',
                 find: [],
                 results: false,
                 fail_result: false,
@@ -110,8 +120,29 @@
                 });
             },
             
-            logout(){
-                this.$http.post('logout').then(response => {
+            test(){
+                this.$http.get('/test').then(response => {
+                   console.log(response)
+                }, response => {
+                    console.log('ueba');
+                });
+            },
+
+            onSubmit() {
+                var formData = new FormData();
+                formData.append('name', this.name);
+                formData.append('email', this.email);
+                formData.append('password', this.password);
+                
+                this.$http.post('/login', formData).then(response => {
+                   console.log(response.body)
+                }, response => {
+                    console.log('proval');
+                });
+            },
+
+            logout() {
+                this.$http.post('/logout').then(response => {
                     console.log('out')
                 }, response => {
                     console.log('error');
