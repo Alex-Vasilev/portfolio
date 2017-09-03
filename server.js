@@ -22,7 +22,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({
-        url: 'mongodb://mongodb:@localhost:27017/store'
+        url: 'mongodb://localhost:27017/store'
     })
 }));
 
@@ -31,19 +31,19 @@ app.use(express.static(__dirname + "/public"));
 
 
 
-app.get('/test', function (req, res, next) {
-    const token = req.headers['authorization'];
-    if (!token) {
-        return next({
-            status: 403,
-            message: 'Forbidden. No Token!'
-        });
-    }
-    console.log(req.headers)
-//  var tokenObj = jwt.verify(token, 'balalaika');
-//  req.token = tokenObj;
-//    res.json('test')
-})
+//app.get('/test', function (req, res, next) {
+//    const token = req.headers['authorization'];
+//    if (!token) {
+//        return next({
+//            status: 403,
+//            message: 'Forbidden. No Token!'
+//        });
+//    }
+//    console.log(req.headers)
+////  var tokenObj = jwt.verify(token, 'balalaika');
+////  req.token = tokenObj;
+////    res.json('test')
+//})
 
 app.post('/login', function (req, res, next) {
     if (req.session.user)
@@ -55,7 +55,6 @@ app.post('/login', function (req, res, next) {
     var userObj = {};
 
     form.on('field', function (field, value) {
-//        console.log(field, value);
         userObj[field] = value;
     });
     form.on('end', function () {
@@ -94,6 +93,7 @@ app.post('/', function (req, res, next) {
         api.createUser(userObj)
                 .then(function (result) {
                     console.log("User created");
+                    res.redirect('/')
                 })
                 .catch(function (err) {
                     console.log(err);
@@ -113,20 +113,23 @@ app.post('/logout', function (req, res, next) {
 });
 
 
-app.get('/', function (req, res, next) {
-    if (req.session.user) {
-        var data = {
-            title: 'Express',
-            user: req.session.user
-        };
-        res.render('index', data);
-    } else {
-        var data = {
-            title: 'Express',
-        };
-        res.render('index', data);
-    }
-});
+//app.get('/a', function (req, res, next) {
+//    if (req.session.user) {
+//        var data = {
+//            title: 'Express',
+//            user: req.session.user
+//        };
+//        console.log(1111)
+//        res.render('index', data);
+//    } else {
+//        var data = {
+//            title: 'Express',
+//        };
+//                console.log(222)
+//
+//        res.render('index', data);
+//    }
+//});
 
 //authorization
 //var basicAuth = require('basic-auth');

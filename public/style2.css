@@ -30,8 +30,8 @@ body{
 
 .header{
     /* filter: blur(3px); */
-    /* background: rgba(248, 248, 248, 0.9); */
-    /* border-bottom: 1px solid rgba(238, 238, 238, 0.24); */
+    background: rgba(255, 255, 255, 0.84);
+    border-bottom: 1px solid rgba(238, 238, 238, 0.85);
     position: fixed;
     top: 0px;
     width: 100%;
@@ -46,6 +46,11 @@ body{
 
 .header a{
     color: #2a2c31;
+}
+
+.header.black-head{
+    background: none;
+    border-bottom: 0;
 }
 
 .header.black-head a{
@@ -122,7 +127,7 @@ h2 > span{
 
 .container{
     box-sizing: border-box;
-    background: rgba(247, 247, 247, 0.65);
+    /* background: rgba(247, 247, 247, 0.65); */
     color: #2a2c31;
     letter-spacing: 1px;
     font-size: 17px;
@@ -548,7 +553,7 @@ h3{
 .form-group textarea{
     width: 70%;
     border: 0;
-    border-bottom: 1px solid rgb(255, 255, 255);
+    border-bottom: 1px solid rgba(76, 77, 81, 0.5);
     outline: none;
     padding: 6px;
     margin-right: 15px;
@@ -662,12 +667,34 @@ button:hover span{
     opacity: 1;
 }
 
-::-webkit-input-placeholder{
-    color: #ffffff;
+.black-head ::-webkit-input-placeholder{
+    color: #fdfdfd;
     font-family: 'Josefin Sans', sans-serif;
 }
 
-::-moz-placeholder{
+.black-head ::-moz-placeholder{
+    color:#fdfdfd;    
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+/* Firefox 19+ */
+.black-head :-moz-placeholder{
+    color:#fdfdfd;    
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+/* Firefox 18- */
+.black-head :-ms-input-placeholder{
+    color:#fdfdfd;    
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+ ::-webkit-input-placeholder{
+    color: #c0392b;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+ ::-moz-placeholder{
     color:#c0392b;    
     font-family: 'Josefin Sans', sans-serif;
 }

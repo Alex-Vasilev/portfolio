@@ -35,31 +35,66 @@
                     </div>
                 </transition>
             </div>
-            <form method='post'
-                  action='/'>
-                <input type='text' name='name'>
-                <input type='text' name='email'>
-                <input type='password' name='password'>
-                <input type='submit' value="Submit">
-            </form>
-<!--            <form action="/login" method='POST'>-->
-<div>
-                <input v-model="name"
-                       type='text'
-                       name='name'>
-                <input v-model='email'
-                       type='text'
-                       name='email'>
-                <input v-model='password'
-                        type='password'
-                       name='password'>
-                <button @click='onSubmit()'>btn</button>
+            <div class="modal-wrapper"
+                 v-if="modal_window"
+                 @click="closeModal()">
+                <div class="user-data"
+                     @click="$event.stopPropagation()">
+                    <div class="modal-buttons">
+                    <button class="sign-in"
+                            :class="{'active-button' : isActiveModalBtn}"
+                            @click="signActive($event)">
+                        sign
+                    </button>
+                    <button class="log-in"
+                            :class="{'active-button' : isActiveModalBtn}"
+                            @click="logActive($event)">
+                        login
+                    </button>
+                        </div>
+                    <form method='post'
+                          action='/'
+                          v-if="sign"
+                          class="">
+                        <div class="form-group">
+                            <label for="sign-name">Name</label>
+                            <input type='text'
+                                   id="sign-name"
+                                   name='name'>
+                        </div>
+                        <div class="form-group">
+                            <label for="sign-email" >Email</label>
+                            <input type='text'
+                                   id="sign-email"
+                                   name='email'>
+                        </div>
+                        <div class="form-group">
+                            <label for="sign-password">Password</label>
+                            <input type='password'
+                                   id="sign-password"
+                                   name='password'>
+                        </div>
+                        <div class="form-group">
+                            <input type='submit' value="Submit">
+                        </div>                      
+                    </form>  
+                    <div v-if="log"
+                         class="">
+                        <input v-model="name"
+                               type='text'
+                               name='name'>
+                        <input v-model='email'
+                               type='text'
+                               name='email'>
+                        <input v-model='password'
+                               type='password'
+                               name='password'>
+                        <button @click='onSubmit()'>btn</button>
+                    </div>
                 </div>
-            <!--</form>-->
-
-            <button @click="logout">logout</button>
-                        <button @click="test">dd</button>
-
+            </div>
+<!--            <button @click="openModal()">Sign</button> 
+            <button @click="logout">logout</button>-->
             <ul class="main-menu"
                 v-bind:class="{'show-menu': active_menu}">
                 <li><router-link to="/about">About</router-link></li>
@@ -95,7 +130,10 @@
                 active_menu: false,
                 resultsDescriptionLength: 80,
 //                headerVisible: true
-                blackHead: true
+                blackHead: true,
+                modal_window: false,
+                sign: true,
+                log: false
             };
         },
 
@@ -119,23 +157,15 @@
                     console.log(4);
                 });
             },
-            
-            test(){
-                this.$http.get('/test').then(response => {
-                   console.log(response)
-                }, response => {
-                    console.log('ueba');
-                });
-            },
 
             onSubmit() {
                 var formData = new FormData();
                 formData.append('name', this.name);
                 formData.append('email', this.email);
                 formData.append('password', this.password);
-                
+
                 this.$http.post('/login', formData).then(response => {
-                   console.log(response.body)
+                    console.log(response.body)
                 }, response => {
                     console.log('proval');
                 });
@@ -178,7 +208,27 @@
             },
             handleScroll: function (event) {
                 console.log(1)
+            },
+            
+            openModal() {
+                this.modal_window = true;
+            },
+            
+            closeModal() {
+                this.modal_window = false;
+            },
+            
+            signActive(e){
+                this.log = false;
+                this.sign = true;
+            },
+            
+            logActive(e){
+                this.sign = false;
+                this.log = true;
+                
             }
+
         },
 
         watch: {
@@ -201,3 +251,25 @@
         }
     }
 </script>
+
+<style>
+    .modal-wrapper{
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        background: rgba(255,255,255,.5);
+        z-index: 9999;
+    }
+
+    .user-data{
+        z-index: 99999;
+        background: #eee;
+        align-self: center;
+        width: 400px;
+        padding: 40px;
+    }
+</style>
