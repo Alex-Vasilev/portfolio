@@ -1,19 +1,22 @@
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 var User = mongoose.Schema({
-    username : {
+    username: {
         type: String,
         unique: true,
         required: true
     },
-    password : {
+    password: {
         type: String,
         required: true
     },
-    
-    email :{
-            type: String
-        }
+
+    email: {
+        type: String
+    },
+    role: {
+        type: String
+    }
 });
  
 module.exports = mongoose.model('User', User);

@@ -1,7 +1,8 @@
 <template>
     <div class="content"
          id="app"> 
-        <div class="header"  v-bind:class="{ 'black-head': blackHead}">
+        <div class="header"
+             v-bind:class="{ 'black-head': blackHead}">
             <router-link to="/" class="logo"></router-link>
             <div class="form-group search">
                 <input type="text"
@@ -93,8 +94,8 @@
                     </div>
                 </div>
             </div>
-<!--            <button @click="openModal()">Sign</button> 
-            <button @click="logout">logout</button>-->
+            <button @click="openModal()">Sign</button> 
+            <button @click="logout">logout</button>
             <ul class="main-menu"
                 v-bind:class="{'show-menu': active_menu}">
                 <li><router-link to="/about">About</router-link></li>
@@ -225,8 +226,7 @@
             
             logActive(e){
                 this.sign = false;
-                this.log = true;
-                
+                this.log = true;              
             }
 
         },

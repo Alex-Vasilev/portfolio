@@ -46,8 +46,9 @@ app.use(express.static(__dirname + "/public"));
 //})
 
 app.post('/login', function (req, res, next) {
-    if (req.session.user)
-        return res.redirect('/')
+    if (req.session.user){
+        return res.redirect('/');
+    }
 
     var form = new formidable.IncomingForm();
 
@@ -61,18 +62,17 @@ app.post('/login', function (req, res, next) {
         api.checkUser(userObj)
                 .then(function (user) {
                     if (user) {
-                        const token = jwt.sign({_id: user._id, name: user.name}, 'balalaika')
+                        const token = jwt.sign({_id: user._id, name: user.name}, 'balalaika');
+                        console.log(user, token);
 
-
-                        req.session.user = {id: user._id, name: user.name}
-                        res.json(token)
-//                      res.redirect('/')
+                        req.session.user = {id: user._id, name: user.name};
+                        res.json({_token: token, role: user.role});
                     } else {
-                        return next(error)
+                        return next(error);
                     }
                 })
                 .catch(function (error) {
-                    return next(error)
+                    return next(error);
                 })
     });
 });
@@ -161,19 +161,39 @@ app.post('/logout', function (req, res, next) {
 // 
 //app.use('/admin', auth);
 //
-//app.get("/admin", function(req, res){
-//      
-//    mongoClient.connect(url, function(err, db){
-//        db.collection("posts")
-//        .find({})
-//        .toArray(function(err, posts){
-//            res.send(posts);
-//            console.log(posts);
-//            db.close();
-//        });
-//    });
-//});
-//
+app.get("/admin", isAuthenticated, function(req, res){
+      
+    mongoClient.connect(url, function(err, db){
+        db.collection("users")
+        .find({})
+        .toArray(function(err, posts){
+            res.send(posts);
+            console.log(posts);
+            db.close();
+        });
+    });
+});
+
+function isAuthenticated(req, res, next) {
+    if (req.session.user) {
+//user logged in
+var a = new objectId(req.session.user['id'])
+        console.log(1, req.session.user)
+        mongoClient.connect('mongodb://localhost:27017/usersdb', function (err, db) {
+            db.collection("users")
+                    .findOne({_id : a}, function(err, user){
+                        db.close();
+                        if(user['role'] == 'admin') next()
+                        else res.status(400).send()
+                    })
+                    
+        });
+//        next()
+    } else {
+        res.status(400).send();
+    }
+}
+
 //app.get("/logout", function(req, res){
 //      unauthorized(res);
 ////      return res.redirect('/');

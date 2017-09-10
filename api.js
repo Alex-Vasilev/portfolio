@@ -15,11 +15,12 @@ exports.createUser = function (userData) {
     var user = {
         username: userData.name,
         email: userData.email,
-        password: hash(userData.password)
+        password: hash(userData.password),
+        role: 'user'
     };
     
     var current = new User(user);
-    console.log(current);
+//    console.log(current);
     return current.save();
 }
 
