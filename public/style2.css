@@ -42,6 +42,7 @@ body{
     align-items: center;
     padding: 3vh 5vw;
     z-index: 999;
+    transition: background 2s;
 }
 
 .header a{

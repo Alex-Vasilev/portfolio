@@ -2,7 +2,10 @@
     <div class="blog-content about">
         <div class="container"> 
                 <h3>About</h3>
-                <p> Hello! My name is Alex. I am 28 years old. I'm engaged in front-end development.
+                <p> Hello! My name is Alex.
+                    I'm a Front-end developer and i like building beautiful and usable interfaces.
+                    I've experiences building responsive and cross-browser web sites with a different 
+                    stacks both with the use of a native js, and with the use of frameworks (jQuery, Vue, Angular 2-4 etc)
                     Now we are working with the guys to develop a cool callback widget
                     with CRM and analytics. Here I will keep a small blog, in which I
                     will describe interesting things that I will encounter in the process of work.

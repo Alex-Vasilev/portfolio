@@ -35,6 +35,7 @@ exports.checkUser = function (userData) {
             .then(function (doc) {
                 if (doc.password == hash(userData.password)) {
                     console.log("User password is ok");
+            console.log(doc)
                     return Promise.resolve(doc)
                 } else {
                     return Promise.reject("Error wrong")

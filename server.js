@@ -20,16 +20,13 @@ var MongoStore = require('connect-mongo')(session);
 app.use(session({
     secret: 'i need more beers',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     store: new MongoStore({
         url: 'mongodb://localhost:27017/store'
     })
 }));
 
-
 app.use(express.static(__dirname + "/public"));
-
-
 
 //app.get('/test', function (req, res, next) {
 //    const token = req.headers['authorization'];
@@ -44,6 +41,29 @@ app.use(express.static(__dirname + "/public"));
 ////  req.token = tokenObj;
 ////    res.json('test')
 //})
+
+app.get('/is_authenicated', function (req, res, next) {
+
+    if (req.session.user) {
+         console.log(1)
+        var id = new objectId(req.session.user['id']);
+
+        console.log(1, req.session.user);
+        mongoClient.connect('mongodb://localhost:27017/usersdb', function (err, db) {
+            db.collection("users")
+                    .findOne({_id: id}, function (err, user) {
+                        db.close();
+                        console.log(user)
+                        const token = jwt.sign({_id: user._id, name: user.name}, 'balalaika');
+                        res.json({_token: token, role: user.role, name: user.username});
+                    });
+
+        });
+
+    }else{
+       console.log(2);
+    }
+});
 
 app.post('/login', function (req, res, next) {
     if (req.session.user){
@@ -66,7 +86,7 @@ app.post('/login', function (req, res, next) {
                         console.log(user, token);
 
                         req.session.user = {id: user._id, name: user.name};
-                        res.json({_token: token, role: user.role});
+                        res.json({_token: token, role: user.role, name: user.username});
                     } else {
                         return next(error);
                     }
@@ -76,6 +96,7 @@ app.post('/login', function (req, res, next) {
                 })
     });
 });
+
 
 app.post('/', function (req, res, next) {
 
@@ -131,40 +152,10 @@ app.post('/logout', function (req, res, next) {
 //    }
 //});
 
-//authorization
-//var basicAuth = require('basic-auth');
-//
-//  function unauthorized(res) {
-//    res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
-//    return res.send(401);
-//  };
-//
-//var auth = function (req, res, next) {
-// 
-//  var user = basicAuth(req);
-// 
-//  // Если пользователь не ввёл пароль или логин, снова показать форму.
-//  if (!user || !user.name || !user.pass) {
-//    return unauthorized(res);
-//  };
-//
-//  // Если логин admin, а пароль superChargePassword перейти к
-//  // следующему middleware.
-//  if (user.name === 'admin' && user.pass === '12345') {
-//    return next();
-//  } else {
-//    return unauthorized(res);
-//  };
-// 
-//  return unauthorized(res);
-//};
-// 
-//app.use('/admin', auth);
-//
-app.get("/admin", isAuthenticated, function(req, res){
+app.get("/admin", isAdmin, function(req, res){
       
     mongoClient.connect(url, function(err, db){
-        db.collection("users")
+        db.collection("posts")
         .find({})
         .toArray(function(err, posts){
             res.send(posts);
@@ -174,19 +165,48 @@ app.get("/admin", isAuthenticated, function(req, res){
     });
 });
 
-function isAuthenticated(req, res, next) {
+//function isAuthenticated(req, res, next) {
+//    if (req.session.user) {
+////user logged in
+//        var id = new objectId(req.session.user['id']);
+//        
+//        console.log(1, req.session.user);
+//        mongoClient.connect('mongodb://localhost:27017/usersdb', function (err, db) {
+//            db.collection("users")
+//                    .findOne({_id: id}, function (err, user) {
+//                        db.close();
+//                        if (user['role'] == 'admin'){
+//                            next();
+//                        }else{
+//                            res.status(400).send();
+//                        }
+//                    });
+//
+//        });
+////        next()
+//    } else {
+//        res.status(400).send();
+//    }
+//}
+
+
+function isAdmin(req, res, next) {
     if (req.session.user) {
 //user logged in
-var a = new objectId(req.session.user['id'])
-        console.log(1, req.session.user)
+        var id = new objectId(req.session.user['id']);
+        
+        console.log(1, req.session.user);
         mongoClient.connect('mongodb://localhost:27017/usersdb', function (err, db) {
             db.collection("users")
-                    .findOne({_id : a}, function(err, user){
+                    .findOne({_id: id}, function (err, user) {
                         db.close();
-                        if(user['role'] == 'admin') next()
-                        else res.status(400).send()
-                    })
-                    
+                        if (user['role'] == 'admin'){
+                            next();
+                        }else{
+                            res.status(400).send();
+                        }
+                    });
+
         });
 //        next()
     } else {
@@ -245,7 +265,7 @@ app.get("/api/posts/:id", function (req, res) {
 });
 
 //add post
-app.post("/api/posts", function (req, res) {
+app.post("/api/posts", isAdmin, function (req, res) {
 
     var form = new formidable.IncomingForm();
     var fileName;
@@ -295,7 +315,7 @@ app.post("/api/posts", function (req, res) {
 });
 
 //delete post
-app.delete("/api/posts/:id", function (req, res) {
+app.delete("/api/posts/:id", isAdmin, function (req, res) {
 
     var id = new objectId(req.params.id);
     mongoClient.connect(url, function (err, db) {
@@ -312,7 +332,7 @@ app.delete("/api/posts/:id", function (req, res) {
 });
 
 //change post
-app.put("/api/posts", jsonParser, function (req, res) {
+app.put("/api/posts", isAdmin, function (req, res) {
 
     var form = new formidable.IncomingForm();
     var fileName;

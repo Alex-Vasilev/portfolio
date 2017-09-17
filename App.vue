@@ -42,60 +42,64 @@
                 <div class="user-data"
                      @click="$event.stopPropagation()">
                     <div class="modal-buttons">
-                    <button class="sign-in"
-                            :class="{'active-button' : isActiveModalBtn}"
-                            @click="signActive($event)">
-                        sign
-                    </button>
-                    <button class="log-in"
-                            :class="{'active-button' : isActiveModalBtn}"
-                            @click="logActive($event)">
-                        login
-                    </button>
-                        </div>
+                        <button class="sign-in"
+                                :class="{'active-button' : isActiveModalBtn}"
+                                @click="signActive($event)"> sign
+                        </button>
+                        <button class="log-in"
+                                :class="{'active-button' : isActiveModalBtn}"
+                                @click="logActive($event)">login
+                       </button>
+                     </div>
                     <form method='post'
                           action='/'
                           v-if="sign"
                           class="">
                         <div class="form-group">
-                            <label for="sign-name">Name</label>
                             <input type='text'
                                    id="sign-name"
-                                   name='name'>
+                                   name='name'
+                                   placeholder="Name">
                         </div>
                         <div class="form-group">
-                            <label for="sign-email" >Email</label>
                             <input type='text'
                                    id="sign-email"
-                                   name='email'>
+                                   name='email'
+                                   placeholder="Email">
                         </div>
                         <div class="form-group">
-                            <label for="sign-password">Password</label>
                             <input type='password'
                                    id="sign-password"
-                                   name='password'>
-                        </div>
-                        <div class="form-group">
-                            <input type='submit' value="Submit">
-                        </div>                      
+                                   name='password'
+                                   placeholder="Password">
+                        </div>                       
+                         <button type='submit' value="Submit">Register</button>                                 
                     </form>  
                     <div v-if="log"
                          class="">
-                        <input v-model="name"
-                               type='text'
-                               name='name'>
-                        <input v-model='email'
-                               type='text'
-                               name='email'>
-                        <input v-model='password'
-                               type='password'
-                               name='password'>
-                        <button @click='onSubmit()'>btn</button>
+                        <div class="form-group">                           
+                            <input v-model='email'
+                                   id="log-email"
+                                   type='text'
+                                   placeholder="Email"
+                                   name='email'>
+                        </div>
+                        <div class="form-group">
+                            <input v-model='password'
+                                   id="log-password"
+                                   placeholder="Password"
+                                   type='password'
+                                   name='password'>
+                        </div>
+                        <button @click='onSubmit()'>Sign in</button>
                     </div>
                 </div>
             </div>
-            <button @click="openModal()">Sign</button> 
-            <button @click="logout">logout</button>
+            <button @click="openModal()"
+                     v-if="!isAuthenicated">Sign</button> 
+            <div v-if="isAuthenicated">Nice to see you {{userData.name}}!</div>
+            <button @click="logout"
+                    v-if="isAuthenicated">logout</button>
             <ul class="main-menu"
                 v-bind:class="{'show-menu': active_menu}">
                 <li><router-link to="/about">About</router-link></li>
@@ -109,7 +113,6 @@
                 <span></span>
             </div>
         </div>
-        <div class="background"></div>
         <transition name="component-fade" mode="out-in">
             <router-view></router-view>
         </transition>
@@ -134,14 +137,15 @@
                 blackHead: true,
                 modal_window: false,
                 sign: true,
-                log: false
+                log: false,
+                isAuthenicated: null
             };
         },
 
         methods: {
             queryValue(value) {
                 console.log(value);
-                if (!value || value.length < 2) {
+                if (!value) {
                     this.results = false;
                     this.fail_result = false;
                     return;
@@ -149,11 +153,18 @@
                 this.query = value;
                 var self = this;
                 let data = JSON.stringify({query: value});
+
                 this.$http.post('api/search', data, {
-                    headers: {"contentType": "application/json"}
+                    before(request) {
+                        if (this.previousRequest) {
+                            this.previousRequest.abort();
+                        }
+                        this.previousRequest = request;
+                    }
                 }).then(response => {
                     self.find = response.data;
                     self.showResults();
+                    console.log(self);
                 }, response => {
                     console.log(4);
                 });
@@ -166,7 +177,10 @@
                 formData.append('password', this.password);
 
                 this.$http.post('/login', formData).then(response => {
-                    console.log(response.body)
+                    console.log(response.data)
+                    this.isAuthenicated = true;
+                    this.userData = response.data;
+                    this.modal_window = false;
                 }, response => {
                     console.log('proval');
                 });
@@ -174,7 +188,8 @@
 
             logout() {
                 this.$http.post('/logout').then(response => {
-                    console.log('out')
+                    console.log('out');
+                    this.isAuthenicated = false;
                 }, response => {
                     console.log('error');
                 });
@@ -210,23 +225,23 @@
             handleScroll: function (event) {
                 console.log(1)
             },
-            
+
             openModal() {
                 this.modal_window = true;
             },
-            
+
             closeModal() {
                 this.modal_window = false;
             },
-            
-            signActive(e){
+
+            signActive(e) {
                 this.log = false;
                 this.sign = true;
             },
-            
-            logActive(e){
+
+            logActive(e) {
                 this.sign = false;
-                this.log = true;              
+                this.log = true;
             }
 
         },
@@ -244,10 +259,28 @@
         },
 
         created() {
-            if (this.$route.path == '/')
+            if (this.$route.path == '/') {
                 this.blackHead = true;
-            else
+            } else {
                 this.blackHead = false;
+            }
+
+            this.$http.get('/is_authenicated').then(response => {
+                console.log(response);
+                this.isAuthenicated = true;
+                this.userData = response.data;
+
+            }, response => {
+                console.log(response);
+            });
+            
+                      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-104951957-1', 'auto');
+          ga('send', 'pageview');
         }
     }
 </script>
@@ -267,7 +300,8 @@
 
     .user-data{
         z-index: 99999;
-        background: #eee;
+        background: #fff;
+        box-shadow: 2px 2px 30px rgba(0, 0, 0, 0.06);
         align-self: center;
         width: 400px;
         padding: 40px;

@@ -2,7 +2,8 @@
     <div class="blog-content home"> 
         <h2>Hello people!<br> 
             <span>
-                Welcome to my blog dedicated to frontend development
+                My name is Alex<br> 
+                and Welcome to my blog!
             </span>
         </h2>
     </div>
