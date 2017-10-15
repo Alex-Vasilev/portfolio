@@ -88,7 +88,6 @@
         },
 
         watch: {
-            // в случае изменения маршрута запрашиваем данные вновь
             '$route': 'fetchData'
         },
 
@@ -127,7 +126,7 @@
                 var day = date.getDate();
                 var monthArr = ['jan', 'feb', 'mar',
                     'apr', 'may', 'june',
-                    'july', 'aug', 'spet',
+                    'july', 'aug', 'sept',
                     'oct', 'nov', 'dec'];
                 var month = date.getMonth();
                 var year = date.getFullYear();
@@ -226,7 +225,7 @@
             },
 
             editPost: function (item) {
-                console.log(item)
+//                console.log(item)
                 this.name = item.name;
                 this.description = item.description;
                 this.text = item.text;

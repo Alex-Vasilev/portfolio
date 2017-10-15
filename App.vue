@@ -32,7 +32,7 @@
                             mode="out-in">
                     <div v-if="fail_result"
                          class="fail-result">
-                        Not found '{{query}}'??
+                        Not found '{{query}}'
                     </div>
                 </transition>
             </div>
@@ -42,15 +42,17 @@
                 <div class="user-data"
                      @click="$event.stopPropagation()">
                     <div class="modal-buttons">
-                        <button class="sign-in"
-                                :class="{'active-button' : isActiveModalBtn}"
-                                @click="signActive($event)"> sign
+                        <button @click="signActive($event)"
+                                :class="{'active-btn': sign}">
+                            <span>sign</span>
+                            sign
                         </button>
-                        <button class="log-in"
-                                :class="{'active-button' : isActiveModalBtn}"
-                                @click="logActive($event)">login
-                       </button>
-                     </div>
+                        <button @click="logActive($event)"
+                                :class="{'active-btn': log}">
+                            <span>login</span>
+                            login
+                        </button>
+                    </div>
                     <form method='post'
                           action='/'
                           v-if="sign"
@@ -73,7 +75,11 @@
                                    name='password'
                                    placeholder="Password">
                         </div>                       
-                         <button type='submit' value="Submit">Register</button>                                 
+                        <button type="submit"
+                                class="btn btn-sm btn-primary">
+                            <span>register</span>
+                            register
+                        </button>
                     </form>  
                     <div v-if="log"
                          class="">
@@ -91,21 +97,26 @@
                                    type='password'
                                    name='password'>
                         </div>
-                        <button @click='onSubmit()'>Sign in</button>
+                        <button @click='onSubmit()'>
+                            <span>Sign in</span>
+                            Sign in
+                        </button>
                     </div>
                 </div>
             </div>
-            <button @click="openModal()"
-                     v-if="!isAuthenicated">Sign</button> 
             <div v-if="isAuthenicated">Nice to see you {{userData.name}}!</div>
-            <button @click="logout"
-                    v-if="isAuthenicated">logout</button>
             <ul class="main-menu"
                 v-bind:class="{'show-menu': active_menu}">
                 <li><router-link to="/about">About</router-link></li>
-                <li><router-link to="/contact">Contact</router-link></li>
                 <li><router-link to="/blog">Blog</router-link></li>
+                <li><router-link to="/contact">Contact</router-link></li>               
                 <li><router-link to="/works">Works</router-link></li>
+                <li> 
+                    <a @click="openModal()"
+                        v-if="!isAuthenicated">Sign</a> 
+                    <a @click="logout"
+                       v-if="isAuthenicated">logout</a>
+                </li>
             </ul>
             <div class="hamburger"
                  @click="triggerMenu()"
@@ -144,7 +155,6 @@
 
         methods: {
             queryValue(value) {
-                console.log(value);
                 if (!value) {
                     this.results = false;
                     this.fail_result = false;
@@ -164,9 +174,8 @@
                 }).then(response => {
                     self.find = response.data;
                     self.showResults();
-                    console.log(self);
                 }, response => {
-                    console.log(4);
+                    
                 });
             },
 
@@ -177,12 +186,12 @@
                 formData.append('password', this.password);
 
                 this.$http.post('/login', formData).then(response => {
-                    console.log(response.data)
+//                    console.log(response.data)
                     this.isAuthenicated = true;
                     this.userData = response.data;
                     this.modal_window = false;
                 }, response => {
-                    console.log('proval');
+//                    console.log('proval');
                 });
             },
 
@@ -191,7 +200,7 @@
                     console.log('out');
                     this.isAuthenicated = false;
                 }, response => {
-                    console.log('error');
+//                    console.log('error');
                 });
             },
 
@@ -222,8 +231,9 @@
                 else
                     this.active_menu = true;
             },
+            
             handleScroll: function (event) {
-                console.log(1)
+//                console.log(1)
             },
 
             openModal() {
@@ -273,14 +283,21 @@
             }, response => {
                 console.log(response);
             });
-            
-                      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-          ga('create', 'UA-104951957-1', 'auto');
-          ga('send', 'pageview');
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r;
+                i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+                a = s.createElement(o),
+                        m = s.getElementsByTagName(o)[0];
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+            ga('create', 'UA-104951957-1', 'auto');
+            ga('send', 'pageview');
         }
     }
 </script>
@@ -297,11 +314,16 @@
         background: rgba(255,255,255,.5);
         z-index: 9999;
     }
+    
+    .modal-buttons{
+        display: flex;
+        margin-bottom: 30px;
+    }
 
     .user-data{
         z-index: 99999;
         background: #fff;
-        box-shadow: 2px 2px 30px rgba(0, 0, 0, 0.06);
+        box-shadow: 2px 2px 30px rgba(0, 0, 0, 0.15);
         align-self: center;
         width: 400px;
         padding: 40px;

@@ -2,21 +2,20 @@
     <div class="blog-content">
         <div class="container">
                 <h3>Contact</h3>
-                <transition name="component-fade"
-                            mode="out-in">
-                    <div v-if="success_message"
-                         class="info-message">
-                        Cool that you decided to write to me! Wait for reply in the near future
-                    </div>
-                </transition>
-                <transition name="component-fade"
-                            mode="out-in">
-                    <div v-if="error_message"
-                         class="info-message">
-                        Something went wrong. Check your internet connection
-                    </div>
-                </transition>
                 <div class="contact-page-body">
+                    <transition name="component-fade"
+                                mode="out-in">
+                        <div v-if="error_message"
+                             class="info-message"
+                             @click="hideInfoMessage()">
+                            Something went wrong. Check your internet connection
+                        </div>
+                        <div v-if="success_message"
+                             class="info-message"
+                             @click="hideInfoMessage()">
+                            Cool that you decided to write to me! Wait for reply in the near future
+                        </div>
+                    </transition>
                     <form @submit.prevent="onContactSubmit"
                            class='contact-form'>
                         <p class="contact-form-description">say hello etc.</p>
@@ -41,7 +40,6 @@
                         </div>
                         <div class="panel-body">
                             <button type="submit"
-                                    class="btn btn-sm btn-primary"
                                     :disabled="!message || !isMessageValid || !from || !isEmailValid">
                                 <span>Send</span>
                                 Send</button>
@@ -86,25 +84,29 @@
                     from: this.from,
                     message: this.message
                 });
-                                    self.error_message = true;
 
-//                this.$http.post('api/contact', data, {
-//                    headers: {"contentType": "application/json"}
-//                }).then(response => {
-//                    self.from = '';
-//                    self.message = '';
+                this.$http.post('api/contact', data, {
+                    headers: {"contentType": "application/json"}
+                }).then(response => {
+                    self.from = '';
+                    self.message = '';
 //                    console.log('send');
-//                    self.success_message = true;
-//                    setTimeout(function () {
-//                        self.success_message = false;
-//                    }, 3000);
-//                }, response => {
+                    self.success_message = true;
+                    setTimeout(function () {
+                        self.success_message = false;
+                    }, 4000);
+                }, response => {
 //                    console.log('fail');
-//                    self.error_message = true;
-//                    setTimeout(function () {
-//                        self.error_message = false;
-//                    }, 3000);
-//                });
+                    self.error_message = true;
+                    setTimeout(function () {
+                        self.error_message = false;
+                    }, 4000);
+                });
+            },
+            
+            hideInfoMessage(){
+              this.success_message = false;
+              this.error_message = false;  
             }
         },
 

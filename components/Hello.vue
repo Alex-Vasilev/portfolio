@@ -1,9 +1,8 @@
 <template>          
     <div class="blog-content home"> 
-        <h2>Hello people!<br> 
+        <h2>Hello, I'm Alex!<br> 
             <span>
-                My name is Alex<br> 
-                and Welcome to my blog!
+                Welcome to my front end developers blog!
             </span>
         </h2>
     </div>

@@ -404,14 +404,14 @@ app.post("/api/contact", jsonParser, function (req, res) {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: '',
-            pass: '*'
+            user: 'aleksandrvasilev666@gmail.com',
+            pass: ''
         }
     });
 
     var mailOptions = {
-        from: 'authuser',
-        to: 'current email',
+        from: 'aleksandrvasilev666@gmail.com',
+        to: 'aleksandr_vasilev1989@list.ru',
         subject: 'AV',
         text: 'Новое сообщение от: ' + email + '\n\n' + message
     };

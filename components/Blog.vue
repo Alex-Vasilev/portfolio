@@ -59,19 +59,19 @@
 
         methods: {
             fethPostsData: function () {
-                console.log(1);
+//                console.log(1);
                 var self = this;
                 this.$http.get('api/posts', {
                     headers: {"contentType": "application/json"}
                 }).then(response => {
                     self.items = response.data;
                 }, response => {
-                    console.log(1);
+//                    console.log(1);
                 });
             },
 
             fethCategoriesData: function () {
-                console.log(2);
+//                console.log(2);
                 var self = this;
                 this.$http.get('api/categories', {
                     headers: {"contentType": "application/json"}
@@ -83,14 +83,14 @@
                         };
                     });
                     self.categories = data;
-                    console.log(self.categories)
+//                    console.log(self.categories)
                 }, response => {
-                    console.log(2);
+//                    console.log(2);
                 });
             },
 
             fetchDataByCategory(data) {
-                console.log(data);
+//                console.log(data);
                 var self = this;
                 var data = JSON.stringify({query: data});
                 this.$http.post('api/by_category', data, {
@@ -98,7 +98,7 @@
                 }).then(response => {
                     self.items = response.data;
                 }, response => {
-                    console.log(3);
+//                    console.log(3);
                 });
             },
 

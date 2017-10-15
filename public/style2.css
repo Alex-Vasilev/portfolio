@@ -19,15 +19,6 @@ body{
     justify-content: space-between;
 }
 
-/*.background{
-    position: fixed;
-    z-index: -99;
-    top:0;
-    width: 100%;
-    min-height: 100%;
-    background: url(bg/sea-coast-ocean-horizon-mountain-cloud-92118-pxhere.com.jpg) no-repeat 50% 50% / cover;
-}*/
-
 .header{
     /* filter: blur(3px); */
     background: rgba(255, 255, 255, 0.84);
@@ -40,9 +31,10 @@ body{
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 3vh 5vw;
+    padding: 0 5vw;
     z-index: 999;
-    transition: background 2s;
+    transition: background 1s;
+    height: 80px;
 }
 
 .header a{
@@ -59,9 +51,8 @@ body{
 }
 
 .logo{
-    width: 7vw;
-    height: 6vh;
-    min-width: 90px;
+    width: 90px;
+    height: 40px;
     background: url(logo-color.png) no-repeat 50% 65%;
     background-size: contain;
     box-sizing: border-box;
@@ -78,31 +69,33 @@ body{
 }
 
 h2 {
-    font-size: 6vh;
-    letter-spacing: .35vw;
+    font-size: 40px;
+    letter-spacing: 2px;
     text-transform: uppercase;
     color: rgb(255, 255, 255);
-    line-height: 7vh;
+    line-height: 46px;
     text-align: left;
     font-weight: 700;
     /* background: rgba(77, 77, 77, 0.41); */
     /* letter-spacing: 0.25vw; */
     z-index: 5;
     box-sizing: border-box;
-    margin-bottom: 25vh;
+    /*margin-bottom: 25vh;*/
     text-shadow: 0 0 40px rgba(51, 46, 46, 0.39);
     position: relative;
     font-variant: small-caps;
     align-self: center;
+    margin-top: 0;
+    margin-bottom: 80px;
 }
 
 h2 > span{
     /* font-size: 3.5vh; */
     /* color: rgba(42, 44, 49, 0.69); */
-    line-height: 5vh;
+    /*line-height: 5vh;*/
     /* text-transform: none; */
     /* font-weight: initial; */
-    letter-spacing: 4px;
+    /*letter-spacing: 4px;*/
 }
 
 .home{
@@ -147,7 +140,7 @@ h2 > span{
 h3{
     margin: 0;
     text-transform: uppercase;
-    font-size: 4vh;
+    font-size: 24px;
     color: #2d2d2d;
     font-weight: initial;
     letter-spacing: 4px;
@@ -171,8 +164,14 @@ h3{
 }
 
 .about p{
-    padding: 0px 20px;
-    /* letter-spacing: 1px; */
+    padding: 0px 15px;
+    margin: 10px 0 0;
+    /*border-bottom: 1px solid #f0f0f0;*/
+}
+
+.about p:last-child{
+    padding: 0px 15px 30px;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .news-item{
@@ -345,9 +344,9 @@ h3{
 .main-menu a {
     letter-spacing: .5px;
     display: block;
-    padding: 1vh 1vw;
+    padding: 7px 15px;
     /*color: rgb(255, 255, 255);*/
-    font-size: 2.5vh;
+    font-size: 18px;
     text-decoration: none;
     position: relative;
     text-transform: uppercase;
@@ -511,17 +510,31 @@ h3{
 }
 
 /*contact*/
+
+.contact-page-body{
+    margin: 20px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    position: relative;
+}
+
 .contact-form{
-    margin: 20px 15px 15px 15px;
+    /*margin: 20px 15px 15px 15px;*/
+    flex-grow: 1;
+    min-width: 310px;
+    box-sizing: border-box;
     padding: 20px;
     border-radius: 3px;
-    background: rgba(243, 243, 243, 0.4);
+    margin-bottom: 20px;
+    /*background: rgba(243, 243, 243, 0.4);*/
     box-shadow: 2px 2px 35px rgba(0, 0, 0, 0.15);
 }
 
 .contact-current{
     display: inline-block;
-    padding: 0 20px;
+    padding: 0 0 0 30px;
     color: rgba(42, 44, 49, 0.81);
 }
 
@@ -561,6 +574,13 @@ h3{
     background: transparent;
 }
 
+.contact-form .form-group input,
+.contact-form .form-group textarea{
+    width: 100%;
+    margin-right: 0;
+    box-sizing: border-box;
+}
+
 textarea{   
     resize: none;
 }
@@ -573,8 +593,12 @@ textarea + .invalid-contact-data{
     text-align: start;
     letter-spacing: 2px;
     text-transform: uppercase;
-    font-size: 2.8vh;
-    text-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    font-size: 20px;
+    margin-bottom: 30px;
+    letter-spacing: 2.5px;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    /* color: #2a2c31; */
+    font-weight: 500;
 }
 
 .component-fade-enter-active, .component-fade-leave-active {
@@ -600,14 +624,17 @@ textarea + .invalid-contact-data{
 .info-message{
     background: #5c5b63;
     position: absolute;
-    width: 300px;
+    width: 100%;
+    box-sizing: border-box;
     padding: 20px;
     text-align: center;
     font-variant: small-caps;
     letter-spacing: 1.5px;
-    font-size: 18px;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+    font-size: 16px;
     line-height: 1.6;
     color: #fff;
+    text-transform: uppercase;
 }
 
 .email,
@@ -623,19 +650,19 @@ textarea + .invalid-contact-data{
 }
 
 button{
-    padding: 1vh 1vw;
+    padding: 7px 15px;
     background: none;
     letter-spacing: .5px;
     font-family: 'Catamaran';
     cursor: pointer;
     border: 0;
     color: rgb(42, 44, 49);
-    font-size: 2.5vh;
+    font-size: 18px;
     text-decoration: none;
     text-transform: uppercase;
     position: relative;
     outline: none;
-    text-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.37);
 }
 
 button::after {
@@ -667,6 +694,19 @@ button span{
 button:hover span{
     opacity: 1;
 }
+
+button.active-btn {
+   background: rgb(42, 44, 49);
+}
+
+button.active-btn::after {
+    width: 100%;
+}
+
+button.active-btn span{
+    opacity: 1;
+}
+
 
 .black-head ::-webkit-input-placeholder{
     color: #fdfdfd;
@@ -718,19 +758,19 @@ button:hover span{
     }
 }
 
-@media screen and (max-width: 666px) {
+@media screen and (max-width: 819px) {
     .header{/* position: relative; */}
     
     .main-menu{
         position: absolute;
-        right: -105px;
-        top: 12vh;
+        right: -125px;
+        top: 80px;
         transition: all .3s;
     }
 
     .main-menu.show-menu{
-        transform: translateX(-120px);
-        top: 12vh;
+        transform: translateX(-125px);
+        top: 80px;
         width: 150px;
     }
 
@@ -773,18 +813,19 @@ button:hover span{
     }
     
     .contact-form{
-        margin: 20px 0 15px;
+        /*margin: 20px 0 15px;*/
     }
     
-    .about p{
-        padding: 0;
-    }
+/*    .about p,
+    .about p:last-child{
+        padding: 0 0 30px;
+    }*/
     
-    .background{
+/*    .background{
         min-height: 120%;
-    }
+    }*/
     .contact-current{
-        padding: 0;
+        /*padding: 0;*/
     }
     
     .form-group input, .form-group textarea{
@@ -796,12 +837,17 @@ button:hover span{
     .blog-content{
         padding: 80px 3vw 0;
     }
-    .blog-content{
-        padding: 12.3vh 3vw 0;
-    }
-    
+
     .post-page-description{
         padding: 10px;
+    }
+    
+    .contact-page-body{
+        margin: 20px 0;
+    }
+    
+    .contact-current{
+        padding: 0;
     }
     
     .news-item-text {
