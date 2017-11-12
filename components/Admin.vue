@@ -2,8 +2,11 @@
     <div class="blog-content" v-if="authorized">
         <div class="container">
             <h3>latest news</h3>
-            <form name="postsForm" @submit.prevent="onSubmit">
-                <input type="hidden" name="id" value="0" />
+            <form name="postsForm"
+                  @submit.prevent="onSubmit">
+                <input type="hidden"
+                       name="id"
+                       value="0" />
                 <div class="form-group">
                     <input class="form-control"
                            name="name"
@@ -45,7 +48,6 @@
                             class="btn btn-sm btn-primary">Save</button>
                     <button type="reset"
                             @click="onCancel">Cancel</button>
-                    <button @click="logout()">Log out</button>
                 </div>
             </form>
             <ul class="news-item-list container">
@@ -93,55 +95,39 @@
 
         methods: {
             fethPostsData: function () {
-                console.log(1);
-                var self = this;
-                $.ajax({
-                    url: "/admin",
-                    type: "GET",
-                    contentType: "application/json",
-                    success: function (posts) {
-                        self.items = posts;
+                let self = this;
+                this.$http.get('/admin', {
+                    headers: {"contentType": "application/json"}
+                }).then(response => {
+                        self.items = response.data;
                         console.log(self.items);
                         self.authorized = true;
-                    },
-                    error: function () {
-                        console.log('sukablyat');
-                    }
+                }, response => {
+//                    console.log(1);
                 });
             },
-
-            logout: function () {
-                $.ajax({
-                    url: "/logout",
-                    contentType: "application/json",
-                    method: "GET",
-                    success: function () {
-                        console.log('exit');
-                    }
-                });
-            },
-
+            
             getPostDate: function () {
-                var date = new Date();
-                var day = date.getDate();
-                var monthArr = ['jan', 'feb', 'mar',
+                let date = new Date();
+                let day = date.getDate();
+                let monthArr = ['jan', 'feb', 'mar',
                     'apr', 'may', 'june',
                     'july', 'aug', 'sept',
                     'oct', 'nov', 'dec'];
-                var month = date.getMonth();
-                var year = date.getFullYear();
-                var fullDate = '' + day + ' ' + monthArr[month] + ' ' + year;
+                let month = date.getMonth();
+                let year = date.getFullYear();
+                let fullDate = '' + day + ' ' + monthArr[month] + ' ' + year;
                 return fullDate;
             },
 
             onSubmit: function () {
-                var name = this.name;
-                var description = this.description;
-                var text = this.text;
-                var categories = this.categories;
-                var self = this;
+                let name = this.name;
+                let description = this.description;
+                let text = this.text;
+                let categories = this.categories;
+                let self = this;
 
-                var formData = new FormData();
+                let formData = new FormData();
                 formData.append('name', name);
                 formData.append('description', description);
                 formData.append('text', text);
@@ -150,24 +136,21 @@
                     formData.append('file', this.files[0]);
 
                 if (this.edit) {
-                    var updateDate = this.getPostDate();
+                    let updateDate = this.getPostDate();
                     formData.append('updateDate', updateDate);
                     formData.append('createDate', this.createDate);
-                    var id = this.id;
+                    let id = this.id;
                     formData.append('id', id);
 
-                    var file = this.file;
-
-                    $.ajax({
-                        url: "api/posts",
-                        cache: false,
+                    let file = this.file;
+                    
+                this.$http.put('api/posts', formData, {
+                    headers: {cache: false,
                         contentType: false,
-                        processData: false,
-                        method: "PUT",
-                        data: formData,
-                        success: function (post) {
-                            for (var i = 0; i < self.items.length; i++) {
-                                if (self.items[i]._id == post._id) {
+                        processData: false}
+                }).then(post=> {
+                            for (let i = 0; i < self.items.length; i++) {
+                                if (self.items[i]._id === post._id) {
                                     self.items[i].name = name;
                                     self.items[i].description = description;
                                     self.items[i].updateDate = updateDate;
@@ -185,34 +168,25 @@
                             self.image = '';
                             self.updateDate = '';
                             self.createDate = '';
-                            console.log(post);
-                        }
-                    });
+                        });                    
                 } else {
-                    var createDate = this.getPostDate();
+                    let createDate = this.getPostDate();
                     formData.append('createDate', createDate);
-//                    formData.append('updateDate', '');
-
-                    $.ajax({
-                        url: "api/posts",
-                        method: "POST",
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        data: formData,
-                        success: function (post) {
+                    
+                    this.$http.put('api/posts', formData, {
+                        headers: {cache: false,
+                            contentType: false,
+                            processData: false}
+                                }).then(post=> {
                             self.items.push(post);
                             self.description = '';
                             self.text = '';
                             self.name = '';
                             self.image = '';
                             self.files = null;
-//                            self.updateDate = '';
-//                            self.createDate = '';
                             self.categories = '';
-                        }
-                    });
-                }
+                        });
+                    }
             },
 
             onCancel: function () {
@@ -225,7 +199,6 @@
             },
 
             editPost: function (item) {
-//                console.log(item)
                 this.name = item.name;
                 this.description = item.description;
                 this.text = item.text;
@@ -237,34 +210,30 @@
             },
 
             deletePost: function (id) {
-                var self = this;
-                $.ajax({
-                    url: "api/posts/" + id,
-                    contentType: "application/json",
-                    method: "DELETE",
-                    success: function () {
-                        for (var i = 0; i < self.items.length; i++) {
-                            if (self.items[i]._id == id) {
-                                self.items.splice(i, 1);
-                                break;
-                            }
+                let self = this;               
+                this.$http.delete("api/posts/" + id, {
+                        headers: {contentType: "application/json"}
+                                }).then(response=> {                                
+                    for (let i = 0; i < self.items.length; i++) {
+                        if (self.items[i]._id === id) {
+                            self.items.splice(i, 1);
+                            break;
                         }
                     }
-                });
+                }); 
             },
 
             onFileChange(e) {
                 this.files = e.target.files || e.dataTransfer.files;
-                console.log(this.files);
-                if (!this.files.length)
+                if (!this.files.length){
                     return;
+                }
                 this.createImage(this.files[0]);
             },
 
             createImage(file) {
-//                var image = new Image();
-                var reader = new FileReader();
-                var vm = this;
+                let reader = new FileReader();
+                let vm = this;
 
                 reader.onload = (e) => {
                     vm.image = e.target.result;

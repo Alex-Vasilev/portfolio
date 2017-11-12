@@ -3,7 +3,8 @@
          id="app"> 
         <div class="header"
              v-bind:class="{ 'black-head': blackHead}">
-            <router-link to="/" class="logo"></router-link>
+            <router-link to="/" class="logo"
+                                v-bind:class="{'white-logo': blackHead}"></router-link>
             <div class="form-group search">
                 <input type="text"
                        class="input-search"
@@ -18,12 +19,12 @@
                         <ul>
                             <li v-for="item in find"
                                 class="result-item">
-                            <router-link  v-bind:to="'/blog/'+item._id">
-                                <h4>{{item.name}}</h4>
-                                <p v-slice="{size: resultsDescriptionLength}">
-                                    {{item.description}}
-                                </p>
-                            </router-link>
+                                <router-link  v-bind:to="'/blog/'+item._id">
+                                    <h4>{{item.name}}</h4>
+                                    <p v-slice="{size: resultsDescriptionLength}">
+                                        {{item.description}}
+                                    </p>
+                                </router-link>
                             </li>
                         </ul>
                     </div>

@@ -200,9 +200,9 @@ function isAdmin(req, res, next) {
             db.collection("users")
                     .findOne({_id: id}, function (err, user) {
                         db.close();
-                        if (user['role'] == 'admin'){
+                        if (user['role'] == 'admin') {
                             next();
-                        }else{
+                        } else {
                             res.status(400).send();
                         }
                     });
