@@ -22,7 +22,8 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             NODE_ENV: JSON.stringify(NODE_ENV)
-        })
+        }),
+        new webpack.optimize.UglifyJsPlugin({minimize: true})
     ],
     
     module: {

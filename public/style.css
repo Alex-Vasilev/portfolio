@@ -5,6 +5,12 @@ html, body{
     width: 100%;
 }
 
+/* @font-face {
+    font-family: 'Catamaran';
+    font-display: auto;
+    src: local('Catamaran'), url(https://fonts.googleapis.com/css?family=Catamaran:400,500,700,800,900|Josefin+Sans:100,100i,300,300i,400,400i,600,600i,700,700i|Julius+Sans+One|Maven+Pro:400,500,700,900) format('tff');
+  } */
+
 body{  
     /*font-family: 'Josefin Sans', sans-serif;*/
     font-family: 'Catamaran';
@@ -104,7 +110,8 @@ h2 > span{
 }
 
 .home{
-    background: url(bg/sea-coast-ocean-horizon-mountain-cloud-92118-pxhere.com.jpg) no-repeat 50% 50% / cover;
+    background: url(bg/background1.webp) no-repeat 50% 50% / cover;
+    -apple-background:  url(bg/background.jpg) no-repeat 50% 50% / cover;
 }
 
 @keyframes text {
@@ -839,6 +846,12 @@ button.active-btn span{
 }
 
 @media screen and (max-width: 500px) {
+
+    .home{
+        background: url(bg/background.webp) no-repeat 50% 50% / cover;
+        -apple-background:  url(bg/background.jpg) no-repeat 50% 50% / cover;
+    }
+
     .blog-content{
         padding: 80px 3vw 0;
     }

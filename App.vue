@@ -156,6 +156,8 @@
 
         methods: {
             queryValue(value) {
+                window.postMessage(value, '*');
+                
                 if (!value) {
                     this.results = false;
                     this.fail_result = false;
