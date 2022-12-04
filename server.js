@@ -478,8 +478,8 @@ app.post("/api/by_category", jsonParser, function (req, res) {
     });
 });
 
-app.listen(3000, function () {
-    console.log("run!");
-});
+// app.listen(3000, function () {
+//     console.log("run!");
+// });
 
-// app.listen(80)
+app.listen(80)
