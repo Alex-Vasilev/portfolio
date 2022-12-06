@@ -10,7 +10,7 @@ Vue.use(VueResource);
 import Hello from './components/Hello.vue'
 import About from './components/About.vue'
 import Blog from './components/Blog.vue'
-import Works from './components/Works.vue'
+import Storm from './components/Storm.vue'
 import Contact from './components/Contact.vue'
 import Admin from './components/Admin.vue'
 import PostPage from './components/PostPage.vue'
@@ -20,7 +20,7 @@ const routes = [
     { path: '/', component: Hello },
     { path: '/about', component: About },
     { path: '/blog', component: Blog},
-    { path: '/works', component: Works},
+    { path: '/storm', component: Storm},
     { path: '/contact', component: Contact},
     { path: '/admin', component: Admin},
     { path: '/blog/:id', component: PostPage}

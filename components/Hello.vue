@@ -1,8 +1,8 @@
 <template>          
     <div class="blog-content home"> 
-        <h2>Hello, I'm Alex!<br> 
+        <h2>Are you sad and lonely?<br> 
             <span>
-                Welcome to my front end developers blog!
+                Do front-end development, you will also be nervous
             </span>
         </h2>
         <div class="spinner"
