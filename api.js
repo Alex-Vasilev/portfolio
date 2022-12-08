@@ -32,11 +32,11 @@ exports.checkUser = function (userData) {
     console.log(userData)
     return User
             .findOne({email: userData.email})
-            .then(function (doc) {
-                if (doc.password == hash(userData.password)) {
+            .then(function ({_doc}) {
+                if (_doc.password == hash(userData.password)) {
                     console.log("User password is ok");
-            console.log(doc)
-                    return Promise.resolve(doc)
+            
+                    return Promise.resolve(_doc)
                 } else {
                     return Promise.reject("Error wrong")
                 }

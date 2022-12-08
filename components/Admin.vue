@@ -172,8 +172,7 @@
                 } else {
                     let createDate = this.getPostDate();
                     formData.append('createDate', createDate);
-                    
-                    this.$http.put('api/posts', formData, {
+                    this.$http.post('api/posts', formData, {
                         headers: {cache: false,
                             contentType: false,
                             processData: false}

@@ -121,7 +121,7 @@ h2>span {
 }
 
 .blog-content {
-    padding: 80px 20vw 0;
+    padding: 80px 25vw 0;
     height: 100%;
     box-sizing: border-box;
 }
@@ -305,13 +305,8 @@ h3 {
 
 .img-container {
     width: 100%;
-    height: auto;
-    max-height: 400px;
+    height: 500px;
     overflow: hidden;
-}
-
-.img-container img {
-    width: 100%;
 }
 
 .post-page-title {
@@ -879,6 +874,10 @@ button.active-btn span {
     .about-image {
         max-width: 300px;
         order: 1;
+    }
+
+    .img-container {
+        height: 200px;
     }
 }
 

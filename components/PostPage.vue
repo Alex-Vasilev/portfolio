@@ -3,8 +3,7 @@
         <div class="container page-container">
             <div class="head-post-container">
                 <p class="news-item-title post-page-title">{{post.name}}</p>
-                <div class="img-container">
-                    <img v-bind:src="'../assets/img/'+ post.file" alt=""/>
+                <div v-bind:style="{background: `url(img/${post.file}) no-repeat 50% 50% / cover`}" class="img-container">
                 </div>             
             </div>
             <div class="post-page-categories">
@@ -45,70 +44,74 @@
     </div>
 </template>
 <script>
-    export default {
-        name: 'PostPage',
-        data() {
-            return {
-                post: {},
-                shareIcons: false
-            };
-        },
+export default {
+  name: "PostPage",
+  data() {
+    return {
+      post: {},
+      shareIcons: false,
+    };
+  },
 
-        methods: {
-            fetch() {
-                var self = this;
-                this.$http.get("api/posts/" + this.$route.params.id, {
-                    headers: {"contentType": "application/json"}
-                }).then(response => {
-                    self.post = response.data;
-                }, response => {
-                    console.log(6);
-                });
-            },
-            vkontakte: function (purl, ptitle, text, pimg) {
-                var url = 'http://vkontakte.ru/share.php?';
-                url += 'url=' + encodeURIComponent(purl);
-                url += '&title=' + encodeURIComponent(ptitle);
-                url += '&description=' + encodeURIComponent(text);
-                url += '&image=' + encodeURIComponent(pimg);
-                url += '&noparse=true';
-                this.popup(url);
-            },
+  methods: {
+    fetch() {
+      var self = this;
+      this.$http
+        .get("api/posts/" + this.$route.params.id, {
+          headers: { contentType: "application/json" },
+        })
+        .then(
+          (response) => {
+            self.post = response.data;
+          },
+          (response) => {
+            console.log(6);
+          }
+        );
+    },
+    vkontakte: function (purl, ptitle, text, pimg) {
+      var url = "http://vkontakte.ru/share.php?";
+      url += "url=" + encodeURIComponent(purl);
+      url += "&title=" + encodeURIComponent(ptitle);
+      url += "&description=" + encodeURIComponent(text);
+      url += "&image=" + encodeURIComponent(pimg);
+      url += "&noparse=true";
+      this.popup(url);
+    },
 
-            showShareIcons() {
-                this.shareIcons = !this.shareIcons
-            },
+    showShareIcons() {
+      this.shareIcons = !this.shareIcons;
+    },
 
-            facebook: function (purl, ptitle, text, pimg) {
+    facebook: function (purl, ptitle, text, pimg) {
+      var url = "http://www.facebook.com/sharer.php?s=100";
+      url += "&p[title]=" + encodeURIComponent(ptitle);
+      url += "&p[summary]=" + encodeURIComponent(text);
+      url += "&p[url]=" + encodeURIComponent(purl);
+      url += "&p[images][0]=" + encodeURIComponent(pimg);
+      this.popup(url);
+    },
 
-                var url = 'http://www.facebook.com/sharer.php?s=100';
-                url += '&p[title]=' + encodeURIComponent(ptitle);
-                url += '&p[summary]=' + encodeURIComponent(text);
-                url += '&p[url]=' + encodeURIComponent(purl);
-                url += '&p[images][0]=' + encodeURIComponent(pimg);
-                this.popup(url);
-            },
+    twitter: function (purl, ptitle) {
+      var url = "http://twitter.com/share?";
+      url += "text=" + encodeURIComponent(ptitle);
+      url += "&url=" + encodeURIComponent(purl);
+      url += "&counturl=" + encodeURIComponent(purl);
+      this.popup(url);
+    },
 
-            twitter: function (purl, ptitle) {
-                var url = 'http://twitter.com/share?';
-                url += 'text=' + encodeURIComponent(ptitle);
-                url += '&url=' + encodeURIComponent(purl);
-                url += '&counturl=' + encodeURIComponent(purl);
-                this.popup(url);
-            },
+    popup: function (url) {
+      window.open(url, "", "toolbar=0,status=0,width=626,height=436");
+    },
+  },
 
-            popup: function (url) {
-                window.open(url, '', 'toolbar=0,status=0,width=626,height=436');
-            }
-        },
+  watch: {
+    $route: "fetch",
+  },
 
-        watch: {
-            '$route': 'fetch'
-        },
-
-        created() {
-            this.fetch();
-            ga('send', 'pageview', 'postpage');
-        }
-    }
+  created() {
+    this.fetch();
+    ga("send", "pageview", "postpage");
+  },
+};
 </script>
