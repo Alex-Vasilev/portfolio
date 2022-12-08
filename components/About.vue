@@ -1,19 +1,19 @@
 <template>
   <div class="blog-content about">
     <div class="container">
-      <h3>About</h3>
+      <h3>Обо мне</h3>
       <div class="about-container">
         <div class="about-description">
           <p>
-            Hello! My name is Alex. I'm a Front-end developer and i like
-            building beautiful and usable interfaces. I've experiences building
-            responsive and cross-browser web sites with a different stacks both
-            with the use of a native js, and with the use of frameworks (React,
-            Vue, Angular etc) and mobile apps (React Native).
+            Привет! Меня зовут Александр. Я занимаюсь Front-end разработкой и
+            мне нравится создавать классные и удобные пользовательский интерфейсы.
+            Занимаюсь этим уже около 5-и лет и есть практический опыт разработки и поддержки
+            веб-приложений как и на нативном JavaScript, так и с использованием фреймворков 
+            (React, Angular, Vue). Также есть опыт в написании мобильных приложений на React Native.
           </p>
           <p>
-            Here I will keep a small blog, in which I will describe interesting
-            things that I will encounter in the process of work.
+            Здесь я по возможности буду вести небольшой блог, в котором буду рассказывать об интересных вещах,
+            с которыми приходилось сталкиваться во время работы.
           </p>
         </div>
         <div class="about-image"></div>

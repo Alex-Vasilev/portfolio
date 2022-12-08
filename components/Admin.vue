@@ -1,7 +1,7 @@
 <template>
     <div class="blog-content" v-if="authorized">
         <div class="container">
-            <h3>latest news</h3>
+            <h3>последние новости</h3>
             <form name="postsForm"
                   @submit.prevent="onSubmit">
                 <input type="hidden"

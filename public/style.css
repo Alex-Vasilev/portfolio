@@ -181,6 +181,7 @@ h3 {
 
 .about-description {
     flex-shrink: 1;
+    padding-right: 15px;
 }
 
 .about p {
@@ -793,13 +794,13 @@ button.active-btn span {
 
     .main-menu {
         position: absolute;
-        right: -125px;
+        right: -150px;
         top: 80px;
         transition: all .3s;
     }
 
     .main-menu.show-menu {
-        transform: translateX(-125px);
+        transform: translateX(-150px);
         top: 80px;
         width: 150px;
     }
@@ -868,6 +869,7 @@ button.active-btn span {
     }
 
     .about-description{
+        padding-right: 0;
         order: 2;
     }
 

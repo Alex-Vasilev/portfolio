@@ -1,5 +1,5 @@
 var express = require("express");
-// const fs = require('fs');
+const fs = require('fs');
 var bodyParser = require("body-parser");
 var mongoClient = require("mongodb").MongoClient;
 var objectId = require("mongodb").ObjectID;
@@ -495,8 +495,8 @@ app.post("/api/by_category", jsonParser, function (req, res) {
     });
 });
 
-// app.listen(3000, function () {
-//     console.log("run!");
-// });
+app.listen(3000, function () {
+    console.log("run!");
+});
 
-app.listen(80)
+// app.listen(80)

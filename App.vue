@@ -8,7 +8,7 @@
             <div class="form-group search">
                 <input type="text"
                        class="input-search"
-                       placeholder="Search"
+                       placeholder="Поиск"
                        @input="queryValue($event.target.value)"
                        @keypress="onEnter($event)"
                        @blur="close()">
@@ -108,15 +108,15 @@
             <div v-if="isAuthenicated">Nice to see you {{userData.name}}!</div>
             <ul class="main-menu"
                 v-bind:class="{'show-menu': active_menu}">
-                <li><router-link to="/about">About</router-link></li>
-                <li><router-link to="/blog">Blog</router-link></li>
-                <li><router-link to="/contact">Contact</router-link></li>               
+                <li><router-link to="/about">Обо мне</router-link></li>
+                <li><router-link to="/blog">Статьи</router-link></li>
+                <li><router-link to="/contact">Контакты</router-link></li>               
                 <li><router-link to="/storm">Štorm</router-link></li>
                 <li> 
                     <a @click="openModal()"
-                        v-if="!isAuthenicated">Sign</a> 
+                        v-if="!isAuthenicated">Войти</a> 
                     <a @click="logout"
-                       v-if="isAuthenicated">logout</a>
+                       v-if="isAuthenicated">Выйти</a>
                 </li>
             </ul>
             <div class="hamburger"

@@ -14,7 +14,7 @@
             <div class='footer-post'>
                 <span class="posted-date">{{post.createDate}}</span>
                 <span class="updated-date"
-                      v-if="post.updateDate">Last updated: {{post.updateDate}}</span>
+                      v-if="post.updateDate">Ред: {{post.updateDate}}</span>
                 <span class="share-post"
                       @click="showShareIcons">
                     <span>Share</span>

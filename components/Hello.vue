@@ -1,8 +1,8 @@
 <template>          
     <div class="blog-content home"> 
-        <h2>Are you sad and lonely?<br> 
+        <h2>Тебе грустно и одиноко?<br> 
             <span>
-                Do front-end development, you will also be nervous
+                Займись front-end разработкой, будешь еще и нервничать
             </span>
         </h2>
         <div class="spinner"

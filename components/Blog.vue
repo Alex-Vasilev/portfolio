@@ -1,13 +1,13 @@
 <template>
     <div class="blog-content ">
         <div class="container">
-            <h3>latest news</h3>
+            <h3>Последние новости</h3>
             <div class="categories-container">
-                <p>Categories:</p>
+                <p>Категории:</p>
                 <ul>
                     <li class="category"
                         v-bind:class="{ 'active-category': isActive }"
-                        @click="checkAllActive()">all</li>
+                        @click="checkAllActive()">Все</li>
                     <li class="category"
                         v-bind:class="{ 'active-category': category.isActive }"
                         v-for="category in categories"
@@ -26,7 +26,7 @@
                 <div class='footer-post'>
                     <span class="posted-date">{{item.createDate}}</span>
                     <span class="updated-date"
-                          v-if="item.updateDate">Last updated: {{item.updateDate}}</span>
+                          v-if="item.updateDate">Ред.: {{item.updateDate}}</span>
                     <!--<span class="share-post">Share</span>-->
                 </div>
             </router-link>

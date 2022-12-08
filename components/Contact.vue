@@ -1,48 +1,48 @@
 <template>
     <div class="blog-content">
         <div class="container">
-                <h3>Contact</h3>
+                <h3>Контакты</h3>
                 <div class="contact-page-body">
                     <transition name="component-fade"
                                 mode="out-in">
                         <div v-if="error_message"
                              class="info-message"
                              @click="hideInfoMessage()">
-                            Something went wrong. Check your internet connection
+                            Что-то пошло не так
                         </div>
                         <div v-if="success_message"
                              class="info-message"
                              @click="hideInfoMessage()">
-                            Cool that you decided to write to me! Wait for reply in the near future
+                            Спасибо за сообщение! Скоро отвечу
                         </div>
                     </transition>
                     <form @submit.prevent="onContactSubmit"
                            class='contact-form'>
-                        <p class="contact-form-description">say hello etc.</p>
+                        <p class="contact-form-description">Скажи "Привет!"</p>
                         <div class="form-group">              
                             <input class="contact-email"
                                    name="email"
                                    v-model="from"
                                    placeholder="E-mail"/>
                             <p class="invalid-contact-data"
-                               v-show="from && !isEmailValid">Not correct e-mail</p>
+                               v-show="from && !isEmailValid">Не корректный e-mail</p>
                         </div>
                         <div class="form-group">              
                             <textarea class="contact-message"
                                       name="message" 
                                       v-model="message"
-                                      placeholder="Message"
+                                      placeholder="Сообщение"
                                       rows="4"></textarea>
                             <p class="invalid-contact-data"
                                 v-show="message && !isMessageValid">
-                                Message must be more than 5 symbols e.g. 'Hello!'
+                                Не менее 5-и символов, например, 'Привет!'
                             </p>
                         </div>
                         <div class="panel-body">
                             <button type="submit"
                                     :disabled="!message || !isMessageValid || !from || !isEmailValid">
-                                <span>Send</span>
-                                Send</button>
+                                <span>Отправить</span>
+                                Отправить</button>
                         </div>
                     </form>
                     <div class="contact-current">
@@ -56,7 +56,7 @@
                         </a>
                         <p class="city">
                             <i class="fa fa-map-marker" aria-hidden="true"></i>
-                            Minsk, Belarus
+                            Минск, Беларусь
                         </p>
                     </div>         
                 </div>
