@@ -16,7 +16,7 @@ exports.createUser = function (userData) {
         username: userData.name,
         email: userData.email,
         password: hash(userData.password),
-        role: 'admin'
+        role: 'user'
     };
     
     var current = new User(user);
