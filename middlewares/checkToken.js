@@ -1,25 +1,34 @@
-const jwt =require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
+const CONFIG = require('../config');
 
-exports.checkToken = function (req, res, next) {
-  const token = req.headers['authorization'];
+const checkToken = (req, res, next) => {
+    let token = req.headers['authorization'];
 
-  if (!token) {
-    return next({
-      status: 403,
-      message: 'Forbidden. No Token!'
-    });
-  }
- var tokenObj = jwt.verify(token, 'balalaika');
-//  try {
-//    var tokenObj = jwt.verify(token, 'balalaika');
-//  } catch ({ message }) {
-//    return next({
-//      status: 400,
-//      message
-//    });
-//  }
-  
-  req.token = tokenObj;
-//  next();
-}
+    if (token) {
+        if (token.startsWith('Bearer ')) {
+            // Remove Bearer from string
+            token = token.slice(7, token.length);
+        }
 
+        jwt.verify(token, CONFIG.SECRET_KEY, (err, decoded) => {
+
+            if (err) {ß
+                return res.json({
+                    err,
+                    success: false,
+                    message: 'Token is not valid'
+                });
+            } else {
+                req.decoded = decoded;
+                next();
+            }
+        });
+    } else {
+        return res.json({
+            success: false,
+            message: 'Auth token is not supplied'
+        });
+    }
+};
+
+module.exports = checkToken;

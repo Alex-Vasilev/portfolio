@@ -1,68 +1,47 @@
-var express = require("express");
-const fs = require('fs');
-var bodyParser = require("body-parser");
-var mongoClient = require("mongodb").MongoClient;
-var objectId = require("mongodb").ObjectID;
+const express = require("express");
+const CONFIG = require('./config');
+const bodyParser = require("body-parser");
+const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
+const app = express();
+const http = require('http').Server(app);
+const mongoClient = require("mongodb").MongoClient;
+const objectId = require("mongodb").ObjectID;
 const nodemailer = require('nodemailer');
-var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-var app = express();
-var jsonParser = bodyParser.json();
-var url = "mongodb://localhost:27017/postsdb";
-var formidable = require('formidable');
-//var fs = require('fs');
-var api = require('./api.js')
-
+const formidable = require('formidable');
+const api = require('./api.js')
 const jwt = require('jsonwebtoken')
-//const checkToken = require('./middlewares/checkToken.js')
-var session = require('express-session')
-var MongoStore = require('connect-mongo')(session);
+
+app.use(bodyParser.json());
+
+const session = require('express-session')
+const MongoStore = require('connect-mongo')(session);
 
 app.use(session({
-    secret: 'i need more beers',
+    secret: CONFIG.SESSION_KEY,
     resave: false,
     saveUninitialized: true,
     store: new MongoStore({
-        url: 'mongodb://localhost:27017/store'
+        url: CONFIG.SESSION_URL
     })
 }));
 
 app.use(express.static(__dirname + "/public"));
 
-//app.get('/test', function (req, res, next) {
-//    const token = req.headers['authorization'];
-//    if (!token) {
-//        return next({
-//            status: 403,
-//            message: 'Forbidden. No Token!'
-//        });
-//    }
-//    console.log(req.headers)
-////  var tokenObj = jwt.verify(token, 'balalaika');
-////  req.token = tokenObj;
-////    res.json('test')
-//})
-
 app.get('/is_authenicated', function (req, res, next) {
-
     if (req.session.user) {
-        console.log(1)
-        var id = new objectId(req.session.user['id']);
-
-        console.log(1, req.session.user);
-        mongoClient.connect('mongodb://localhost:27017/usersdb', function (err, db) {
+        const id = new objectId(req.session.user['id']);
+        mongoClient.connect(CONFIG.USER_URL, function (err, db) {
             db.collection("users")
                 .findOne({ _id: id }, function (err, user) {
                     db.close();
-                    console.log(user)
-                    const token = jwt.sign({ _id: user._id, name: user.name }, 'balalaika');
+                    const token = jwt.sign({ _id: user._id, name: user.name }, CONFIG.SECRET_KEY);
                     res.json({ _token: token, role: user.role, name: user.username });
                 });
 
         });
-
     } else {
-        console.log(2);
+        next();
     }
 });
 
@@ -71,10 +50,10 @@ app.post('/login', function (req, res, next) {
         return res.redirect('/');
     }
 
-    var form = new formidable.IncomingForm();
+    const form = new formidable.IncomingForm();
 
     form.parse(req);
-    var userObj = {};
+    let userObj = {};
 
     form.on('field', function (field, value) {
         userObj[field] = value;
@@ -83,9 +62,7 @@ app.post('/login', function (req, res, next) {
         api.checkUser(userObj)
             .then(function (user) {
                 if (user) {
-                    const token = jwt.sign({ _id: user._id, name: user.name }, 'balalaika');
-                    console.log(user, token);
-
+                    const token = jwt.sign({ _id: user._id, name: user.name },  CONFIG.SECRET_KEY);
                     req.session.user = { id: user._id, name: user.name };
                     res.json({ _token: token, role: user.role, name: user.username });
                 } else {
@@ -100,14 +77,12 @@ app.post('/login', function (req, res, next) {
 
 
 app.post('/', function (req, res, next) {
-
-    var form = new formidable.IncomingForm();
+    const form = new formidable.IncomingForm();
 
     form.parse(req);
-    var userObj = {};
+    let userObj = {};
 
     form.on('field', function (field, value) {
-        //        console.log(field, value);
         userObj[field] = value;
     });
 
@@ -118,7 +93,6 @@ app.post('/', function (req, res, next) {
                 res.redirect('/')
             })
             .catch(function (err) {
-                console.log(err);
                 if (err.toJSON().code == 11000) {
                     res.status(500).send("This email already exist");
                 }
@@ -134,70 +108,23 @@ app.post('/logout', function (req, res, next) {
     }
 });
 
-
-//app.get('/a', function (req, res, next) {
-//    if (req.session.user) {
-//        var data = {
-//            title: 'Express',
-//            user: req.session.user
-//        };
-//        console.log(1111)
-//        res.render('index', data);
-//    } else {
-//        var data = {
-//            title: 'Express',
-//        };
-//                console.log(222)
-//
-//        res.render('index', data);
-//    }
-//});
-
 app.get("/admin", isAdmin, function (req, res) {
 
-    mongoClient.connect(url, function (err, db) {
+    mongoClient.connect(CONFIG.POSTS_URL, function (err, db) {
         db.collection("posts")
             .find({})
             .toArray(function (err, posts) {
                 res.send(posts);
-                console.log(posts);
                 db.close();
             });
     });
 });
 
-//function isAuthenticated(req, res, next) {
-//    if (req.session.user) {
-////user logged in
-//        var id = new objectId(req.session.user['id']);
-//        
-//        console.log(1, req.session.user);
-//        mongoClient.connect('mongodb://localhost:27017/usersdb', function (err, db) {
-//            db.collection("users")
-//                    .findOne({_id: id}, function (err, user) {
-//                        db.close();
-//                        if (user['role'] == 'admin'){
-//                            next();
-//                        }else{
-//                            res.status(400).send();
-//                        }
-//                    });
-//
-//        });
-////        next()
-//    } else {
-//        res.status(400).send();
-//    }
-//}
-
-
 function isAdmin(req, res, next) {
     if (req.session.user) {
-        //user logged in
-        var id = new objectId(req.session.user['id']);
+        const id = new objectId(req.session.user['id']);
 
-        console.log(1, req.session.user);
-        mongoClient.connect('mongodb://localhost:27017/usersdb', function (err, db) {
+        mongoClient.connect(CONFIG.USER_URL, function (err, db) {
             db.collection("users")
                 .findOne({ _id: id }, function (err, user) {
                     db.close();
@@ -209,20 +136,14 @@ function isAdmin(req, res, next) {
                 });
 
         });
-        //        next()
     } else {
         res.status(400).send();
     }
 }
 
-//app.get("/logout", function(req, res){
-//      unauthorized(res);
-////      return res.redirect('/');
-//});
-
 // blog posts
 app.get("/api/posts", function (req, res) {
-    mongoClient.connect(url, function (err, db) {
+    mongoClient.connect(CONFIG.POSTS_URL, function (err, db) {
         db.collection("posts")
             .find({}, {
                 name: 1,
@@ -241,7 +162,7 @@ app.get("/api/posts", function (req, res) {
 
 //categories
 app.get("/api/categories", function (req, res) {
-    mongoClient.connect(url, function (err, db) {
+    mongoClient.connect(CONFIG.POSTS_URL, function (err, db) {
         db.collection("posts").distinct('categories')
             .then(function (val) {
                 res.send(val);
@@ -253,9 +174,8 @@ app.get("/api/categories", function (req, res) {
 
 //get current post
 app.get("/api/posts/:id", function (req, res) {
-
-    var id = new objectId(req.params.id);
-    mongoClient.connect(url, function (err, db) {
+    const id = new objectId(req.params.id);
+    mongoClient.connect(CONFIG.POSTS_URL, function (err, db) {
         db.collection("posts").findOne({ _id: id }, function (err, post) {
 
             if (err)
@@ -269,25 +189,9 @@ app.get("/api/posts/:id", function (req, res) {
 
 //add post
 app.post("/api/posts", isAdmin, function (req, res) {
-
-    var form = new formidable.IncomingForm();
-    var fileName;
-    var postObj = {};
-
-    // form.parse(req, function (err, fields, files) {
-    //     console.log(666, files.file.name)
-    //     var oldPath = files.file.path;
-    //     var newPath = __dirname + '/public/img/' + files.file.name
-    //     var rawData = fs.readFileSync(oldPath)
-    //     fileName = files.file.name
-    //     console.log(7777, newPath, rawData)
-    //     fs.writeFile(newPath, rawData, function (err) {
-    //         if (err) console.log(err)
-    //         console.log(999, res)
-
-    //         // return res.send("Successfully uploaded")
-    //     })
-    // })
+    const form = new formidable.IncomingForm();
+    let fileName;
+    let postObj = {};
 
     form.parse(req)
 
@@ -305,10 +209,10 @@ app.post("/api/posts", isAdmin, function (req, res) {
     });
 
     form.on('end', function () {
-        var re = /\s*,\s*/;
-        var categories = postObj.categories.split(re);
+        const re = /\s*,\s*/;
+        const categories = postObj.categories.split(re);
 
-        var post = {
+        const post = {
             name: postObj.name,
             description: postObj.description,
             text: postObj.text,
@@ -317,7 +221,7 @@ app.post("/api/posts", isAdmin, function (req, res) {
             categories: categories
         };
 
-        mongoClient.connect(url, function (err, db) {
+        mongoClient.connect(CONFIG.POSTS_URL, function (err, db) {
             db.collection("posts").insertOne(post, function (err, result) {
                 console.log(result.ops);
                 if (err)
@@ -331,15 +235,13 @@ app.post("/api/posts", isAdmin, function (req, res) {
 
 //delete post
 app.delete("/api/posts/:id", isAdmin, function (req, res) {
-
-    var id = new objectId(req.params.id);
-    mongoClient.connect(url, function (err, db) {
+    const id = new objectId(req.params.id);
+    mongoClient.connect(CONFIG.POSTS_URL, function (err, db) {
         db.collection("posts").findOneAndDelete({ _id: id }, function (err, result) {
-
             if (err)
                 return res.status(400).send();
 
-            var post = result.value;
+            const post = result.value;
             res.send(post);
             db.close();
         });
@@ -348,9 +250,9 @@ app.delete("/api/posts/:id", isAdmin, function (req, res) {
 
 //change post
 app.put("/api/posts", isAdmin, function (req, res) {
-    var form = new formidable.IncomingForm();
-    var fileName;
-    var postObj = {};
+    const form = new formidable.IncomingForm();
+    let fileName;
+    let postObj = {};
 
     form.parse(req);
 
@@ -369,16 +271,16 @@ app.put("/api/posts", isAdmin, function (req, res) {
     });
 
     form.on('end', function () {
-        var id = new objectId(postObj.id);
-        var name = postObj.name;
-        var description = postObj.description;
-        var text = postObj.text;
-        var updateDate = postObj.updateDate;
-        var createDate = postObj.createDate;
-        var re = /\s*,\s*/;
-        var categories = postObj.categories.split(re);
+        const id = new objectId(postObj.id);
+        const name = postObj.name;
+        const description = postObj.description;
+        const text = postObj.text;
+        const updateDate = postObj.updateDate;
+        const createDate = postObj.createDate;
+        const re = /\s*,\s*/;
+        const categories = postObj.categories.split(re);
 
-        mongoClient.connect(url, function (err, db) {
+        mongoClient.connect(CONFIG.POSTS_URL, function (err, db) {
             db.collection("posts").findOneAndUpdate({ _id: id },
                 {
                     $set: {
@@ -397,7 +299,7 @@ app.put("/api/posts", isAdmin, function (req, res) {
                     if (err)
                         return res.status(400).send();
 
-                    var post = result.value;
+                    const post = result.value;
                     res.send(post);
                     console.log(post);
                     db.close();
@@ -406,16 +308,15 @@ app.put("/api/posts", isAdmin, function (req, res) {
     });
 });
 
-//send mail from contact page
-app.post("/api/contact", jsonParser, function (req, res) {
+app.post("/api/contact", function (req, res) {
     if (!req.body)
         return res.sendStatus(400);
 
-    var email = req.body.from;
-    var message = req.body.message;
-    var current_message = { email: email, message: message };
+    const email = req.body.from;
+    const message = req.body.message;
+    const current_message = { email: email, message: message };
 
-    var transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: 'aleksandrvasilev666@gmail.com',
@@ -423,7 +324,7 @@ app.post("/api/contact", jsonParser, function (req, res) {
         }
     });
 
-    var mailOptions = {
+    const mailOptions = {
         from: 'aleksandrvasilev666@gmail.com',
         to: 'aleksandr_vasilev1989@list.ru',
         subject: 'AV',
@@ -432,7 +333,6 @@ app.post("/api/contact", jsonParser, function (req, res) {
 
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-            //            res.send(error);
             console.log(error);
         } else {
             res.send(current_message);
@@ -441,17 +341,16 @@ app.post("/api/contact", jsonParser, function (req, res) {
     });
 });
 
-//search
-app.post("/api/search", jsonParser, function (req, res) {
+app.post("/api/search", function (req, res) {
     if (!req.body)
         return res.sendStatus(400);
-    var currentQuery = req.body.query;
-    console.log(currentQuery);
-    var re = new RegExp(currentQuery);
-    mongoClient.connect(url, function (err, db) {
+    const currentQuery = req.body.query;
+    const re = new RegExp(currentQuery);
+
+    mongoClient.connect(CONFIG.POSTS_URL, function (err, db) {
         if (err)
             throw err;
-        var query = { text: re };
+        const query = { text: re };
         db.collection("posts")
             .find(query, {
                 name: 1,
@@ -467,16 +366,17 @@ app.post("/api/search", jsonParser, function (req, res) {
 });
 
 //find by category
-app.post("/api/by_category", jsonParser, function (req, res) {
+app.post("/api/by_category", function (req, res) {
     if (!req.body)
         return res.sendStatus(400);
-    var currentQuery = req.body.query;
+    const currentQuery = req.body.query;
     console.log(currentQuery);
-    var re = new RegExp(currentQuery);
-    mongoClient.connect(url, function (err, db) {
+    const re = new RegExp(currentQuery);
+
+    mongoClient.connect(CONFIG.POSTS_URL, function (err, db) {
         if (err)
             throw err;
-        var query = { categories: re };
+        const query = { categories: re };
         db.collection("posts")
             .find(query, {
                 name: 1,
@@ -495,8 +395,18 @@ app.post("/api/by_category", jsonParser, function (req, res) {
     });
 });
 
-// app.listen(3000, function () {
-//     console.log("run!");
-// });
+// app.listen(80)
 
-app.listen(80)
+mongoose.connect(CONFIG.USER_URL, { useNewUrlParser: true });
+const db = mongoose.connection;
+
+db.once('open', function (err) {
+    if (err) {
+        console.log("Error Opening the DB Connection: ", err);
+        return;
+    }
+ 
+    http.listen(CONFIG.PORT, function () {
+        console.log("run!");
+    });
+});

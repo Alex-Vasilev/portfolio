@@ -884,6 +884,9 @@ button.active-btn span {
 }
 
 @media screen and (max-width: 500px) {
+    h2{
+        font-size: 30px;
+    }
 
     .home {
         background: url(bg/background.webp) no-repeat 50% 50% / cover;

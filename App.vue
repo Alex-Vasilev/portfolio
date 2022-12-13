@@ -112,12 +112,12 @@
                 <li><router-link to="/blog">Статьи</router-link></li>
                 <li><router-link to="/contact">Контакты</router-link></li>               
                 <li><router-link to="/storm">Štorm</router-link></li>
-                <!-- <li> 
+                <li> 
                     <a @click="openModal()"
                         v-if="!isAuthenicated">Войти</a> 
                     <a @click="logout"
                        v-if="isAuthenicated">Выйти</a>
-                </li> -->
+                </li>
             </ul>
             <div class="hamburger"
                  @click="triggerMenu()"
@@ -189,12 +189,10 @@
                 formData.append('password', this.password);
 
                 this.$http.post('/login', formData).then(response => {
-//                    console.log(response.data)
                     this.isAuthenicated = true;
                     this.userData = response.data;
                     this.modal_window = false;
                 }, response => {
-//                    console.log('proval');
                 });
             },
 
@@ -233,10 +231,6 @@
                     this.active_menu = false;
                 else
                     this.active_menu = true;
-            },
-            
-            handleScroll: function (event) {
-//                console.log(1)
             },
 
             openModal() {
