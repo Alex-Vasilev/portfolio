@@ -46,58 +46,66 @@ app.get('/is_authenicated', function (req, res, next) {
 });
 
 app.post('/login', function (req, res, next) {
-    if (req.session.user) {
-        return res.redirect('/');
-    }
+    try {
+        if (req.session.user) {
+            return res.redirect('/');
+        }
 
-    const form = new formidable.IncomingForm();
+        const form = new formidable.IncomingForm();
 
-    form.parse(req);
-    let userObj = {};
+        form.parse(req);
+        let userObj = {};
 
-    form.on('field', function (field, value) {
-        userObj[field] = value;
-    });
-    form.on('end', function () {
-        api.checkUser(userObj)
-            .then(function (user) {
-                if (user) {
-                    const token = jwt.sign({ _id: user._id, name: user.name },  CONFIG.SECRET_KEY);
-                    req.session.user = { id: user._id, name: user.name };
-                    res.json({ _token: token, role: user.role, name: user.username });
-                } else {
+        form.on('field', function (field, value) {
+            userObj[field] = value;
+        });
+        form.on('end', function () {
+            api.checkUser(userObj)
+                .then(function (user) {
+                    if (user) {
+                        const token = jwt.sign({ _id: user._id, name: user.name }, CONFIG.SECRET_KEY);
+                        req.session.user = { id: user._id, name: user.name };
+                        res.json({ _token: token, role: user.role, name: user.username });
+                    } else {
+                        return next(error);
+                    }
+                })
+                .catch(function (error) {
                     return next(error);
-                }
-            })
-            .catch(function (error) {
-                return next(error);
-            })
-    });
+                })
+        });
+    } catch (e) {
+        res.status(400).json({ message: e });
+    }
 });
 
 
 app.post('/', function (req, res, next) {
-    const form = new formidable.IncomingForm();
+    try {
+        const form = new formidable.IncomingForm();
 
-    form.parse(req);
-    let userObj = {};
+        form.parse(req);
+        let userObj = {};
 
-    form.on('field', function (field, value) {
-        userObj[field] = value;
-    });
+        form.on('field', function (field, value) {
+            userObj[field] = value;
+        });
 
-    form.on('end', function () {
-        api.createUser(userObj)
-            .then(function (result) {
-                console.log("User created");
-                res.redirect('/')
-            })
-            .catch(function (err) {
-                if (err.toJSON().code == 11000) {
-                    res.status(500).send("This email already exist");
-                }
-            });
-    });
+        form.on('end', function () {
+            api.createUser(userObj)
+                .then(function (result) {
+                    console.log("User created");
+                    res.redirect('/')
+                })
+                .catch(function (err) {
+                    if (err.toJSON().code == 11000) {
+                        res.status(500).send("This email already exist");
+                    }
+                });
+        });
+    } catch (e) {
+        res.status(400).json({ message: e });
+    }
 });
 
 app.post('/logout', function (req, res, next) {
@@ -189,48 +197,52 @@ app.get("/api/posts/:id", function (req, res) {
 
 //add post
 app.post("/api/posts", isAdmin, function (req, res) {
-    const form = new formidable.IncomingForm();
-    let fileName;
-    let postObj = {};
+    try {
+        const form = new formidable.IncomingForm();
+        let fileName;
+        let postObj = {};
 
-    form.parse(req)
+        form.parse(req)
 
-    form.on('fileBegin', function (name, file) {
-        file.path = __dirname + '/public/img/' + file.name;
-        fileName = file.name;
-    });
+        form.on('fileBegin', function (name, file) {
+            file.path = __dirname + '/public/img/' + file.name;
+            fileName = file.name;
+        });
 
-    form.on('field', function (field, value) {
-        postObj[field] = value;
-    });
+        form.on('field', function (field, value) {
+            postObj[field] = value;
+        });
 
-    form.on('file', function (name, file) {
-        console.log('Uploaded ' + file.name);
-    });
+        form.on('file', function (name, file) {
+            console.log('Uploaded ' + file.name);
+        });
 
-    form.on('end', function () {
-        const re = /\s*,\s*/;
-        const categories = postObj.categories.split(re);
+        form.on('end', function () {
+            const re = /\s*,\s*/;
+            const categories = postObj.categories.split(re);
 
-        const post = {
-            name: postObj.name,
-            description: postObj.description,
-            text: postObj.text,
-            createDate: postObj.createDate,
-            file: fileName,
-            categories: categories
-        };
+            const post = {
+                name: postObj.name,
+                description: postObj.description,
+                text: postObj.text,
+                createDate: postObj.createDate,
+                file: fileName,
+                categories: categories
+            };
 
-        mongoClient.connect(CONFIG.POSTS_URL, function (err, db) {
-            db.collection("posts").insertOne(post, function (err, result) {
-                console.log(result.ops);
-                if (err)
-                    return res.status(400).send();
-                res.send(post);
-                db.close();
+            mongoClient.connect(CONFIG.POSTS_URL, function (err, db) {
+                db.collection("posts").insertOne(post, function (err, result) {
+                    console.log(result.ops);
+                    if (err)
+                        return res.status(400).send();
+                    res.send(post);
+                    db.close();
+                });
             });
         });
-    });
+    } catch (e) {
+        res.status(400).json({ message: e });
+    }
 });
 
 //delete post
@@ -250,62 +262,66 @@ app.delete("/api/posts/:id", isAdmin, function (req, res) {
 
 //change post
 app.put("/api/posts", isAdmin, function (req, res) {
-    const form = new formidable.IncomingForm();
-    let fileName;
-    let postObj = {};
+    try {
+        const form = new formidable.IncomingForm();
+        let fileName;
+        let postObj = {};
 
-    form.parse(req);
+        form.parse(req);
 
-    form.on('fileBegin', function (name, file) {
-        file.path = __dirname + '/public/img/' + file.name;
-        fileName = file.name;
-    });
-
-    form.on('field', function (field, value) {
-        console.log(field, value);
-        postObj[field] = value;
-    });
-
-    form.on('file', function (name, file) {
-        console.log('Uploaded ' + file.name);
-    });
-
-    form.on('end', function () {
-        const id = new objectId(postObj.id);
-        const name = postObj.name;
-        const description = postObj.description;
-        const text = postObj.text;
-        const updateDate = postObj.updateDate;
-        const createDate = postObj.createDate;
-        const re = /\s*,\s*/;
-        const categories = postObj.categories.split(re);
-
-        mongoClient.connect(CONFIG.POSTS_URL, function (err, db) {
-            db.collection("posts").findOneAndUpdate({ _id: id },
-                {
-                    $set: {
-                        name: name,
-                        description: description,
-                        text: text,
-                        file: fileName,
-                        updateDate: updateDate,
-                        createDate: createDate,
-                        categories: categories
-                    }
-                },
-                {
-                    returnOriginal: false
-                }, function (err, result) {
-                    if (err)
-                        return res.status(400).send();
-
-                    const post = result.value;
-                    res.send(post);
-                    console.log(post);
-                    db.close();
-                });
+        form.on('fileBegin', function (name, file) {
+            file.path = __dirname + '/public/img/' + file.name;
+            fileName = file.name;
         });
-    });
+
+        form.on('field', function (field, value) {
+            console.log(field, value);
+            postObj[field] = value;
+        });
+
+        form.on('file', function (name, file) {
+            console.log('Uploaded ' + file.name);
+        });
+
+        form.on('end', function () {
+            const id = new objectId(postObj.id);
+            const name = postObj.name;
+            const description = postObj.description;
+            const text = postObj.text;
+            const updateDate = postObj.updateDate;
+            const createDate = postObj.createDate;
+            const re = /\s*,\s*/;
+            const categories = postObj.categories.split(re);
+
+            mongoClient.connect(CONFIG.POSTS_URL, function (err, db) {
+                db.collection("posts").findOneAndUpdate({ _id: id },
+                    {
+                        $set: {
+                            name: name,
+                            description: description,
+                            text: text,
+                            file: fileName,
+                            updateDate: updateDate,
+                            createDate: createDate,
+                            categories: categories
+                        }
+                    },
+                    {
+                        returnOriginal: false
+                    }, function (err, result) {
+                        if (err)
+                            return res.status(400).send();
+
+                        const post = result.value;
+                        res.send(post);
+                        console.log(post);
+                        db.close();
+                    });
+            });
+        });
+    } catch (e) {
+        res.status(400).json({ message: e });
+    }
 });
 
 app.post("/api/contact", function (req, res) {
@@ -405,7 +421,7 @@ db.once('open', function (err) {
         console.log("Error Opening the DB Connection: ", err);
         return;
     }
- 
+
     http.listen(CONFIG.PORT, function () {
         console.log("run!");
     });
