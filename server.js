@@ -35,8 +35,7 @@ app.get('/is_authenicated', function (req, res, next) {
             db.collection("users")
                 .findOne({ _id: id }, function (err, user) {
                     db.close();
-                    const token = jwt.sign({ _id: user._id, name: user.name }, CONFIG.SECRET_KEY);
-                    res.json({ _token: token, role: user.role, name: user.username });
+                    res.json({ name: user.username });
                 });
 
         });
@@ -63,9 +62,8 @@ app.post('/login', function (req, res, next) {
             api.checkUser(userObj)
                 .then(function (user) {
                     if (user) {
-                        const token = jwt.sign({ _id: user._id, name: user.name }, CONFIG.SECRET_KEY);
                         req.session.user = { id: user._id, name: user.name };
-                        res.json({ _token: token, role: user.role, name: user.username });
+                        res.json({ name: user.username });
                     } else {
                         return next(error);
                     }
@@ -110,7 +108,6 @@ app.post('/', function (req, res, next) {
 
 app.post('/logout', function (req, res, next) {
     if (req.session.user) {
-        console.log(req, req.session, req.session.user);
         delete req.session.user;
         res.redirect('/');
     }
@@ -162,7 +159,6 @@ app.get("/api/posts", function (req, res) {
             })
             .toArray(function (err, posts) {
                 res.send(posts);
-                console.log(posts);
                 db.close();
             });
     });
@@ -174,7 +170,6 @@ app.get("/api/categories", function (req, res) {
         db.collection("posts").distinct('categories')
             .then(function (val) {
                 res.send(val);
-                console.log(val);
                 db.close();
             });
     });
@@ -232,7 +227,6 @@ app.post("/api/posts", isAdmin, function (req, res) {
 
             mongoClient.connect(CONFIG.POSTS_URL, function (err, db) {
                 db.collection("posts").insertOne(post, function (err, result) {
-                    console.log(result.ops);
                     if (err)
                         return res.status(400).send();
                     res.send(post);
@@ -275,7 +269,6 @@ app.put("/api/posts", isAdmin, function (req, res) {
         });
 
         form.on('field', function (field, value) {
-            console.log(field, value);
             postObj[field] = value;
         });
 
@@ -314,7 +307,6 @@ app.put("/api/posts", isAdmin, function (req, res) {
 
                         const post = result.value;
                         res.send(post);
-                        console.log(post);
                         db.close();
                     });
             });
@@ -386,7 +378,6 @@ app.post("/api/by_category", function (req, res) {
     if (!req.body)
         return res.sendStatus(400);
     const currentQuery = req.body.query;
-    console.log(currentQuery);
     const re = new RegExp(currentQuery);
 
     mongoClient.connect(CONFIG.POSTS_URL, function (err, db) {

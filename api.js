@@ -1,14 +1,5 @@
-var mongoose = require('mongoose')
 var crypto = require('crypto')
-// mongoose.Promise = global.Promise;
-// mongoose.connect("mongodb://localhost:27017/usersdb")
 var User = require('./db/models/user.js')
-// var db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'connection error:'));
-// db.once('open', function () {
-//     console.log('ds')
-// });
-// User API
 
 exports.createUser = function (userData) { 
     var current = new User({
