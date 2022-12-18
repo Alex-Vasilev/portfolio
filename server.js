@@ -59,17 +59,21 @@ app.post('/login', function (req, res, next) {
             userObj[field] = value;
         });
         form.on('end', function () {
+            if (!userObj.password || !userObj.email) {
+                return res.status(400).json({ message: 'Érror' });
+            }
+
             api.checkUser(userObj)
                 .then(function (user) {
                     if (user) {
                         req.session.user = { id: user._id, name: user.name };
                         res.json({ name: user.username });
                     } else {
-                        return next(error);
+                        next(error);
                     }
                 })
                 .catch(function (error) {
-                    return next(error);
+                    next(error);
                 })
         });
     } catch (e) {
