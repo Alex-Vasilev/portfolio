@@ -48,9 +48,10 @@
               login
             </button>
           </div>
-          <form method="post" action="/" v-if="sign" class="">
+          <div v-if="sign" class="">
             <div class="form-group">
               <input
+                v-model="name"
                 type="text"
                 id="sign-name"
                 name="name"
@@ -59,6 +60,7 @@
             </div>
             <div class="form-group">
               <input
+                v-model="email"
                 type="text"
                 id="sign-email"
                 name="email"
@@ -67,17 +69,18 @@
             </div>
             <div class="form-group">
               <input
+                v-model="password"
                 type="password"
                 id="sign-password"
                 name="password"
                 placeholder="Password"
               />
             </div>
-            <button type="submit" class="btn btn-sm btn-primary">
+            <button @click="onRegister()">
               <span>register</span>
               register
             </button>
-          </form>
+          </div>
           <div v-if="log" class="">
             <div class="form-group">
               <input
@@ -97,7 +100,7 @@
                 name="password"
               />
             </div>
-            <button @click="onSubmit()">
+            <button @click="onSign()">
               <span>Sign in</span>
               Sign in
             </button>
@@ -183,13 +186,28 @@ export default {
         );
     },
 
-    onSubmit() {
+    onSign() {
+      var formData = new FormData();
+      formData.append("email", this.email);
+      formData.append("password", this.password);
+
+      this.$http.post("/login", formData).then(
+        (response) => {
+          this.isAuthenicated = true;
+          this.userData = response.data;
+          this.modal_window = false;
+        },
+        (response) => {}
+      );
+    },
+
+    onRegister() {
       var formData = new FormData();
       formData.append("name", this.name);
       formData.append("email", this.email);
       formData.append("password", this.password);
 
-      this.$http.post("/login", formData).then(
+      this.$http.post("/registration", formData).then(
         (response) => {
           this.isAuthenicated = true;
           this.userData = response.data;
@@ -206,7 +224,6 @@ export default {
           this.isAuthenicated = false;
         },
         (response) => {
-          //                    console.log('error');
         }
       );
     },

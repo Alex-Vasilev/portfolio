@@ -81,8 +81,25 @@ app.post('/login', function (req, res, next) {
     }
 });
 
+const isEmailValid = (email) => {
+    return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        email
+    );
+}
 
-app.post('/', function (req, res, next) {
+const isNameValid = (name) => {
+    return /^(?=.*[A-Za-z])[A-Za-z\d]{2,15}$/.test(
+        name
+    )
+}
+
+const isPasswordValid = (password) => {
+    return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/.test(
+        password
+    )
+}
+
+app.post('/registration', function (req, res, next) {
     try {
         const form = new formidable.IncomingForm();
 
@@ -94,10 +111,15 @@ app.post('/', function (req, res, next) {
         });
 
         form.on('end', function () {
+            if (!isPasswordValid(userObj.password)) return res.status(400).json({ message: 'Érror pass' });
+            if (!isEmailValid(userObj.email)) return res.status(400).json({ message: 'Érror email' });
+            if (!isNameValid(userObj.name)) return res.status(400).json({ message: 'Érror name' });
+
             api.createUser(userObj)
-                .then(function (result) {
+                .then(function ({_doc}) {
                     console.log("User created");
-                    res.redirect('/')
+                    req.session.user = { id: _doc._id, name: _doc.name };
+                    res.json({ name: _doc.username });
                 })
                 .catch(function (err) {
                     if (err.toJSON().code == 11000) {
