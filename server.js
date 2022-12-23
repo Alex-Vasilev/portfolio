@@ -10,7 +10,6 @@ const objectId = require("mongodb").ObjectID;
 const nodemailer = require('nodemailer');
 const formidable = require('formidable');
 const api = require('./api.js')
-const jwt = require('jsonwebtoken')
 
 app.use(bodyParser.json());
 
@@ -378,15 +377,15 @@ app.post("/api/contact", function (req, res) {
 app.post("/api/search", function (req, res) {
     if (!req.body)
         return res.sendStatus(400);
+
     const currentQuery = req.body.query;
-    const re = new RegExp(currentQuery);
+    const regex = new RegExp(currentQuery, 'i');
 
     mongoClient.connect(CONFIG.POSTS_URL, function (err, db) {
         if (err)
             throw err;
-        const query = { text: re };
         db.collection("posts")
-            .find(query, {
+            .find({ name: { $regex: regex } }, {
                 name: 1,
                 description: 1
             })
@@ -403,6 +402,7 @@ app.post("/api/search", function (req, res) {
 app.post("/api/by_category", function (req, res) {
     if (!req.body)
         return res.sendStatus(400);
+        
     const currentQuery = req.body.query;
     const re = new RegExp(currentQuery);
 
@@ -443,3 +443,10 @@ db.once('open', function (err) {
         console.log("run!");
     });
 });
+
+process.on('uncaughtException', (err, origin) => {
+    console.log(
+       `Caught exception: ${err}\n` +
+       `Exception origin: ${origin}`,
+     );
+   });
