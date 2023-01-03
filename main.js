@@ -17,26 +17,26 @@ import PostPage from './components/PostPage.vue'
 
 
 const routes = [
-    { path: '/', component: Hello },
-    { path: '/about', component: About },
-    { path: '/blog', component: Blog},
-    { path: '/storm', component: Storm},
-    { path: '/contact', component: Contact},
-    { path: '/admin', component: Admin},
-    { path: '/blog/:id', component: PostPage}
+  { path: '/', component: Hello },
+  { path: '/about', component: About },
+  { path: '/blog', component: Blog },
+  { path: '/storm', component: Storm },
+  { path: '/contact', component: Contact },
+  { path: '/admin', component: Admin },
+  { path: '/blog/:id', component: PostPage }
 ];
 
 const router = new VueRouter({
-  routes, // short for routes: routes
-//  mode: 'history'
+  routes,
+  //  mode: 'history'
 });
 
 Vue.directive('slice', {
-    inserted: function (el, size) {
-        if (el.innerText.length >= size.value.size) {
-            el.innerText = el.innerText.slice(0, size.value.size) + '...';
-        }
+  inserted: function (el, size) {
+    if (el.innerText.length >= size.value.size) {
+      el.innerText = el.innerText.slice(0, size.value.size) + '...';
     }
+  }
 })
 
 //instatinat the vue instance
@@ -44,7 +44,7 @@ new Vue({
   el: '#app',
   template: '<App/>',
   //declare components that the root component can access
-  components: {App} ,
+  components: { App },
   router
 }).$mount('#app');
 

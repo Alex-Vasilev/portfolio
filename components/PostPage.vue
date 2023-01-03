@@ -1,47 +1,70 @@
-<template>          
-    <div class="blog-content"> 
-        <div class="container page-container">
-            <div class="head-post-container">
-                <p class="news-item-title post-page-title">{{post.name}}</p>
-                <div v-bind:style="{background: `url(img/${post.file}) no-repeat 50% 50% / cover`}" class="img-container">
-                </div>             
-            </div>
-            <div class="post-page-categories">
-                <div v-for="item in post.categories"
-                     class="category">{{item}}
-                </div>
-            </div>
-            <div class='footer-post'>
-                <span class="posted-date">{{post.createDate}}</span>
-                <span class="updated-date"
-                      v-if="post.updateDate">Ред: {{post.updateDate}}</span>
-                <span class="share-post"
-                      @click="showShareIcons">
-                    <span>Share</span>
-                    <div class="share-icons">
-                        <a href="#"
-                           target="_blank"
-                           @click.stop.prevent="vkontakte('http://avdevelop.com/#/blog/' + post._id, post.name, post.description, './public/assets/img/'+ post.file)">
-                            <i class="fa fa-vk" aria-hidden="true"></i>
-                        </a>
-                        <a href="#"
-                           target="_blank"
-                           @click.stop.prevent="facebook('http://avdevelop.com/#/blog/' + post._id, post.name, post.description, '../assets/img/'+ post.file)">
-                            <i class="fa fa-facebook-official" aria-hidden="true"></i>
-                        </a>
-                        <a href="#"
-                           target="_blank"
-                           @click.stop.prevent="twitter('http://avdevelop.com/#/blog/' + post._id, post.name)">
-                            <i class="fa fa-twitter" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </span>
-            </div>
-            <p class="post-page-description">{{post.description}}</p>
-            <p class="news-item-text"
-               v-html="post.text"></p>
-        </div>
+<template>
+  <div class="blog-content">
+    <div class="container page-container">
+      <div class="head-post-container">
+        <p class="news-item-title post-page-title">{{ post.name }}</p>
+        <div
+          v-bind:style="{
+            background: `url(img/${post.file}) no-repeat 50% 50% / cover`,
+          }"
+          class="img-container"
+        ></div>
+      </div>
+      <div class="post-page-categories">
+        <div v-for="item in post.categories" class="category">{{ item }}</div>
+      </div>
+      <div class="footer-post">
+        <span class="posted-date">{{ post.createDate }}</span>
+        <span class="updated-date" v-if="post.updateDate"
+          >Ред: {{ post.updateDate }}</span
+        >
+        <span class="share-post" @click="showShareIcons">
+          <span>Share</span>
+          <div class="share-icons">
+            <a
+              href="#"
+              target="_blank"
+              @click.stop.prevent="
+                vkontakte(
+                  'http://avdevelop.com/#/blog/' + post._id,
+                  post.name,
+                  post.description,
+                  './public/assets/img/' + post.file
+                )
+              "
+            >
+              <i class="fa fa-vk" aria-hidden="true"></i>
+            </a>
+            <a
+              href="#"
+              target="_blank"
+              @click.stop.prevent="
+                facebook(
+                  'http://avdevelop.com/#/blog/' + post._id,
+                  post.name,
+                  post.description,
+                  '../assets/img/' + post.file
+                )
+              "
+            >
+              <i class="fa fa-facebook-official" aria-hidden="true"></i>
+            </a>
+            <a
+              href="#"
+              target="_blank"
+              @click.stop.prevent="
+                twitter('http://avdevelop.com/#/blog/' + post._id, post.name)
+              "
+            >
+              <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+          </div>
+        </span>
+      </div>
+      <p class="post-page-description">{{ post.description }}</p>
+      <p class="news-item-text" v-html="post.text"></p>
     </div>
+  </div>
 </template>
 <script>
 export default {
@@ -52,6 +75,10 @@ export default {
       shareIcons: false,
     };
   },
+
+  // mounted() {
+  //   window.scrollTo(0, 0);
+  // },
 
   methods: {
     fetch() {

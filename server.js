@@ -303,26 +303,22 @@ app.put("/api/posts", isAdmin, function (req, res) {
 
         form.on('end', function () {
             const id = new objectId(postObj.id);
-            const name = postObj.name;
-            const description = postObj.description;
-            const text = postObj.text;
-            const updateDate = postObj.updateDate;
-            const createDate = postObj.createDate;
             const re = /\s*,\s*/;
             const categories = postObj.categories.split(re);
+
+            let updatedFields = {
+                ...postObj,
+                categories
+            }
+
+            if (fileName) {
+                updatedFields.file = fileName
+            }
 
             mongoClient.connect(CONFIG.POSTS_URL, function (err, db) {
                 db.collection("posts").findOneAndUpdate({ _id: id },
                     {
-                        $set: {
-                            name: name,
-                            description: description,
-                            text: text,
-                            file: fileName,
-                            updateDate: updateDate,
-                            createDate: createDate,
-                            categories: categories
-                        }
+                        $set: updatedFields
                     },
                     {
                         returnOriginal: false
@@ -402,7 +398,7 @@ app.post("/api/search", function (req, res) {
 app.post("/api/by_category", function (req, res) {
     if (!req.body)
         return res.sendStatus(400);
-        
+
     const currentQuery = req.body.query;
     const re = new RegExp(currentQuery);
 

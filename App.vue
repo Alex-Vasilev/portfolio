@@ -331,18 +331,6 @@ export default {
 </script>
 
 <style>
-.modal-wrapper {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  background: rgba(255, 255, 255, 0.5);
-  z-index: 9999;
-}
-
 .modal-buttons {
   display: flex;
   margin-bottom: 30px;
