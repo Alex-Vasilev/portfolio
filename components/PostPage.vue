@@ -92,7 +92,6 @@ export default {
             self.post = response.data;
           },
           (response) => {
-            console.log(6);
           }
         );
     },

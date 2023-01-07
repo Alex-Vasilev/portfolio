@@ -10,8 +10,10 @@ const objectId = require("mongodb").ObjectID;
 const nodemailer = require('nodemailer');
 const formidable = require('formidable');
 const api = require('./api.js')
+const history = require('connect-history-api-fallback');
 
 app.use(bodyParser.json());
+app.use(history());
 
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session);

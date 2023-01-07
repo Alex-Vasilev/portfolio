@@ -28,7 +28,7 @@ const routes = [
 
 const router = new VueRouter({
   routes,
-  //  mode: 'history'
+  mode: 'history'
 });
 
 Vue.directive('slice', {
@@ -39,11 +39,9 @@ Vue.directive('slice', {
   }
 })
 
-//instatinat the vue instance
 new Vue({
   el: '#app',
   template: '<App/>',
-  //declare components that the root component can access
   components: { App },
   router
 }).$mount('#app');
